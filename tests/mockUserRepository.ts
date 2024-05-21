@@ -18,5 +18,18 @@ export class MockUserRepository implements UserRepository {
         return this.users;
     }
 
+    createUser(user: User):void {
+        this.users.push(user);
+    };
+
+    editUser(user: User): void {
+        let userId = user.getId();
+        this.users[userId - 1]= user;
+    };
+
+    deleteUser(userId: number): void {
+        this.users = this.users.filter(user => user.getId() !== userId);
+    };
+
 
 };

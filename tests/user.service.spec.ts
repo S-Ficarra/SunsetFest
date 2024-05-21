@@ -1,5 +1,7 @@
 import { UserService } from '../src/services/user/user.service'  
 import { MockUserRepository } from './mockUserRepository'; 
+import { Role } from '../src/domain/models/user/role.model';
+import { User } from '../src/domain/models/user/user.model';
 
 
 
@@ -35,4 +37,27 @@ describe('UserService', () => {
             expect.objectContaining({ _id: 3, _name: 'Jane' })
         ]));
     });
+
+
+    it('Should return user just created with id 666', () => {
+        const user666 = new User(666,'Dev', 'Hill', 'dev@exemple.com', 'password', new Role(1, 'Author'));
+        userRepository.createUser(user666);
+        const foundUser666 = userService.getUserById(666);
+        expect(foundUser666).toEqual(expect.objectContaining({ _id: 666, _name: 'Dev' }));
+    });
+
+
+    it('should return user 1 with name buggs', () => {
+        const editedUser = new User(1, 'buggs', 'Doe', 'bugs@exemple.com', 'password', new Role(1, 'Author'));
+        userService.editUser(editedUser);
+        const foundUserEdited = userService.getUserById(1); 
+        expect(foundUserEdited).toEqual(expect.objectContaining({ _id: 1, _name: 'buggs', _email: 'bugs@exemple.com' }));
+    });
+
+    it('should delete the user with id 1', () => {
+        userService.deleteUser(1);
+        const usersAfterDeletion = userService.getAllUsers();
+        expect(usersAfterDeletion.some(user => user.getId() === 1)).toBeFalsy();
+    });
+
 });

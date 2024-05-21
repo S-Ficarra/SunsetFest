@@ -9,12 +9,24 @@ export class UserService {
     constructor (private userRepository: UserRepository
     ) {};
 
-    getUserById(id: number): User| undefined {
-        return this.userRepository.getUserById(id);
+    getUserById(userId: number): User| undefined {
+        return this.userRepository.getUserById(userId);
     };
 
     getAllUsers(): User[] {
         return this.userRepository.getAllUsers();
+    };
+
+    createUser(user: User): void {
+        this.userRepository.createUser(user);
+    };
+
+    editUser(user: User): void {
+        this.userRepository.editUser(user);
+    };
+
+    deleteUser(userId: number): void {
+        this.userRepository.deleteUser(userId);
     };
 
 

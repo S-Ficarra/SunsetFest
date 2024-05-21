@@ -4,6 +4,5 @@ export interface RoleRepository {
 
     getRoleById(id: number): Role | undefined;
     getAllRoles(): Role[];
-    updateRole(newRoleId: number): void;
 
 }
