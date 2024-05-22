@@ -9,12 +9,13 @@ export class UserService {
     constructor (private userRepository: UserRepository
     ) {};
 
-    getUserById(userId: number): User| undefined {
-        return this.userRepository.getUserById(userId);
-    };
 
     getAllUsers(): User[] {
         return this.userRepository.getAllUsers();
+    };
+
+    getUserById(userId: number): User| undefined {
+        return this.userRepository.getUserById(userId);
     };
 
     createUser(user: User): void {

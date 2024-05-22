@@ -1,5 +1,5 @@
 import { Author } from "../user/author.model";
-import { Content } from "../content/content.model";
+import { Content } from "./content.model";
 import { Publication } from "./publication.model";
 
 export class Information extends Publication{

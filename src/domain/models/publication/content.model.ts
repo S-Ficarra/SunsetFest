@@ -28,7 +28,7 @@ export class Content {
     };
 
     setImage(blob: Blob): void {
-        this.image = this.image;
+        this.image = blob;
     };
 
     getImage(): Blob {

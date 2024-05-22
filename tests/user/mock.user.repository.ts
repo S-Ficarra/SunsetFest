@@ -1,6 +1,6 @@
-import { User } from "../src/domain/models/user/user.model";
-import { UserRepository } from "../src/domain/repositories/user/user.repository";
-import { Role } from "../src/domain/models/user/role.model";
+import { User } from "../../src/domain/models/user/user.model";
+import { UserRepository } from "../../src/domain/repositories/user/user.repository";
+import { Role } from "../../src/domain/models/user/role.model";
 
 export class MockUserRepository implements UserRepository {
 
@@ -24,7 +24,7 @@ export class MockUserRepository implements UserRepository {
 
     editUser(user: User): void {
         let userId = user.getId();
-        this.users[userId - 1]= user;
+        this.users[userId - 1] = user;
     };
 
     deleteUser(userId: number): void {
