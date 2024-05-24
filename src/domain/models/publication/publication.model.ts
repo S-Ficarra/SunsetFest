@@ -1,19 +1,19 @@
-import { Author } from "../user/author.model";
 
 export class Publication {
 
     private _id: number;
-    private _authorId: Author;
+    private _authorId: number;
     private _createdAt: Date;
     private _modifiedAt: Date;
     private _status : boolean;
+    private _type : string;
 
-    constructor (id: number, authorId: Author, createdAt: Date, modifiedAt: Date, status: boolean) {
-        this._id = id;
+    constructor (authorId: number, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
         this._authorId = authorId;
         this._createdAt = createdAt;
         this._modifiedAt = modifiedAt;
         this._status = status;
+        this._type = type;
     }
 
     setId(value: number): void {
@@ -24,11 +24,11 @@ export class Publication {
         return this._id;
     };
 
-    setAuthorId(authorId: Author): void {
+    setAuthorId(authorId: number): void {
         this._authorId = authorId;
     };
 
-    getAuthorId(): Author {
+    getAuthorId(): number {
         return this._authorId;
     };
 
@@ -54,6 +54,14 @@ export class Publication {
 
     getStatus(): boolean {
         return this._status;
+    };
+
+    setType(type: string): void {
+        this._type = type;
+    };
+
+    getType(): string {
+        return this._type;
     };
 
 };

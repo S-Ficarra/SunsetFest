@@ -2,10 +2,9 @@ import { Socials } from "../../models/band/socials.model";
 
 export interface SocialsRepository {
 
-    getSocials(): Socials | undefined;
+    getSocialsById(socialsId: number): Socials | undefined;
     createSocials(socials: Socials): void;
     editSocials(socials: Socials): void;
-    deleteSocials(): void;
-
+    deleteSocials(socialId: number): void;
 
 };

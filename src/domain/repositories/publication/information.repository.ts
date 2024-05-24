@@ -1,12 +1,11 @@
 import { Information } from "../../models/publication/information.model"; 
-import { PublicationRepository } from "./publication.repository";
 
-export interface InformationRepository extends PublicationRepository{
+export interface InformationRepository{
 
     getAllInformation(): Information[];
-    getInformationById(id: number): Information | undefined;
-    createInformation(Information: Information): void;
-    editInformation(Information: Information): void;
-    deleteInformation(id: number): void;
+    getInformationById(informationId: number): Information | undefined;
+    createInformation(information: Information): void;
+    editInformation(information: Information): void;
+    deleteInformation(informationId: number): void;
 
 };

@@ -1,12 +1,12 @@
 import { Faq } from "../../models/publication/faq.model"; 
 import { PublicationRepository } from "./publication.repository";
 
-export interface FaqRepository extends PublicationRepository{
+export interface FaqRepository {
 
     getAllFaq(): Faq[];
-    getFaqById(id: number): Faq | undefined;
-    createFaq(Faq: Faq): void;
-    editFaq(Faq: Faq): void;
-    deleteFaq(id: number): void;
+    getFaqById(faqId: number): Faq | undefined;
+    createFaq(faq: Faq): void;
+    editFaq(faq: Faq): void;
+    deleteFaq(faqId: number): void;
 
 };

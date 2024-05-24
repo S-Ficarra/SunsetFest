@@ -1,13 +1,12 @@
 import { Publication } from "./publication.model"; 
-import { Author } from "../user/author.model";
 
 export class Faq extends Publication {
 
     public question: string;
     public answer: string
 
-    constructor (id: number, authorId: Author, createdAt: Date, modifiedAt: Date, status: boolean, question: string, answer: string) {
-        super (id, authorId, createdAt, modifiedAt, status)
+    constructor (authorId: number, createdAt: Date, modifiedAt: Date, status: boolean, question: string, answer: string) {
+        super (authorId, createdAt, modifiedAt, status, "faq")
         this.question = question;
         this.answer = answer;
     };

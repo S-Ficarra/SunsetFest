@@ -1,5 +1,6 @@
 export class Socials {
 
+    private _id : number
     public facebook: string;
     public instagram: string;
     public twitter: string;
@@ -19,6 +20,14 @@ export class Socials {
         this.spotifyIntegrationLink = spotifyIntegrationLink;
         this.youtubeIntegrationLink = youtubeIntegrationLink;
     };
+
+    getId(): number {
+        return this._id;
+    }
+
+    setId(id: number): void {
+        this._id = id;
+    }
 
     setFacebook(facebookLink: string) {
         this.facebook = facebookLink;

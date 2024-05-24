@@ -1,22 +1,20 @@
-import { Author } from "../user/author.model";
 import { Socials } from "./socials.model";
 
 export class Band {
 
-    public id: number;
+    private _id: number;
     public name: string;
     public country: string;
     public text: string;
     public socials: Socials;
     public thumbnailImage: Blob;
     public bannerImage: Blob;
-    public authorId: Author;
+    public authorId: number;
     public createdAt: Date;
     public modifiedAt: Date;
 
 
-    constructor(id: number, name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, authorId: Author, createdAt: Date, modifiedAt: Date) {
-        this.id = id;
+    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, authorId: number, createdAt: Date, modifiedAt: Date) {
         this.name = name;
         this.country = country;
         this.text = text;
@@ -29,11 +27,11 @@ export class Band {
     };
 
     setId(id: number) {
-        this.id = id;
+        this._id = id;
     };
 
     getId(): number {
-        return this.id;
+        return this._id;
     };
 
     setName(name: string) {
@@ -84,11 +82,11 @@ export class Band {
         return this.bannerImage;
     };
 
-    setAuthorId(authorId: Author) {
+    setAuthorId(authorId: number) {
         this.authorId = authorId;
     };
 
-    getAuthorId(): Author {
+    getAuthorId(): number {
         return this.authorId;
     };
 

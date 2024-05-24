@@ -1,10 +1,7 @@
 import { Publication } from "../../src/domain/models/publication/publication.model";
 import { PublicationService } from "../../src/services/publication/publication.service";
 import { MockPublicationRepository } from "./mock.publication.repository";
-import { User } from "../../src/domain/models/user/user.model";
-import { Role } from "../../src/domain/models/user/role.model";
 
-let author3 = new User(3, 'Dev', 'Hill', 'Dev@example.com', 'password', new Role(3, 'Administrator'));
  
 describe('PublicationService', () => {
     let publicationService: PublicationService;
@@ -13,43 +10,45 @@ describe('PublicationService', () => {
     beforeEach(() => {
         publicationRepository = new MockPublicationRepository();
         publicationService = new PublicationService(publicationRepository);
+        publicationRepository.setFakeIdToTest();
     });
 
     //getPublicationById
     it("Sould return a publication by it's id", () => {
         const foundPublication1 = publicationService.getPublicationById(1);
-        expect(foundPublication1).toEqual(expect.objectContaining({ _id: 1, _authorId: expect.objectContaining({ _id: 1 }) }));
+        expect(foundPublication1).toEqual(expect.objectContaining({ _id: 1, _status: false}));
     });
 
     //getAllPublication
     it('should return all publication', () => {
-        const publications = publicationRepository.getAllPublication();
+        const publications = publicationService.getAllPublication();
         expect(publications).toHaveLength(2);
         expect(publications).toEqual(expect.arrayContaining([
-            expect.objectContaining({_id: 1, _authorId: expect.objectContaining({ _id: 1 }) }),
-            expect.objectContaining({_id: 2, _authorId: expect.objectContaining({ _id: 2 }) }),
+            expect.objectContaining({_type: 'news', _status: false}),
+            expect.objectContaining({_type: 'news', _status: true}),
         ])); 
     });
 
     //createPublication
     it('should return a publication just created', () => {
-        publicationService.createPublication(new Publication(3, author3,new Date(), new Date(), false));
+        publicationService.createPublication(new Publication(3,new Date(), new Date(), false,'information'));
         const foundPublication = publicationService.getPublicationById(3);
-        expect(foundPublication).toEqual(expect.objectContaining({ _id: 3, _authorId: expect.objectContaining({ _id: 3 }) }));
+        expect(foundPublication).toEqual(expect.objectContaining({ _type: 'information', _authorId: 3}));
     });
 
     //editPublication
     it('should return the publication edited with the modification', () => {
-        const editedPublication = new Publication(1, author3, new Date(), new Date(), true);
+        const editedPublication = new Publication(3, new Date(), new Date(), true,'faq');
+        editedPublication.setId(1)
         publicationService.editPublication(editedPublication);
         const editedPublicationFounded = publicationService.getPublicationById(1)
-        expect(editedPublicationFounded).toEqual(expect.objectContaining({ _id: 1, _authorId: expect.objectContaining({ _id: 3 }) }));
+        expect(editedPublicationFounded).toEqual(expect.objectContaining({ _type: 'faq', _status: true}));
     });
 
     //deletePublicatio 
     it('should delete the publication with the id 1', () => {
         publicationService.deletePublication(1);
-        const publications = publicationRepository.getAllPublication();
+        const publications = publicationService.getAllPublication();
         expect(publications).toHaveLength(1);
         expect(publications.some(publication => publication.getId() === 1)).toBeFalsy();
     });

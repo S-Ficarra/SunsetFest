@@ -44,7 +44,7 @@ describe('UserService', () => {
     //createUser and return it with getUserById
     it('Should return user just created with id 666', () => {
         const user666 = new User(666,'Dev', 'Hill', 'dev@exemple.com', 'password', new Role(1, 'Author'));
-        userRepository.createUser(user666);
+        userService.createUser(user666);
         const foundUser666 = userService.getUserById(666);
         expect(foundUser666).toEqual(expect.objectContaining({ _id: 666, _name: 'Dev' }));
     });

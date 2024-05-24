@@ -1,5 +1,6 @@
 export class Content {
 
+    private _id: number;
     public title: string;
     public text: string;
     public image: Blob; 
@@ -10,6 +11,13 @@ export class Content {
         this.image = image;
     };
 
+    getId(): number {
+        return this._id;
+    }
+
+    setId(id: number): void {
+        this._id = id;
+    }
 
     setTitle(title: string): void {
         this.title = title;
