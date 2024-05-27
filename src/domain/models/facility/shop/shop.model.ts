@@ -3,19 +3,19 @@ import { OpeningTimes } from "../openingTimes.model";
 
 export class Shop extends Facility {
 
-    public openingTimes: OpeningTimes;
+    private _openingTimes: OpeningTimes;
 
-    constructor(id: number, name: string, longitude: number, latitude: number, openingTimes: OpeningTimes) {
-        super (id, name, longitude, latitude)
-        this.openingTimes = openingTimes;
+    constructor(name: string, longitude: number, latitude: number, openingTimes: OpeningTimes, type: string) {
+        super (name, longitude, latitude, type)
+        this._openingTimes = openingTimes;
     };
 
     setOpeningTimes(openingTime: OpeningTimes): void {
-        this.openingTimes = openingTime;
+        this._openingTimes = openingTime;
     };
 
     getOpeningTimes(): OpeningTimes {
-        return this.openingTimes;
+        return this._openingTimes;
     };
 
 };

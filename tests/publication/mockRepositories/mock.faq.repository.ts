@@ -1,5 +1,5 @@
-import { Faq } from "../../src/domain/models/publication/faq.model";
-import { FaqRepository } from "../../src/domain/repositories/publication/faq.repository";
+import { Faq } from "../../../src/domain/models/publication/faq.model";
+import { FaqRepository } from "../../../src/domain/repositories/publication/faq.repository";
 
 export class MockFaqRepository implements FaqRepository {
 

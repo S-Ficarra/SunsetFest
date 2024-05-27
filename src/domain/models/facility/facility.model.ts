@@ -4,13 +4,14 @@ export class Facility {
     private _name: string;
     private _longitude: number;
     private _latitude: number;
+    private _type: string;
 
 
-    constructor(id: number, name: string, longitude: number, latitude: number) {
-        this._id = id;
+    constructor(name: string, longitude: number, latitude: number, type: string) {
         this._name = name;
         this._longitude = longitude;
         this._latitude = latitude;
+        this._type = type;
     };
 
     setId(id: number): void {
@@ -43,6 +44,14 @@ export class Facility {
 
     getLatitude(): number {
         return this._latitude;
+    };
+
+    getType(): string {
+        return this._type;
+    };
+
+    setType(facilityType: string): void {
+        this._type = facilityType;
     };
 
 };

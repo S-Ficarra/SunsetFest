@@ -1,30 +1,31 @@
+import { PublicationType } from "./PublicationTypes";
 import { Publication } from "./publication.model"; 
 
 export class Faq extends Publication {
 
-    public question: string;
-    public answer: string
+    private _question: string;
+    private _answer: string
 
-    constructor (authorId: number, createdAt: Date, modifiedAt: Date, status: boolean, question: string, answer: string) {
-        super (authorId, createdAt, modifiedAt, status, "faq")
-        this.question = question;
-        this.answer = answer;
+    constructor (userId: number, createdAt: Date, modifiedAt: Date, status: boolean, question: string, answer: string) {
+        super (userId, createdAt, modifiedAt, status, PublicationType.Faq)
+        this._question = question;
+        this._answer = answer;
     };
 
     setQuestion(question: string): void {
-        this.question = question;
+        this._question = question;
     };
 
     getQuestion(): string {
-        return this.question
+        return this._question
     };
 
     setAnswer(answer: string): void {
-        this.answer = answer;
+        this._answer = answer;
     };
 
     getAnswer(): string {
-        return this.answer;
+        return this._answer;
     };
 
 };

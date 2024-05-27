@@ -1,9 +1,9 @@
 import { Information } from "../../src/domain/models/publication/information.model";
 import { InformationService } from "../../src/services/publication/information.service";
-import { MockInformationRepository } from "./mock.information.repository";
+import { MockInformationRepository } from "./mockRepositories/mock.information.repository";
 import { Content } from "../../src/domain/models/publication/content.model";
 import { ContentService } from "../../src/services/publication/content.service";
-import { MockContentRepository } from "./mock.content.repository";
+import { MockContentRepository } from "./mockRepositories/mock.content.repository";
 
 
 
@@ -18,7 +18,7 @@ describe('InformationService', () => {
         contentRepository = new MockContentRepository;
         contentService = new ContentService(contentRepository);
         informationRepository= new MockInformationRepository();
-        informationService = new InformationService(informationRepository, contentService/*, publicationService*/);
+        informationService = new InformationService(informationRepository, contentService);
         informationRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
     });
     
@@ -27,24 +27,24 @@ describe('InformationService', () => {
         const information = informationService.getAllInformation();
         expect(information).toHaveLength(2);
         expect(information).toEqual(expect.arrayContaining([
-            expect.objectContaining({_type: 'information', content: expect.objectContaining({title: 'titleInformation1'})}),
-            expect.objectContaining({_type: 'information', content: expect.objectContaining({title: 'titleInformation2'})})
+            expect.objectContaining({_type: 'information', _content: expect.objectContaining({_title: 'titleInformation1'})}),
+            expect.objectContaining({_type: 'information', _content: expect.objectContaining({_title: 'titleInformation2'})})
         ]));
     });
 
     //getInformationById
     it("should return a information by it's id", () => {
         let foundInformation1 = informationService.getInformationById(1);
-        expect(foundInformation1).toEqual(expect.objectContaining({_type: 'information', content: expect.objectContaining({title: 'titleInformation1'})}));
+        expect(foundInformation1).toEqual(expect.objectContaining({_type: 'information', _content: expect.objectContaining({_title: 'titleInformation1'})}));
 
     });
 
 
     //createInformation
     it('should return a information just created', () => {
-        informationService.createInformation(new Information (1, new Date, new Date, true, new Content('titleInformation3', 'textInformation3', new Blob)));
-        const foundInformation3 = informationService.getInformationById(3);       
-        expect(foundInformation3).toEqual(expect.objectContaining({ _id: 3, _type: 'information', content: expect.objectContaining({title: 'titleInformation3'})}));
+        const foundInformation3 = new Information (1, new Date, new Date, true, new Content('titleInformation3', 'textInformation3', new Blob));
+        informationService.createInformation(foundInformation3);
+        expect(foundInformation3).toEqual(expect.objectContaining({ _id: 3, _type: 'information', _content: expect.objectContaining({_title: 'titleInformation3'})}));
 
     });
 
@@ -53,9 +53,8 @@ describe('InformationService', () => {
     it('should return a information with titleEdited and textEdited', () => {
         const informationEdited = new Information (1, new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
         informationEdited.setId(1)
-        informationService.editInformation(informationEdited);
-        const foundInformationEdited = informationService.getInformationById(1)
-        expect(foundInformationEdited).toEqual(expect.objectContaining({ content: expect.objectContaining({title: 'titleEdited', text: 'textEdited'})}));
+        const foundInformationEdited = informationService.editInformation(informationEdited);
+        expect(foundInformationEdited).toEqual(expect.objectContaining({ _content: expect.objectContaining({_title: 'titleEdited', _text: 'textEdited'})}));
 
     })
 

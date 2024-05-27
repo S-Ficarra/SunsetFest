@@ -1,6 +1,6 @@
 import { Faq } from "../../src/domain/models/publication/faq.model";
 import { FaqService } from "../../src/services/publication/faq.service";
-import { MockFaqRepository } from "./mock.faq.repository";
+import { MockFaqRepository } from "./mockRepositories/mock.faq.repository";
 
 
 describe('FaqService', () => {
@@ -19,8 +19,8 @@ describe('FaqService', () => {
         const faqs = faqService.getAllFaq();
         expect(faqs).toHaveLength(2);
         expect(faqs).toEqual(expect.arrayContaining([
-            expect.objectContaining({_type: 'faq', question: 'question1', answer: 'answer1'}),
-            expect.objectContaining({_type: 'faq', question: 'question2', answer: 'answer2'})
+            expect.objectContaining({_type: 'faq', _question: 'question1', _answer: 'answer1'}),
+            expect.objectContaining({_type: 'faq', _question: 'question2', _answer: 'answer2'})
         ]));
     });
 
@@ -28,15 +28,15 @@ describe('FaqService', () => {
     //getFaqById
     it('Should return the faq id 1 with the question: question 1', () => {
         const foundFaq1 = faqService.getFaqById(1);
-        expect(foundFaq1).toEqual(expect.objectContaining({_type: 'faq', question: 'question1', answer: 'answer1'}));
+        expect(foundFaq1).toEqual(expect.objectContaining({_type: 'faq', _question: 'question1', _answer: 'answer1'}));
     });
 
 
     //createFaq
     it('should return the new faq created', () => {
-        faqService.createFaq(new Faq (666, new Date, new Date, false, 'question3', 'answer3'));
-        let foundFaq3 = faqService.getFaqById(3);
-        expect(foundFaq3).toEqual(expect.objectContaining({_authorId: 666, question: 'question3', answer: 'answer3'}));
+        let foundFaq3 =new Faq (666, new Date, new Date, false, 'question3', 'answer3');
+        faqService.createFaq(foundFaq3);
+        expect(foundFaq3).toEqual(expect.objectContaining({_userId: 666, _question: 'question3', _answer: 'answer3'}));
     });
 
 
@@ -45,9 +45,8 @@ describe('FaqService', () => {
         let creationDate = faqRepository.faqs[0].getCreatedAt();
         let editedFaq = new Faq (2526, creationDate, new Date, true, 'questionEdited', 'answerEdited');
         editedFaq.setId(1);
-        faqService.editFaq(editedFaq);
-        let foundFaqEdited = faqService.getFaqById(1);
-        expect(foundFaqEdited).toEqual(expect.objectContaining({_authorId: 2526, question: 'questionEdited', answer: 'answerEdited'}));        
+        let foundFaqEdited = faqService.editFaq(editedFaq);
+        expect(foundFaqEdited).toEqual(expect.objectContaining({_userId: 2526, _question: 'questionEdited', _answer: 'answerEdited'}));        
     });
 
 

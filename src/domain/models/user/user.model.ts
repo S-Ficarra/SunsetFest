@@ -9,8 +9,7 @@ export class User {
     private _password: string;
     private _role: Role;
 
-    constructor(id: number, name: string, firstName: string, email: string, password: string, role: Role) {
-        this._id = id;
+    constructor(name: string, firstName: string, email: string, password: string, role: Role) {
         this._name = name;
         this._firstName = firstName;
         this._email = email;

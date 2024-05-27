@@ -17,7 +17,7 @@ describe('BandService', () => {
         socialsRepository = new MockSocialsRepository;
         socialsService = new SocialsService(socialsRepository);
         bandRepository= new MockBandRepository(socialsRepository);
-        bandService = new BandService(bandRepository, socialsService/*, publicationService*/);
+        bandService = new BandService(bandRepository, socialsService);
         bandRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         socialsRepository.setFakeIdToTest();
     });
@@ -41,8 +41,8 @@ describe('BandService', () => {
 
     //createBand
     it('should return a band just created', () => {
-        bandService.createBand (new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), new Blob, new Blob, 3, new Date, new Date));
-        const foundBand3 = bandService.getBandById(3);       
+        const foundBand3 = new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), new Blob, new Blob, 3, new Date, new Date);
+        bandService.createBand(foundBand3);
         expect(foundBand3).toEqual(expect.objectContaining({ _id: 3, country: 'country3', socials: expect.objectContaining({youtube: 'yout3'})}));
 
     });
@@ -53,8 +53,7 @@ describe('BandService', () => {
         const bandEdited = new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), new Blob, new Blob, 3, new Date, new Date);
         bandEdited.setId(1)
         bandEdited.socials.setId(1);
-        bandService.editBand(bandEdited);
-        const foundBandEdited = bandService.getBandById(1)
+        const foundBandEdited = bandService.editBand(bandEdited);
         expect(foundBandEdited).toEqual(expect.objectContaining({ country: 'country3', socials: expect.objectContaining({youtube: 'yout3', facebook: 'fb3'})}));
     })
 

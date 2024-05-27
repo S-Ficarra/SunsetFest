@@ -1,5 +1,5 @@
-import { Content } from "../../src/domain/models/publication/content.model";
-import { ContentRepository } from "../../src/domain/repositories/publication/content.repository";
+import { Content } from "../../../src/domain/models/publication/content.model";
+import { ContentRepository } from "../../../src/domain/repositories/publication/content.repository";
 
 export class MockContentRepository implements ContentRepository {
 

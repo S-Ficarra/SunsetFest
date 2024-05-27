@@ -1,19 +1,20 @@
+import { FacilityType } from "./FacilityType";
 import { Facility } from "./facility.model";
 
 export class Stage extends Facility{
 
-    public capacity: number;
+    private _capacity: number;
 
-    constructor(id: number, name: string, longitude: number, latitude: number, capacity: number) {
-        super (id, name, longitude, latitude)
-        this.capacity = capacity;
+    constructor(name: string, longitude: number, latitude: number, capacity: number) {
+        super (name, longitude, latitude, FacilityType.Stage)
+        this._capacity = capacity;
     };
 
     setCapacity(capacity: number): void {
-        this.capacity = capacity;
+        this._capacity = capacity;
     };
 
     getCapacity(): number {
-        return this.capacity;
+        return this._capacity;
     };
 };

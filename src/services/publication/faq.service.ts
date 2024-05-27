@@ -1,13 +1,11 @@
 import { Faq } from "../../domain/models/publication/faq.model";
 import { FaqRepository } from "../../domain/repositories/publication/faq.repository";
-//import { PublicationService } from "./publication.service";
 
 export class FaqService {
 
 
     constructor(
         private faqRepository: FaqRepository,
-        //private publicationService: PublicationService
     ){};
 
     getAllFaq(): Faq[] {
@@ -19,14 +17,14 @@ export class FaqService {
         return this.faqRepository.getFaqById(faqId);
     };
 
-    createFaq(faq: Faq): void {
-        //this.publicationService.createPublication(faq);
+    createFaq(faq: Faq): Faq {
         this.faqRepository.createFaq(faq);
+        return faq;
     };
 
-    editFaq(faq: Faq): void {
-        //this.publicationService.editPublication(faq)
+    editFaq(faq: Faq): Faq {
         this.faqRepository.editFaq(faq);
+        return faq;
     };
 
 

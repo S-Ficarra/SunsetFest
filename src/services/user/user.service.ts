@@ -18,12 +18,14 @@ export class UserService {
         return this.userRepository.getUserById(userId);
     };
 
-    createUser(user: User): void {
+    createUser(user: User): User {
         this.userRepository.createUser(user);
+        return user
     };
 
-    editUser(user: User): void {
+    editUser(user: User): User {
         this.userRepository.editUser(user);
+        return user
     };
 
     deleteUser(userId: number): void {

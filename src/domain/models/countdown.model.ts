@@ -1,27 +1,27 @@
 export class Countdown {
 
-    public startingDateAndTime: Date;
-    public endingDateAndTime: Date;
+    private _startingDateAndTime: Date;
+    private _endingDateAndTime: Date;
 
     constructor(startingDateAndTime: Date, endingDateAndTime: Date) {
-        this.startingDateAndTime = startingDateAndTime;
-        this.endingDateAndTime = endingDateAndTime;
+        this._startingDateAndTime = startingDateAndTime;
+        this._endingDateAndTime = endingDateAndTime;
     };
 
-    setStartingDateAndTime(startingDateAndTime: Date): void {
-        this.startingDateAndTime = startingDateAndTime;
+    setStartingDateAndTime(_startingDateAndTime: Date): void {
+        this._startingDateAndTime = _startingDateAndTime;
     };
 
     getStartingDateAndTime(): Date {
-        return this.startingDateAndTime;
+        return this._startingDateAndTime;
     };
 
     setEndingDateAndTime(endingDateAndTime: Date): void {
-        this.endingDateAndTime = endingDateAndTime;
+        this._endingDateAndTime = endingDateAndTime;
     };
 
     getEndingDateAndTime(): Date {
-        return this.endingDateAndTime;
+        return this._endingDateAndTime;
     };
 
 

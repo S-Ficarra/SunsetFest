@@ -1,14 +1,12 @@
 import { Information } from "../../domain/models/publication/information.model";
 import { InformationRepository } from "../../domain/repositories/publication/information.repository";
 import { ContentService } from "./content.service";
-//import { PublicationService } from "./publication.service";
 
 export class InformationService {
 
     constructor(
         private informationRepository: InformationRepository,
         private contentService: ContentService,
-        //private publicationService: PublicationService
     ){};
 
     getAllInformation(): Information[]{
@@ -19,23 +17,23 @@ export class InformationService {
         return this.informationRepository.getInformationById(informationId);
     };
 
-    createInformation(information: Information): void {
-        //this.publicationService.createPublication(Information);
-        this.contentService.createContent(information.content)
-        this.informationRepository.createInformation(information);        
+    createInformation(information: Information): Information {
+        this.contentService.createContent(information.getContent());
+        this.informationRepository.createInformation(information);  
+        return information;      
     };
 
-    editInformation(information: Information): void {
-        //this.publicationService.editPublication(Information)
-        this.contentService.editContent(information.content)
-        this.informationRepository.editInformation(information);        
+    editInformation(information: Information): Information {
+        this.contentService.editContent(information.getContent());
+        this.informationRepository.editInformation(information);    
+        return information;
     };
 
     deleteInformation(informationId: number): void {
-        let Information = this.informationRepository.getInformationById(informationId)
-        let InformationContentId = Information.getContent()
-        this.contentService.deleteContent(InformationContentId.getId())
-        this.informationRepository.deleteInformation(informationId)
-    }
+        let Information = this.informationRepository.getInformationById(informationId);
+        let InformationContentId = Information.getContent();
+        this.contentService.deleteContent(InformationContentId.getId());
+        this.informationRepository.deleteInformation(informationId);
+    };
 
 };

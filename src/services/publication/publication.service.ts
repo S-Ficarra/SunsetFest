@@ -5,7 +5,9 @@ import { Publication } from "../../domain/models/publication/publication.model";
 @Injectable()
 export class PublicationService {
 
+
     constructor(private publicationRepository: PublicationRepository){};
+
 
     getAllPublication(): Publication[] {
         return this.publicationRepository.getAllPublication();
@@ -15,12 +17,14 @@ export class PublicationService {
         return this.publicationRepository.getPublicationById(publicationId);
     };
 
-    createPublication(publication: Publication): void {
+    createPublication(publication: Publication): Publication {
         this.publicationRepository.createPublication(publication);
+        return publication;
     };
 
-    editPublication(publication: Publication): void {
-        this.publicationRepository.editPublication(publication)
+    editPublication(publication: Publication): Publication {
+        this.publicationRepository.editPublication(publication);
+        return publication;
     }
 
     deletePublication(publicationId: number): void {

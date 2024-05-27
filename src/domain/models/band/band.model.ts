@@ -9,19 +9,19 @@ export class Band {
     public socials: Socials;
     public thumbnailImage: Blob;
     public bannerImage: Blob;
-    public authorId: number;
+    public userId: number;
     public createdAt: Date;
     public modifiedAt: Date;
 
 
-    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, authorId: number, createdAt: Date, modifiedAt: Date) {
+    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, userId: number, createdAt: Date, modifiedAt: Date) {
         this.name = name;
         this.country = country;
         this.text = text;
         this.socials = socials;
         this.thumbnailImage = thumbnailImage;
         this.bannerImage = bannerImage;
-        this.authorId = authorId;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     };
@@ -82,12 +82,12 @@ export class Band {
         return this.bannerImage;
     };
 
-    setAuthorId(authorId: number) {
-        this.authorId = authorId;
+    setAuthorId(userId: number) {
+        this.userId = userId;
     };
 
     getAuthorId(): number {
-        return this.authorId;
+        return this.userId;
     };
 
     setCreatedAt(createdAt: Date) {

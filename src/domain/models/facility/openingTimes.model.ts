@@ -1,26 +1,46 @@
 export class OpeningTimes {
 
-    public openAt: Date;
-    public closeAt: Date;
+    private _id: number
+    private _openAt: Date;
+    private _closeAt: Date;
+
+    private formatTime(time: Date): string {
+        let hours: string | number = time.getHours();
+        let minutes: string | number = time.getMinutes();
+
+        hours = (hours < 10) ? '' + hours : hours;
+        minutes = (minutes < 10) ? '0' + minutes : minutes;
+
+        return `${hours}:${minutes}`;
+    }
 
     constructor(openAt: Date, closeAt: Date) {
-        this.openAt = openAt;
-        this.closeAt = closeAt;
+        this._openAt = openAt;
+        this._closeAt = closeAt;
+    };
+
+    setId(id: number): void {
+        this._id = id;
+    };
+
+    getId(): number {
+        return this._id;
     };
 
     setOpenAt(openingTime: Date): void {
-        this.openAt = openingTime;
+        this._openAt = openingTime;
     };
 
-    getOpenAt(): Date {
-        return this.openAt;
+    getOpenAt(): string {
+        return this.formatTime(this._openAt);
     };
 
     setCloseAt(closingTime: Date): void {
-        this.closeAt = closingTime;
+        this._closeAt = closingTime;
     };
 
-    getCloseAt(): Date {
-        return this.closeAt;
+    getCloseAt(): string {
+        return this.formatTime(this._closeAt);
     };
+    
 };

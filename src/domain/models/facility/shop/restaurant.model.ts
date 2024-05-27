@@ -1,21 +1,22 @@
+import { FacilityType } from "../FacilityType";
 import { OpeningTimes } from "../openingTimes.model";
 import { Shop } from "./shop.model";
 
 export class Restaurant extends Shop {
 
-    public foodType: string;
+    private _foodType: string;
 
-    constructor(id: number, name: string, longitude: number, latitude: number, openingTimes: OpeningTimes, foodType: string) {
-        super (id, name, longitude, latitude, openingTimes);
-        this.foodType = foodType;
+    constructor(name: string, longitude: number, latitude: number, openingTimes: OpeningTimes, foodType: string) {
+        super (name, longitude, latitude, openingTimes, FacilityType.Restaurant);
+        this._foodType = foodType;
     };
 
     setFoodType(foodType: string): void {
-        this.foodType = foodType;
+        this._foodType = foodType;
     };
 
     getFoodType(): string {
-        return this.foodType;
+        return this._foodType;
     };
 
 };

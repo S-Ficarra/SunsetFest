@@ -2,14 +2,14 @@
 export class Publication {
 
     private _id: number;
-    private _authorId: number;
+    private _userId: number;
     private _createdAt: Date;
     private _modifiedAt: Date;
     private _status : boolean;
     private _type : string;
 
-    constructor (authorId: number, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
-        this._authorId = authorId;
+    constructor (userId: number, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
+        this._userId = userId;
         this._createdAt = createdAt;
         this._modifiedAt = modifiedAt;
         this._status = status;
@@ -24,12 +24,12 @@ export class Publication {
         return this._id;
     };
 
-    setAuthorId(authorId: number): void {
-        this._authorId = authorId;
+    setAuthorId(userId: number): void {
+        this._userId = userId;
     };
 
     getAuthorId(): number {
-        return this._authorId;
+        return this._userId;
     };
 
     setCreatedAt(createdAt: Date) {

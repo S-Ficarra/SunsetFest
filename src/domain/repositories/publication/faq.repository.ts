@@ -1,5 +1,4 @@
 import { Faq } from "../../models/publication/faq.model"; 
-import { PublicationRepository } from "./publication.repository";
 
 export interface FaqRepository {
 

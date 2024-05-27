@@ -1,5 +1,5 @@
-import { News } from "../../src/domain/models/publication/news.model";
-import { NewsRepository } from "../../src/domain/repositories/publication/news.repository";
+import { News } from "../../../src/domain/models/publication/news.model";
+import { NewsRepository } from "../../../src/domain/repositories/publication/news.repository";
 import { MockContentRepository } from "./mock.content.repository";
 
 export class MockNewsRepository implements NewsRepository {

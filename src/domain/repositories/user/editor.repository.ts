@@ -1,7 +1,6 @@
 import { Program } from "../../models/program/program.model";
-import { AuthorRepository } from "./author.repository";
 
-export interface EditorRepository extends AuthorRepository{
+export interface EditorRepository {
 
     publish(publicationId: number): void;
     

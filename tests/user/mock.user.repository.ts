@@ -4,11 +4,18 @@ import { Role } from "../../src/domain/models/user/role.model";
 
 export class MockUserRepository implements UserRepository {
 
-    private users: User[] = [
-        new User(1, 'John', 'Doe', 'john@example.com', 'password', new Role(1, 'Author')),
-        new User(2, 'Julien', 'Deaux', 'julien@example.com', 'password', new Role(2, 'Editor')),
-        new User(3, 'Jane', 'Doe', 'jane@example.com', 'password', new Role(3, 'Admin'))
+    public users: User[] = [
+        new User('John', 'Doe', 'john@example.com', 'password', new Role(1, 'Author')),
+        new User('Julien', 'Deaux', 'julien@example.com', 'password', new Role(2, 'Editor')),
+        new User('Jane', 'Doe', 'jane@example.com', 'password', new Role(3, 'Admin'))
     ];
+
+    setFakeIdToTest(): void {
+        this.users[0].setId(1)
+        this.users[1].setId(2)
+        this.users[2].setId(3)
+
+    };
 
     getUserById(id: number): User | undefined {
         return this.users.find(user => user.getId() === id);
@@ -19,6 +26,7 @@ export class MockUserRepository implements UserRepository {
     }
 
     createUser(user: User):void {
+        user.setId(this.users.length + 1)        
         this.users.push(user);
     };
 

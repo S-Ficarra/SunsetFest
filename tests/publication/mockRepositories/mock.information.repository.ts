@@ -1,6 +1,6 @@
-import { Content } from "../../src/domain/models/publication/content.model";
-import { Information } from "../../src/domain/models/publication/information.model";
-import { InformationRepository } from "../../src/domain/repositories/publication/information.repository";
+import { Content } from "../../../src/domain/models/publication/content.model";
+import { Information } from "../../../src/domain/models/publication/information.model";
+import { InformationRepository } from "../../../src/domain/repositories/publication/information.repository";
 
 export class MockInformationRepository implements InformationRepository {
 

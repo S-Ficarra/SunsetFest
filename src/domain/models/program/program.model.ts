@@ -4,8 +4,7 @@ export class Program {
     private _day: string;
     private _performances: Performance[];
 
-    constructor(id: number, day: string, performances: Performance[]) {
-        this._id = id;
+    constructor(day: string, performances: Performance[]) {
         this._day = day;
         this._performances = performances || [];
     };

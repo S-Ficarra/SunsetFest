@@ -1,5 +1,5 @@
-import { Publication } from "../../src/domain/models/publication/publication.model";
-import { PublicationRepository } from "../../src/domain/repositories/publication/publication.repository";
+import { Publication } from "../../../src/domain/models/publication/publication.model";
+import { PublicationRepository } from "../../../src/domain/repositories/publication/publication.repository";
 
 
 export class MockPublicationRepository implements PublicationRepository {
@@ -25,6 +25,7 @@ export class MockPublicationRepository implements PublicationRepository {
     };
 
     createPublication(publication: Publication): void {
+        publication.setId(this.publications.length + 1)        
         this.publications.push(publication);
     };
 

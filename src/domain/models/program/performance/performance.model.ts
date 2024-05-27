@@ -11,8 +11,7 @@ export class Performance {
     private _stage: Stage;
 
 
-    constructor(id: number, band: Band, timeFrame: TimeFrame, stage: Stage) {
-        this._id = id;
+    constructor(band: Band, timeFrame: TimeFrame, stage: Stage) {
         this._band = band;
         this._timeFrame = timeFrame;
         this._stage = stage;

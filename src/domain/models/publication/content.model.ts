@@ -1,14 +1,14 @@
 export class Content {
 
     private _id: number;
-    public title: string;
-    public text: string;
-    public image: Blob; 
+    private _title: string;
+    private _text: string;
+    private _image: Blob; 
 
     constructor (title: string, text: string, image: Blob) {
-        this.title = title;
-        this.text = text;
-        this.image = image;
+        this._title = title;
+        this._text = text;
+        this._image = image;
     };
 
     getId(): number {
@@ -20,27 +20,27 @@ export class Content {
     }
 
     setTitle(title: string): void {
-        this.title = title;
+        this._title = title;
     };
 
     getTitle(): string {
-        return this.title
+        return this._title
     };
 
     setText(text: string): void {
-        this.text = text;
+        this._text = text;
     };
 
     getText(): string {
-        return this.text;
+        return this._text;
     };
 
     setImage(blob: Blob): void {
-        this.image = blob;
+        this._image = blob;
     };
 
     getImage(): Blob {
-        return this.image;
+        return this._image;
     };
 
 

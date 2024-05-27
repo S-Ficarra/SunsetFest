@@ -1,6 +1,6 @@
 import { Publication } from "../../src/domain/models/publication/publication.model";
 import { PublicationService } from "../../src/services/publication/publication.service";
-import { MockPublicationRepository } from "./mock.publication.repository";
+import { MockPublicationRepository } from "./mockRepositories/mock.publication.repository";
 
  
 describe('PublicationService', () => {
@@ -31,17 +31,15 @@ describe('PublicationService', () => {
 
     //createPublication
     it('should return a publication just created', () => {
-        publicationService.createPublication(new Publication(3,new Date(), new Date(), false,'information'));
-        const foundPublication = publicationService.getPublicationById(3);
-        expect(foundPublication).toEqual(expect.objectContaining({ _type: 'information', _authorId: 3}));
+        const foundPublication = publicationService.createPublication(new Publication(3,new Date(), new Date(), false,'information'));
+        expect(foundPublication).toEqual(expect.objectContaining({ _type: 'information', _userId: 3}));
     });
 
     //editPublication
     it('should return the publication edited with the modification', () => {
         const editedPublication = new Publication(3, new Date(), new Date(), true,'faq');
         editedPublication.setId(1)
-        publicationService.editPublication(editedPublication);
-        const editedPublicationFounded = publicationService.getPublicationById(1)
+        const editedPublicationFounded = publicationService.editPublication(editedPublication);
         expect(editedPublicationFounded).toEqual(expect.objectContaining({ _type: 'faq', _status: true}));
     });
 

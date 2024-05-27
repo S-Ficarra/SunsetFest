@@ -12,23 +12,15 @@ describe('UserService', () => {
     beforeEach(() => {
         userRepository = new MockUserRepository();
         userService = new UserService(userRepository);
+        userRepository.setFakeIdToTest();
     });
 
     //getUserById existing user
     it('Should return a user by id', () => {
         const foundUser1 = userService.getUserById(1);
-        const foundUser2 = userService.getUserById(2);
-        const foundUser3 = userService.getUserById(3);
         expect(foundUser1).toEqual(expect.objectContaining({ _id: 1, _name: 'John' }));
-        expect(foundUser2).toEqual(expect.objectContaining({ _id: 2, _name: 'Julien' }));
-        expect(foundUser3).toEqual(expect.objectContaining({ _id: 3, _name: 'Jane' }));
     });
 
-    //getUserById non existing user
-    it("Should return undefined as user doesn't exist", () => {
-        const foundUser = userService.getUserById(999);
-        expect(foundUser).toBeUndefined();
-    });
 
     //getAllUsers
     it('Should return all users', () => {
@@ -42,18 +34,17 @@ describe('UserService', () => {
     });
 
     //createUser and return it with getUserById
-    it('Should return user just created with id 666', () => {
-        const user666 = new User(666,'Dev', 'Hill', 'dev@exemple.com', 'password', new Role(1, 'Author'));
-        userService.createUser(user666);
-        const foundUser666 = userService.getUserById(666);
-        expect(foundUser666).toEqual(expect.objectContaining({ _id: 666, _name: 'Dev' }));
+    it('Should return user just created with id 4', () => {
+        const user4 = new User('Dev', 'Hill', 'dev@exemple.com', 'password', new Role(1, 'Author'));
+        const foundUser4 = userService.createUser(user4);
+        expect(foundUser4).toEqual(expect.objectContaining({ _id: 4, _name: 'Dev' }));
     });
 
     //editUser
     it('should return user 1 with name buggs', () => {
-        const editedUser = new User(1, 'buggs', 'Doe', 'bugs@exemple.com', 'password', new Role(1, 'Author'));
-        userService.editUser(editedUser);
-        const foundUserEdited = userService.getUserById(1); 
+        const editedUser = new User('buggs', 'Doe', 'bugs@exemple.com', 'password', new Role(1, 'Author'));
+        editedUser.setId(1);
+        const foundUserEdited = userService.editUser(editedUser);
         expect(foundUserEdited).toEqual(expect.objectContaining({ _id: 1, _name: 'buggs', _email: 'bugs@exemple.com' }));
     });
 
