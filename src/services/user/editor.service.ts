@@ -9,7 +9,7 @@ export class EditorService {
 
     isEditor(userId: number): boolean {
         let user: User | undefined = this.userRepository.getUserById(userId)
-        if (user && user.getRole().getId() == 2) {
+        if (user && user.getRole() == 2) {
             return true;
         };
         return false;

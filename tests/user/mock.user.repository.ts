@@ -1,13 +1,12 @@
 import { User } from "../../src/domain/models/user/user.model";
 import { UserRepository } from "../../src/domain/repositories/user/user.repository";
-import { Role } from "../../src/domain/models/user/role.model";
 
 export class MockUserRepository implements UserRepository {
 
     public users: User[] = [
-        new User('John', 'Doe', 'john@example.com', 'password', new Role(1, 'Author')),
-        new User('Julien', 'Deaux', 'julien@example.com', 'password', new Role(2, 'Editor')),
-        new User('Jane', 'Doe', 'jane@example.com', 'password', new Role(3, 'Admin'))
+        new User('John', 'Doe', 'john@example.com', 'password', 1),
+        new User('Julien', 'Deaux', 'julien@example.com', 'password', 2),
+        new User('Jane', 'Doe', 'jane@example.com', 'password', 3)
     ];
 
     setFakeIdToTest(): void {

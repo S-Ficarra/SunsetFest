@@ -1,12 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import { PublicationRepository } from "../../domain/repositories/publication/publication.repository";
 import { Publication } from "../../domain/models/publication/publication.model";
+import { AdministratorService } from "../user/administrator.service";
+import { EditorService } from "../user/editor.service";
 
 @Injectable()
 export class PublicationService {
 
 
-    constructor(private publicationRepository: PublicationRepository){};
+    constructor(
+        private publicationRepository: PublicationRepository,
+        private administratorService: AdministratorService,
+        private editorService: EditorService,
+        ){};
 
 
     getAllPublication(): Publication[] {
@@ -27,9 +33,19 @@ export class PublicationService {
         return publication;
     }
 
-    deletePublication(publicationId: number): void {
-        this.publicationRepository.deletePublication(publicationId);
+    deletePublication(requestingUserId: number, publicationId: number): void | Error { 
+        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+            this.publicationRepository.deletePublication(publicationId);
+        } else {
+            throw new Error ('Unauthorized')
+        };
     };
 
-
+    changeStatus(requestingUserId: number, publicationId: number, newStatus: boolean): void | Error {
+        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+            this.getPublicationById(publicationId).setStatus(newStatus)
+        } else {
+            throw new Error ('Unauthorized')
+        };
+    };
 };

@@ -1,11 +1,15 @@
 import { Faq } from "../../domain/models/publication/faq.model";
 import { FaqRepository } from "../../domain/repositories/publication/faq.repository";
+import { AdministratorService } from "../user/administrator.service";
+import { EditorService } from "../user/editor.service";
 
 export class FaqService {
 
 
     constructor(
         private faqRepository: FaqRepository,
+        private administratorService : AdministratorService,
+        private editorService: EditorService,
     ){};
 
     getAllFaq(): Faq[] {
@@ -28,8 +32,20 @@ export class FaqService {
     };
 
 
-    deleteFaq(faqId: number): void {
-        this.faqRepository.deleteFaq(faqId);
+    deleteFaq(requestingUserId: number, faqId: number): void | Error {
+        if (this.editorService.isEditor(requestingUserId) || this.administratorService.isAdmin(requestingUserId)){
+            this.faqRepository.deleteFaq(faqId);
+        } else {
+            throw new Error('Unauthorized');
+        };
+    };
+
+    changeStatus(requestingUserId: number, faqId: number, newStatus: boolean): void | Error {
+        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+            this.getFaqById(faqId).setStatus(newStatus)
+        } else {
+            throw new Error ('Unauthorized')
+        };
     };
 
 

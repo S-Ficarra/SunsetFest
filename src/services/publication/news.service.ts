@@ -1,5 +1,7 @@
 import { News } from "../../domain/models/publication/news.model";
 import { NewsRepository } from "../../domain/repositories/publication/news.repository";
+import { AdministratorService } from "../user/administrator.service";
+import { EditorService } from "../user/editor.service";
 import { ContentService } from "./content.service";
 
 export class NewsService{
@@ -7,6 +9,8 @@ export class NewsService{
     constructor(
         private newsRepository: NewsRepository,
         private contentService: ContentService,
+        private administratorService : AdministratorService,
+        private editorService: EditorService,
     ){};
 
     getAllNews(): News[]{
@@ -29,11 +33,23 @@ export class NewsService{
         return news;         
     };
 
-    deleteNews(newsId: number): void {
-        let news = this.newsRepository.getNewsById(newsId);
-        let newsContentId = news.getContent();
-        this.contentService.deleteContent(newsContentId.getId());
-        this.newsRepository.deleteNews(newsId);
+    deleteNews(requestingUserId: number, newsId: number): void | Error {
+        if (this.editorService.isEditor(requestingUserId) || this.administratorService.isAdmin(requestingUserId)){
+            let news = this.newsRepository.getNewsById(newsId);
+            let newsContentId = news.getContent();
+            this.contentService.deleteContent(newsContentId.getId());
+            this.newsRepository.deleteNews(newsId);
+        } else {
+            throw new Error('Unauthorized')
+        };
+    };
+
+    changeStatus(requestingUserId: number, newsId: number, newStatus: boolean): void | Error {
+        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+            this.getNewsById(newsId).setStatus(newStatus)
+        } else {
+            throw new Error ('Unauthorized')
+        };
     };
 
 };

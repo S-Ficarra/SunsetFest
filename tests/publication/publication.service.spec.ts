@@ -1,15 +1,26 @@
+import { AdministratorService } from "../../src/services/user/administrator.service";
 import { Publication } from "../../src/domain/models/publication/publication.model";
 import { PublicationService } from "../../src/services/publication/publication.service";
 import { MockPublicationRepository } from "./mockRepositories/mock.publication.repository";
+import { EditorService } from "../../src/services/user/editor.service";
+import { MockUserRepository } from "../user/mock.user.repository";
 
  
 describe('PublicationService', () => {
+    let userRepository : MockUserRepository;
+    let administratorService: AdministratorService;
+    let editorService: EditorService;
     let publicationService: PublicationService;
     let publicationRepository: MockPublicationRepository;
 
+
     beforeEach(() => {
+        userRepository = new MockUserRepository();
         publicationRepository = new MockPublicationRepository();
-        publicationService = new PublicationService(publicationRepository);
+        administratorService = new AdministratorService(userRepository);
+        editorService = new EditorService(userRepository);
+        publicationService = new PublicationService(publicationRepository, administratorService, editorService);
+        userRepository.setFakeIdToTest();
         publicationRepository.setFakeIdToTest();
     });
 
@@ -43,12 +54,31 @@ describe('PublicationService', () => {
         expect(editedPublicationFounded).toEqual(expect.objectContaining({ _type: 'faq', _status: true}));
     });
 
-    //deletePublicatio 
+    //deletePublication by an editor or admin
     it('should delete the publication with the id 1', () => {
-        publicationService.deletePublication(1);
+        publicationService.deletePublication(3, 1);        
         const publications = publicationService.getAllPublication();
         expect(publications).toHaveLength(1);
         expect(publications.some(publication => publication.getId() === 1)).toBeFalsy();
+    });
+
+    //deletePublication by an author
+    it('should delete the publication with the id 1', () => {
+        const deletePublicatonCall = () => publicationService.deletePublication(1, 1);        
+        expect(deletePublicatonCall).toThrow(Error);
+    });
+
+
+    //changeStatus by an editor
+    it ('Should change the status of the publication Id1 from false to true', () => {
+        publicationService.changeStatus(2,1,true);
+        expect(publicationService.getPublicationById(1)).toEqual(expect.objectContaining({ _status: true}));
+    });
+
+    //changeStatus by an author
+    it ('Should change the status of the publication Id1 from false to true', () => {
+        const changeStatusCall = () => publicationService.changeStatus(1,1,true);
+        expect(changeStatusCall).toThrow(Error);
     });
 
 });

@@ -1,17 +1,27 @@
 import { Faq } from "../../src/domain/models/publication/faq.model";
 import { FaqService } from "../../src/services/publication/faq.service";
 import { MockFaqRepository } from "./mockRepositories/mock.faq.repository";
+import { AdministratorService } from "../../src/services/user/administrator.service";
+import { EditorService } from "../../src/services/user/editor.service";
+import { MockUserRepository } from "../user/mock.user.repository";
 
 
 describe('FaqService', () => {
     let faqService: FaqService;
     let faqRepository: MockFaqRepository;
+    let administratorService : AdministratorService;
+    let editorService : EditorService;
+    let userRepository : MockUserRepository;
 
 
     beforeEach(() => {
+        userRepository = new MockUserRepository;
+        administratorService = new AdministratorService(userRepository);
+        editorService = new EditorService(userRepository);
         faqRepository = new MockFaqRepository();
-        faqService = new FaqService(faqRepository/*, publicationService*/);
+        faqService = new FaqService(faqRepository, administratorService, editorService);
         faqRepository.setFakeIdToTest();
+        userRepository.setFakeIdToTest();
     });
 
     //getAllFaqs
@@ -50,11 +60,28 @@ describe('FaqService', () => {
     });
 
 
-    //deleteFaq
+    //deleteFaq by editor or administrator
     it('should return the faqs array without the faq with id1', () => {
-        faqService.deleteFaq(1)
-        let allFaqs = faqRepository.faqs
-        expect(allFaqs.some(faqs => faqs.getId() === 1)).toBeFalsy();
+        faqService.deleteFaq(2, 1)
+        expect(faqRepository.faqs.some(faqs => faqs.getId() === 1)).toBeFalsy();
+    });
+
+    //deleteFaq by an author
+    it('should delete the publication with the id 1', () => {
+        const deleteFaqCall = () => faqService.deleteFaq(1, 1);        
+        expect(deleteFaqCall).toThrow(Error);
+    });
+
+    //changeStatus by an editor
+    it ('Should change the status of the publication Id1 from false to true', () => {
+        faqService.changeStatus(2,1,false);
+        expect(faqService.getFaqById(1)).toEqual(expect.objectContaining({ _status: false}));
+    });
+
+    //changeStatus by an author
+    it ('Should change the status of the publication Id1 from false to true', () => {
+        const changeStatusCall = () => faqService.changeStatus(1,1,false);
+        expect(changeStatusCall).toThrow(Error);
     });
 
 

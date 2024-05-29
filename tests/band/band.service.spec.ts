@@ -4,6 +4,9 @@ import { MockBandRepository } from "./mock.band.repository";
 import { Socials } from "../../src/domain/models/band/socials.model";
 import { SocialsService } from "../../src/services/band/social.service";
 import { MockSocialsRepository } from "./mock.socials.repository";
+import { AdministratorService } from "../../src/services/user/administrator.service";
+import { EditorService } from "../../src/services/user/editor.service";
+import { MockUserRepository } from "../user/mock.user.repository";
 
 
 describe('BandService', () => {
@@ -11,19 +14,26 @@ describe('BandService', () => {
     let socialsRepository: MockSocialsRepository;
     let bandService: BandService;
     let bandRepository: MockBandRepository;
+    let administratorService : AdministratorService;
+    let editorService : EditorService;
+    let userRepository : MockUserRepository;
 
 
     beforeEach(() => {
+        userRepository = new MockUserRepository;
+        administratorService = new AdministratorService(userRepository);
+        editorService = new EditorService(userRepository);
         socialsRepository = new MockSocialsRepository;
         socialsService = new SocialsService(socialsRepository);
         bandRepository= new MockBandRepository(socialsRepository);
-        bandService = new BandService(bandRepository, socialsService);
+        bandService = new BandService(bandRepository, socialsService, administratorService, editorService);
         bandRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         socialsRepository.setFakeIdToTest();
+        userRepository.setFakeIdToTest();
     });
     
     //getAllBand
-    it('should return all band', () => {
+    it('should return all bands', () => {
         const bands = bandService.getAllBand();
         expect(bands).toHaveLength(2);
         expect(bands).toEqual(expect.arrayContaining([
@@ -49,7 +59,7 @@ describe('BandService', () => {
 
     
     //editBand
-    it('should return a band with titleEdited and textEdited', () => {
+    it('should return a band with country3 and socials yout3 & fb3', () => {
         const bandEdited = new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), new Blob, new Blob, 3, new Date, new Date);
         bandEdited.setId(1)
         bandEdited.socials.setId(1);
@@ -58,12 +68,18 @@ describe('BandService', () => {
     })
 
 
-    //deleteBand
-    it('should return the band list without the one with id 3', () => {
-        const bandToDelete = bandService.getBandById(1);
-        bandService.deleteBand(bandToDelete.getId())
-        expect(bandRepository.bands.some(band => band.getId() === 3)).toBeFalsy();
-    })
+    //deleteBand by and editor or admin
+    it('should return the band list without the one with id 1', () => {
+        bandService.deleteBand(2, 1)
+        expect(bandRepository.bands.some(band => band.getId() === 1)).toBeFalsy();
+    });
+
+
+    //deleteBand by an author
+    it('should return an error', () => {
+        const deleteBandCall = () => bandService.deleteBand(1, 1);        
+        expect(deleteBandCall).toThrow(Error);
+    });
 
 
 

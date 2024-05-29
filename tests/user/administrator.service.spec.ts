@@ -5,12 +5,12 @@ import { MockUserRepository } from './mock.user.repository';
 
 describe('EditorService', () => {
     let administratorService: AdministratorService;
-    let mockUserRepository: MockUserRepository;
+    let userRepository: MockUserRepository;
   
     beforeEach(() => {
-      mockUserRepository = new MockUserRepository();
-      administratorService = new AdministratorService(mockUserRepository);
-      mockUserRepository.setFakeIdToTest();
+    userRepository = new MockUserRepository();
+    administratorService = new AdministratorService(userRepository);
+    userRepository.setFakeIdToTest();
     });
 
     //isAdministrator
@@ -21,8 +21,15 @@ describe('EditorService', () => {
 
     //isAdministrator
     it("shoud return false, user isn't administrator", () => {
-        const EditorUser = administratorService.isAdmin(1)
-        expect(EditorUser).toBeFalsy();
+        const AuthorUser = administratorService.isAdmin(1)
+        expect(AuthorUser).toBeFalsy();
     });
+
+
+    it("should change the role of user id 1 from 1 to 2", () => {       
+        administratorService.changeRole(3, 1, 2);
+        expect(userRepository.getUserById(1).getRole()).toEqual(2);
+    })
+
 });
 

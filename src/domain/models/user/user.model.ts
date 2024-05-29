@@ -1,4 +1,4 @@
-import { Role } from './role.model'
+import { UserTypes } from "./UserType";
 
 export class User {
 
@@ -7,9 +7,9 @@ export class User {
     private _firstName: string;
     private _email: string;
     private _password: string;
-    private _role: Role;
+    private _role: number;
 
-    constructor(name: string, firstName: string, email: string, password: string, role: Role) {
+    constructor(name: string, firstName: string, email: string, password: string, role: number) {
         this._name = name;
         this._firstName = firstName;
         this._email = email;
@@ -58,11 +58,11 @@ export class User {
         return this._password;
     };
 
-    setRole(role: Role): void {
+    setRole(role: number): void {
         this._role = role;
     }
 
-    getRole(): Role {
+    getRole(): number {
         return this._role;
     };
 

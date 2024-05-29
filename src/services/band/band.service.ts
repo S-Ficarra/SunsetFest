@@ -1,5 +1,7 @@
 import { Band } from "../../domain/models/band/band.model";
 import { BandRepository } from "../../domain/repositories/band/band.repository";
+import { AdministratorService } from "../user/administrator.service";
+import { EditorService } from "../user/editor.service";
 import { SocialsService } from "./social.service";
 
 export class BandService{
@@ -7,6 +9,8 @@ export class BandService{
     constructor(
         private bandRepository: BandRepository,
         private socialsService: SocialsService,
+        private administratorService: AdministratorService,
+        private editorService: EditorService,
     ){};
 
     getAllBand(): Band[]{
@@ -29,11 +33,15 @@ export class BandService{
         return band;     
     };
 
-    deleteBand(bandId: number): void {
-        let band = this.bandRepository.getBandById(bandId)
-        let bandSocialsId = band.getSocials()
-        this.socialsService.deleteSocials(bandSocialsId.getId())
-        this.bandRepository.deleteBand(bandId)
-    }
+    deleteBand(requestingUserId: number, bandId: number): void | Error {
+        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+            let band = this.bandRepository.getBandById(bandId)
+            let bandSocialsId = band.getSocials()
+            this.socialsService.deleteSocials(bandSocialsId.getId())
+            this.bandRepository.deleteBand(bandId)
+        } else {
+            throw new Error ('Unauthorized');
+        };
+    };
 
 };

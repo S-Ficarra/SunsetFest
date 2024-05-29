@@ -1,3 +1,4 @@
+import { PublicationType } from "./PublicationTypes";
 
 export class Publication {
 
@@ -61,7 +62,7 @@ export class Publication {
     };
 
     getType(): string {
-        return this._type;
+        return PublicationType[this._type];
     };
 
 };
