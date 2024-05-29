@@ -1,11 +1,14 @@
+import { Performance } from "./performance/performance.model";
+
 export class Program {
+    findIndex() {
+        throw new Error("Method not implemented.");
+    }
 
     private _id: number;
-    private _day: string;
     private _performances: Performance[];
 
-    constructor(day: string, performances: Performance[]) {
-        this._day = day;
+    constructor(performances: Performance[]) {
         this._performances = performances || [];
     };
 
@@ -15,14 +18,6 @@ export class Program {
 
     getId(): number {
         return this._id;
-    };
-
-    setDay(day: string) {
-        this._day = day;
-    };
-
-    getDay(): string {
-        return this._day;
     };
 
     addPerformance(performance: Performance): void {
