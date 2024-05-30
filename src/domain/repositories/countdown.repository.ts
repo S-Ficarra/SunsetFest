@@ -2,9 +2,10 @@ import { Countdown } from "../models/countdown.model";
 
 export interface CountdownRepository {
 
-    getCountdown(): Countdown | undefined;
-    createCountdown(countdown: Countdown): void;
-    editCountdown(countdown: Countdown): void;
-    deleteCountdown(): void;
+    getAllCountdowns(): Countdown [] | undefined;
+    getCountdownById(countdownId: number): Countdown | undefined;
+    createCountdown(countdown: Countdown): void | Countdown;
+    editCountdown(countdown: Countdown): void | Countdown;
+    deleteCountdown(countdownId: number): void;
 
 };
