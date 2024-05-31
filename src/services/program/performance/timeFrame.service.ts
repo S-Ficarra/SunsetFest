@@ -10,20 +10,9 @@ export class TimeFrameService{
         return this.timeFrameRepository.getTimeFrameById(timeFrameId);
     };
 
-    saveTimeFrame(timeFrame: TimeFrame): void {
-        this.timeFrameRepository.saveTimeFrame(timeFrame);
-    };
-
-    createTimeFrame(startingAt: string, endingAt: string): TimeFrame {
-        const [startingHours, startingMinutes] = startingAt.split(':').map(Number);
-        const [endingHours, endingMinutes] = endingAt.split(':').map(Number);
-        const startingAtToDate = new Date();
-        startingAtToDate.setHours(startingHours, startingMinutes, 0);
-        const endingAtToDate = new Date();
-        endingAtToDate.setHours(endingHours, endingMinutes, 0);
-        const startingingTimeToSave =  new TimeFrame(startingAtToDate, endingAtToDate);
-        this.saveTimeFrame(startingingTimeToSave);
-        return startingingTimeToSave;
+    createTimeFrame(startingAt: Date, endingAt: Date): TimeFrame {
+        let timeFrame = new TimeFrame(startingAt, endingAt)
+        return this.timeFrameRepository.createTimeFrame(timeFrame);
     };
 
 

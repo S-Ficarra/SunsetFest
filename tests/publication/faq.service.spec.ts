@@ -18,7 +18,7 @@ describe('FaqService', () => {
         userRepository = new MockUserRepository;
         administratorService = new AdministratorService(userRepository);
         editorService = new EditorService(userRepository);
-        faqRepository = new MockFaqRepository();
+        faqRepository = new MockFaqRepository(userRepository);
         faqService = new FaqService(faqRepository, administratorService, editorService);
         faqRepository.setFakeIdToTest();
         userRepository.setFakeIdToTest();
@@ -44,19 +44,19 @@ describe('FaqService', () => {
 
     //createFaq
     it('should return the new faq created', () => {
-        let foundFaq3 =new Faq (666, new Date, new Date, false, 'question3', 'answer3');
+        let foundFaq3 =new Faq (userRepository.users[0], new Date, new Date, false, 'question3', 'answer3');
         faqService.createFaq(foundFaq3);
-        expect(foundFaq3).toEqual(expect.objectContaining({_userId: 666, _question: 'question3', _answer: 'answer3'}));
+        expect(foundFaq3).toEqual(expect.objectContaining({_userId: expect.objectContaining({_id: 1,}), _question: 'question3', _answer: 'answer3'}));
     });
 
 
     //editFaq
     it('should return the faq1 with question and answer edited', () => {
         let creationDate = faqRepository.faqs[0].getCreatedAt();
-        let editedFaq = new Faq (2526, creationDate, new Date, true, 'questionEdited', 'answerEdited');
+        let editedFaq = new Faq (userRepository.users[0], creationDate, new Date, true, 'questionEdited', 'answerEdited');
         editedFaq.setId(1);
         let foundFaqEdited = faqService.editFaq(editedFaq);
-        expect(foundFaqEdited).toEqual(expect.objectContaining({_userId: 2526, _question: 'questionEdited', _answer: 'answerEdited'}));        
+        expect(foundFaqEdited).toEqual(expect.objectContaining({_userId: expect.objectContaining({_id: 1,}), _question: 'questionEdited', _answer: 'answerEdited'}));        
     });
 
 

@@ -1,24 +1,24 @@
 export class Socials {
 
     private _id : number
-    public facebook: string;
-    public instagram: string;
-    public twitter: string;
-    public youtube: string;
-    public spotify: string;
-    public website: string;
-    public spotifyIntegrationLink: string;
-    public youtubeIntegrationLink: string;
+    private _facebook: string;
+    private _instagram: string;
+    private _twitter: string;
+    private _youtube: string;
+    private _spotify: string;
+    private _website: string;
+    private _spotifyIntegrationLink: string;
+    private _youtubeIntegrationLink: string;
 
     constructor(facebook: string, instagram: string, twitter: string, youtube: string, spotify: string, website: string, spotifyIntegrationLink: string, youtubeIntegrationLink: string) {
-        this.facebook = facebook;
-        this.instagram = instagram;
-        this.twitter = twitter;
-        this.youtube = youtube;
-        this.spotify = spotify;
-        this.website = website;
-        this.spotifyIntegrationLink = spotifyIntegrationLink;
-        this.youtubeIntegrationLink = youtubeIntegrationLink;
+        this._facebook = facebook;
+        this._instagram = instagram;
+        this._twitter = twitter;
+        this._youtube = youtube;
+        this._spotify = spotify;
+        this._website = website;
+        this._spotifyIntegrationLink = spotifyIntegrationLink;
+        this._youtubeIntegrationLink = youtubeIntegrationLink;
     };
 
     getId(): number {
@@ -30,67 +30,67 @@ export class Socials {
     }
 
     setFacebook(facebookLink: string) {
-        this.facebook = facebookLink;
+        this._facebook = facebookLink;
     }
 
     getFacebook(): string {
-        return this.facebook;
+        return this._facebook;
     }
 
     setInstagram(InstagramLink: string) {
-        this.instagram = InstagramLink;
+        this._instagram = InstagramLink;
     }
 
     getInstagram(): string {
-        return this.instagram;
+        return this._instagram;
     }
 
     setTwitter(twitterLink: string) {
-        this.twitter = twitterLink;
+        this._twitter = twitterLink;
     }
 
     getTwitter(): string {
-        return this.twitter;
+        return this._twitter;
     }
 
     setYoutube(youtubeLink: string) {
-        this.youtube = youtubeLink;
+        this._youtube = youtubeLink;
     }
 
     getYoutube(): string {
-        return this.youtube;
+        return this._youtube;
     }
 
     setSpotify(spotifyLink: string) {
-        this.spotify = spotifyLink;
+        this._spotify = spotifyLink;
     }
 
     getSpotify(): string {
-        return this.spotify;
+        return this._spotify;
     }
 
     setWebsite(websiteLink: string) {
-        this.website = websiteLink;
+        this._website = websiteLink;
     }
 
     getWebsite(): string {
-        return this.website;
+        return this._website;
     }
 
     setSpotifyIntegration(spotifyIntegrationlink: string) {
-        this.spotifyIntegrationLink = spotifyIntegrationlink;
+        this._spotifyIntegrationLink = spotifyIntegrationlink;
     }
 
     getSpotifyIntegration(): string {
-        return this.spotifyIntegrationLink;
+        return this._spotifyIntegrationLink;
     }
 
     setYoutubeIntegration(youtubeIntegrationlink: string) {
-        this.youtubeIntegrationLink = youtubeIntegrationlink;
+        this._youtubeIntegrationLink = youtubeIntegrationlink;
     }
 
     getYoutubeIntegration(): string {
-        return this.youtubeIntegrationLink;
+        return this._youtubeIntegrationLink;
     }
 
 

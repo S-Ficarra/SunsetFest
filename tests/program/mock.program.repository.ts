@@ -43,6 +43,7 @@ export class MockProgramRepository implements ProgramRepository {
         this.programList = this.programList.filter(program => program.getId() !== programId);
     };
 
+
     addPerformanceToProgram(performanceId: number): void {
         const performanceToAdd = this.performanceRepository.getPerformanceById(performanceId);
         const program1 = this.getProgramById(1)

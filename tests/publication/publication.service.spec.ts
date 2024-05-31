@@ -16,7 +16,7 @@ describe('PublicationService', () => {
 
     beforeEach(() => {
         userRepository = new MockUserRepository();
-        publicationRepository = new MockPublicationRepository();
+        publicationRepository = new MockPublicationRepository(userRepository);
         administratorService = new AdministratorService(userRepository);
         editorService = new EditorService(userRepository);
         publicationService = new PublicationService(publicationRepository, administratorService, editorService);
@@ -42,13 +42,13 @@ describe('PublicationService', () => {
 
     //createPublication
     it('should return a publication just created', () => {
-        const foundPublication = publicationService.createPublication(new Publication(3,new Date(), new Date(), false,'information'));
-        expect(foundPublication).toEqual(expect.objectContaining({ _type: 'information', _userId: 3}));
+        const foundPublication = publicationService.createPublication(new Publication(userRepository.users[0],new Date(), new Date(), false,'information'));
+        expect(foundPublication).toEqual(expect.objectContaining({ _type: 'information', _status: false, _userId: (expect.objectContaining({ _id: 1}))}));
     });
 
     //editPublication
     it('should return the publication edited with the modification', () => {
-        const editedPublication = new Publication(3, new Date(), new Date(), true,'faq');
+        const editedPublication = new Publication(userRepository.users[1], new Date(), new Date(), true,'faq');
         editedPublication.setId(1)
         const editedPublicationFounded = publicationService.editPublication(editedPublication);
         expect(editedPublicationFounded).toEqual(expect.objectContaining({ _type: 'faq', _status: true}));

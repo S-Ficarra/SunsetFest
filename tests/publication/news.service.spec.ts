@@ -26,7 +26,7 @@ describe('NewsService', () => {
         editorService = new EditorService(userRepository);
         contentRepository = new MockContentRepository;
         contentService = new ContentService(contentRepository);
-        newsRepository= new MockNewsRepository(contentRepository);
+        newsRepository= new MockNewsRepository(contentRepository, userRepository);
         newsService = new NewsService(newsRepository, contentService, administratorService, editorService);
         newsRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         contentRepository.setFakeIdToTest();
@@ -53,7 +53,7 @@ describe('NewsService', () => {
 
     //createNews
     it('should return a news just created', () => {
-        const foundNews3 = new News (1, new Date, new Date, true, new Content('title3', 'text3', new Blob));  
+        const foundNews3 = new News (userRepository.users[0], new Date, new Date, true, new Content('title3', 'text3', new Blob));  
         newsService.createNews(foundNews3); 
         expect(foundNews3).toEqual(expect.objectContaining({ _id: 3, _type: 'news', _content: expect.objectContaining({_title: 'title3'})}));
 
@@ -62,7 +62,7 @@ describe('NewsService', () => {
     
     //editNews
     it('should return a news with titleEdited and textEdited', () => {
-        const newsEdited = new News (1, new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
+        const newsEdited = new News (userRepository.users[0], new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
         newsEdited.setId(1)
         newsEdited.getContent().setId(1)
         const foundNewsEdited = newsService.editNews(newsEdited);

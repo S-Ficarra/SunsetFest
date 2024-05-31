@@ -2,13 +2,14 @@ import { Program } from "src/domain/models/program/program.model";
 import { ProgramRepository } from "src/domain/repositories/program/program.repository";
 import { AdministratorService } from "../user/administrator.service";
 import { EditorService } from "../user/editor.service";
+import { Performance } from "src/domain/models/program/performance/performance.model";
 
 export class ProgramService {
 
     constructor(
         private programRepository: ProgramRepository,
         private adminService: AdministratorService,
-        private editorService: EditorService
+        private editorService: EditorService,
     ){};
 
     getAllPrograms(): Program[] {
@@ -45,21 +46,51 @@ export class ProgramService {
         };
     };
 
-    addPerformanceToProgram(requestingUserId: number, performanceId: number): void {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
-            this.programRepository.addPerformanceToProgram(performanceId); 
+    private hasConflict(performanceA: Performance, performanceB: Performance): any {
+        const sameDayStageTime = performanceA.getDay() == performanceB.getDay() && performanceA.getStage() == performanceB.getStage() && performanceA.getTimeFrame() == performanceB.getTimeFrame();
+        const sameBand = performanceA.getBand() == performanceB.getBand();        
+        if (sameBand && sameDayStageTime) {
+            throw new Error('This performance is already in the program');
+        } else if (sameBand) {
+            throw new Error ("This band is planned to perform more than once");
+        } else if (sameDayStageTime) {
+            throw new Error('Another band is already planned at this stage, time & day');
         } else {
-            throw new Error ('Unauthorized');
-        };
+            return false;
+        }
     };
 
-    deletePerformanceFromProgram(requestingUserId: number, performanceId: number): void {
+    private checkConflict(performance: Performance, program: Program): boolean {
+        const performances = program.getPerformances();
+        for (let i = 0; i < performances.length; i++) {
+            const performanceA = performances[i];
+            const performanceB = performance;
+                if (this.hasConflict(performanceA, performanceB)) {
+                    return true
+                };
+            };
+        return false;
+    };
+    
+    addPerformanceToProgram(requestingUserId: number, programId: number, performance: Performance): any {
         if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
-            this.programRepository.deletePerformanceFromProgram(performanceId);
+            let program = this.programRepository.getProgramById(programId);
+            const isConflict = this.checkConflict(performance, program);
+            if (!isConflict) {
+                this.programRepository.addPerformanceToProgram(programId, performance);
+            }
+            return isConflict;
         } else {
             throw new Error ('Unauthorized');
         };
-    };
-    
+    }; 
+
+    deletePerformanceFromProgram(requestingUserId: number, programId: number, performanceId: number): void {
+        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+            this.programRepository.deletePerformanceFromProgram(programId, performanceId);
+        } else {
+            throw new Error ('Unauthorized');
+        };
+    };    
 
 };

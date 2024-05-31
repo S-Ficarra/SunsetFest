@@ -22,13 +22,13 @@ export class BandService{
     };
 
     createBand(band: Band): Band {
-        this.socialsService.createSocials(band.socials)
+        this.socialsService.createSocials(band.getSocials())
         this.bandRepository.createBand(band);    
         return band;    
     };
 
     editBand(band: Band): Band {
-        this.socialsService.editSocials(band.socials)
+        this.socialsService.editSocials(band.getSocials())
         this.bandRepository.editBand(band);   
         return band;     
     };

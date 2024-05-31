@@ -27,7 +27,7 @@ describe('InformationService', () => {
         editorService = new EditorService(userRepository);
         contentRepository = new MockContentRepository;
         contentService = new ContentService(contentRepository);
-        informationRepository= new MockInformationRepository();
+        informationRepository= new MockInformationRepository(contentRepository, userRepository);
         informationService = new InformationService(informationRepository, contentService, administratorService, editorService);
         informationRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         userRepository.setFakeIdToTest();
@@ -53,7 +53,7 @@ describe('InformationService', () => {
 
     //createInformation
     it('should return a information just created', () => {
-        const foundInformation3 = new Information (1, new Date, new Date, true, new Content('titleInformation3', 'textInformation3', new Blob));
+        const foundInformation3 = new Information (userRepository.users[0], new Date, new Date, true, new Content('titleInformation3', 'textInformation3', new Blob));
         informationService.createInformation(foundInformation3);
         expect(foundInformation3).toEqual(expect.objectContaining({ _id: 3, _type: 'information', _content: expect.objectContaining({_title: 'titleInformation3'})}));
 
@@ -62,7 +62,7 @@ describe('InformationService', () => {
     
     //editInformation
     it('should return a information with titleEdited and textEdited', () => {
-        const informationEdited = new Information (1, new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
+        const informationEdited = new Information (userRepository.users[0], new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
         informationEdited.setId(1)
         const foundInformationEdited = informationService.editInformation(informationEdited);
         expect(foundInformationEdited).toEqual(expect.objectContaining({ _content: expect.objectContaining({_title: 'titleEdited', _text: 'textEdited'})}));
@@ -73,7 +73,7 @@ describe('InformationService', () => {
     //deleteInformation by an admin or editor
     it('should return the information list without the one with id 1', () => {
         informationService.deleteInformation(2, 1)
-        expect(informationRepository.information.some(information => information.getId() === 1)).toBeFalsy();
+        expect(informationRepository.informations.some(information => information.getId() === 1)).toBeFalsy();
     });
 
     //deleteInformation by an author

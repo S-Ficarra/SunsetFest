@@ -24,7 +24,9 @@ describe('TimeFrameService', () => {
 
     //createTimeFrame
     it('should return the new timeFrame created', () => {
-        let foundTimeFrame3 = timeFrameService.createTimeFrame('12:00','14:00');
+        let startingAt = new Date (2000, 1, 1, 8, 0, 0)
+        let endingAt = new Date (2000, 1, 1, 10, 0, 0)
+        let foundTimeFrame3 = timeFrameService.createTimeFrame(startingAt, endingAt);
         expect(foundTimeFrame3).toEqual(timeFrameRepository.timeFrameArray[2]);
     });
 
