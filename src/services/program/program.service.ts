@@ -48,8 +48,8 @@ export class ProgramService {
     addPerformanceToProgram(requestingUser: User, programId: number, performance: Performance): any {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             let program = this.programRepository.getProgramById(programId);
-            const isConflict = this.checkConflict(performance, program);
-            if (!isConflict) {
+            let isOk = this.noConflict(performance, program)
+            if (isOk) {
                 this.programRepository.addPerformanceToProgram(programId, performance);
                 return performance;
             };
@@ -58,16 +58,16 @@ export class ProgramService {
         };
     }; 
 
-    private checkConflict(performance: Performance, program: Program): boolean {
+    private noConflict(performance: Performance, program: Program): boolean {
         const performances = program.getPerformances();
         for (let i = 0; i < performances.length; i++) {
             const performanceA = performances[i];
             const performanceB = performance;
                 if (this.hasConflict(performanceA, performanceB)) {
-                    return true
+                    return false
                 };
             };
-        return false;
+        return true;
     };
 
     private hasConflict(performanceA: Performance, performanceB: Performance): any {
