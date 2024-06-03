@@ -13,19 +13,19 @@ export class Band {
     private _socials: Socials;
     private _thumbnailImage: Blob;
     private _bannerImage: Blob;
-    private _userId: User;
+    private _user: User;
     private _createdAt: Date;
     private _modifiedAt: Date;
 
 
-    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, userId: User, createdAt: Date, modifiedAt: Date) {
+    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, user: User, createdAt: Date, modifiedAt: Date) {
         this._name = name;
         this._country = country;
         this._text = text;
         this._socials = socials;
         this._thumbnailImage = thumbnailImage;
         this._bannerImage = bannerImage;
-        this._userId = userId;
+        this._user = user;
         this._createdAt = createdAt;
         this._modifiedAt = modifiedAt;
     };
@@ -87,11 +87,11 @@ export class Band {
     };
 
     setAuthorId(userId: User) {
-        this._userId = userId;
+        this._user = userId;
     };
 
     getAuthorId(): User {
-        return this._userId;
+        return this._user;
     };
 
     setCreatedAt(createdAt: Date) {

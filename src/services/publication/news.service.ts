@@ -1,7 +1,7 @@
+import { User } from "../../domain/models/user/user.model";
 import { News } from "../../domain/models/publication/news.model";
 import { NewsRepository } from "../../domain/repositories/publication/news.repository";
-import { AdministratorService } from "../user/administrator.service";
-import { EditorService } from "../user/editor.service";
+import { RoleService } from "../user/role.service";
 import { ContentService } from "./content.service";
 
 export class NewsService{
@@ -9,8 +9,7 @@ export class NewsService{
     constructor(
         private newsRepository: NewsRepository,
         private contentService: ContentService,
-        private administratorService : AdministratorService,
-        private editorService: EditorService,
+        private roleService : RoleService,
     ){};
 
     getAllNews(): News[]{
@@ -33,8 +32,8 @@ export class NewsService{
         return news;         
     };
 
-    deleteNews(requestingUserId: number, newsId: number): void | Error {
-        if (this.editorService.isEditor(requestingUserId) || this.administratorService.isAdmin(requestingUserId)){
+    deleteNews(requestingUser: User, newsId: number): void | Error {
+        if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             let news = this.newsRepository.getNewsById(newsId);
             let newsContentId = news.getContent();
             this.contentService.deleteContent(newsContentId.getId());
@@ -44,8 +43,8 @@ export class NewsService{
         };
     };
 
-    changeStatus(requestingUserId: number, newsId: number, newStatus: boolean): void | Error {
-        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+    changeStatus(requestingUser: User, newsId: number, newStatus: boolean): void | Error {
+        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
             this.getNewsById(newsId).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')

@@ -4,8 +4,7 @@ import { MockBandRepository } from "./mock.band.repository";
 import { Socials } from "../../src/domain/models/band/socials.model";
 import { SocialsService } from "../../src/services/band/social.service";
 import { MockSocialsRepository } from "./mock.socials.repository";
-import { AdministratorService } from "../../src/services/user/administrator.service";
-import { EditorService } from "../../src/services/user/editor.service";
+import { RoleService } from "../../src/services/user/role.service";
 import { MockUserRepository } from "../user/mock.user.repository";
 
 
@@ -14,20 +13,18 @@ describe('BandService', () => {
     let socialsRepository: MockSocialsRepository;
     let bandService: BandService;
     let bandRepository: MockBandRepository;
-    let administratorService : AdministratorService;
-    let editorService : EditorService;
+    let roleService : RoleService;
     let userRepository : MockUserRepository;
 
 
     beforeEach(() => {
         userRepository = new MockUserRepository;
-        administratorService = new AdministratorService(userRepository);
-        editorService = new EditorService(userRepository);
+        roleService = new RoleService();
         socialsRepository = new MockSocialsRepository;
         socialsService = new SocialsService(socialsRepository);
         userRepository.setFakeIdToTest();
         bandRepository= new MockBandRepository(socialsRepository, userRepository);
-        bandService = new BandService(bandRepository, socialsService, administratorService, editorService);
+        bandService = new BandService(bandRepository, socialsService, roleService);
         bandRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         socialsRepository.setFakeIdToTest();
     });
@@ -70,14 +67,14 @@ describe('BandService', () => {
 
     //deleteBand by and editor or admin
     it('should return the band list without the one with id 1', () => {
-        bandService.deleteBand(2, 1)
+        bandService.deleteBand(userRepository.users[2], 1)
         expect(bandRepository.bands.some(band => band.getId() === 1)).toBeFalsy();
     });
 
 
     //deleteBand by an author
     it('should return an error', () => {
-        const deleteBandCall = () => bandService.deleteBand(1, 1);        
+        const deleteBandCall = () => bandService.deleteBand(userRepository.users[0], 1);        
         expect(deleteBandCall).toThrow(Error);
     });
 

@@ -4,8 +4,7 @@ import { MockInformationRepository } from "./mockRepositories/mock.information.r
 import { Content } from "../../src/domain/models/publication/content.model";
 import { ContentService } from "../../src/services/publication/content.service";
 import { MockContentRepository } from "./mockRepositories/mock.content.repository";
-import { AdministratorService } from "../../src/services/user/administrator.service";
-import { EditorService } from "../../src/services/user/editor.service";
+import { RoleService } from "../../src/services/user/role.service";
 import { MockUserRepository } from "../user/mock.user.repository";
 
 
@@ -15,20 +14,18 @@ describe('InformationService', () => {
     let contentRepository: MockContentRepository;
     let informationService: InformationService;
     let informationRepository: MockInformationRepository;
-    let administratorService : AdministratorService;
-    let editorService : EditorService;
+    let roleService : RoleService;
     let userRepository : MockUserRepository;
     
 
 
     beforeEach(() => {
         userRepository = new MockUserRepository;
-        administratorService = new AdministratorService(userRepository);
-        editorService = new EditorService(userRepository);
+        roleService = new RoleService();
         contentRepository = new MockContentRepository;
         contentService = new ContentService(contentRepository);
         informationRepository= new MockInformationRepository(contentRepository, userRepository);
-        informationService = new InformationService(informationRepository, contentService, administratorService, editorService);
+        informationService = new InformationService(informationRepository, contentService, roleService);
         informationRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         userRepository.setFakeIdToTest();
     });
@@ -72,25 +69,25 @@ describe('InformationService', () => {
 
     //deleteInformation by an admin or editor
     it('should return the information list without the one with id 1', () => {
-        informationService.deleteInformation(2, 1)
+        informationService.deleteInformation(userRepository.users[1], 1)
         expect(informationRepository.informations.some(information => information.getId() === 1)).toBeFalsy();
     });
 
     //deleteInformation by an author
     it('should delete the publication with the id 1', () => {
-        const deleteInformationCall = () => informationService.deleteInformation(1, 1);        
+        const deleteInformationCall = () => informationService.deleteInformation(userRepository.users[0], 1);        
         expect(deleteInformationCall).toThrow(Error);
     });
 
     //changeStatus by an editor
     it ('Should change the status of the publication Id1 from false to true', () => {
-        informationService.changeStatus(2,1,false);
+        informationService.changeStatus(userRepository.users[1],1,false);
         expect(informationService.getInformationById(1)).toEqual(expect.objectContaining({ _status: false}));
     });
 
     //changeStatus by an author
     it ('Should change the status of the publication Id1 from false to true', () => {
-        const changeStatusCall = () => informationService.changeStatus(1,1,false);
+        const changeStatusCall = () => informationService.changeStatus(userRepository.users[0],1,false);
         expect(changeStatusCall).toThrow(Error);
     });
 

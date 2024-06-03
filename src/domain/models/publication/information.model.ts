@@ -8,8 +8,8 @@ export class Information extends Publication{
     private _content: Content;
 
 
-    constructor (userId: User, createdAt: Date, modifiedAt: Date, status: boolean, content: Content) {
-        super (userId, createdAt, modifiedAt, status, PublicationType.Information)
+    constructor (user: User, createdAt: Date, modifiedAt: Date, status: boolean, content: Content) {
+        super (user, createdAt, modifiedAt, status, PublicationType.Information)
         this._content = content;
     };
 

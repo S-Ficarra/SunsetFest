@@ -6,8 +6,7 @@ import { MockStageRepository } from "../facility/mockRepositories/mock.stage.rep
 import { MockTimeFrameRepository } from "./performance/mock.timeFrame.repository";
 import { MockSocialsRepository } from "../band/mock.socials.repository";
 import { ProgramService } from "../../src/services/program/program.service";
-import { AdministratorService } from "../../src/services/user/administrator.service";
-import { EditorService } from "../../src/services/user/editor.service";
+import { RoleService } from "../../src/services/user/role.service";
 import { MockUserRepository } from "../user/mock.user.repository";
 import { Performance } from "../../src/domain/models/program/performance/performance.model";
 
@@ -19,15 +18,13 @@ describe('MockProgramRepository', () => {
     let timeFrameRepository: MockTimeFrameRepository;
     let socialRepository: MockSocialsRepository;
     let programService: ProgramService;
-    let adminService: AdministratorService;
-    let editorService: EditorService;
+    let roleService: RoleService;
     let userRepository: MockUserRepository;
 
 
     beforeEach(() => {
         userRepository = new MockUserRepository();
-        adminService = new AdministratorService(userRepository);
-        editorService = new EditorService(userRepository);
+        roleService = new RoleService();
         socialRepository = new MockSocialsRepository();
         bandRepository = new MockBandRepository(socialRepository, userRepository);
         stageRepository = new MockStageRepository();
@@ -39,7 +36,7 @@ describe('MockProgramRepository', () => {
         userRepository.setFakeIdToTest();
         performanceRepository = new MockPerformanceRepository(userRepository, bandRepository, timeFrameRepository, stageRepository);
         programRepository = new MockProgramRepository(performanceRepository);
-        programService = new ProgramService(programRepository, adminService, editorService);
+        programService = new ProgramService(programRepository, roleService);
         performanceRepository.setFakeIdToTest();
         programRepository.setFakeIdToTest();
 
@@ -65,7 +62,7 @@ describe('MockProgramRepository', () => {
     //CreateProgram by an admin or editor
     it('should create a program', () => {
         const program = new Program([]);
-        programService.createProgram(2, program);
+        programService.createProgram(userRepository.users[1], program);
         const programs = programService.getAllPrograms();
         expect(programs).toHaveLength(3);
         expect(programs[2]).toBe(program);
@@ -75,7 +72,7 @@ describe('MockProgramRepository', () => {
     //createProgram by an author
     it('should return unauthorized', () => {
         const program = new Program([]);
-        const createProgramCall = () => programService.createProgram(1, program);
+        const createProgramCall = () => programService.createProgram(userRepository.users[0], program);
         expect(createProgramCall).toThrow(Error);
     });
 
@@ -84,7 +81,7 @@ describe('MockProgramRepository', () => {
     it('should edit a program', () => {
         const program = new Program([]);
         program.setId(1);
-        programService.editProgram(2, program);
+        programService.editProgram(userRepository.users[1], program);
         const editedProgram = programService.getProgramById(1);
         expect(editedProgram).toBe(program);
     });
@@ -93,14 +90,14 @@ describe('MockProgramRepository', () => {
     //editProgram by an author
     it('should return unauthorized', () => {
         const program = new Program([]);
-        const editProgramCall = () => programService.editProgram(1, program);
+        const editProgramCall = () => programService.editProgram(userRepository.users[0], program);
         expect(editProgramCall).toThrow(Error);
     });
 
 
     //deleteProgram by an admin or editor
     it('should delete a program', () => {
-        programService.deleteProgram(3, 1);
+        programService.deleteProgram(userRepository.users[1], 1);
         const programs = programService.getAllPrograms();
         expect(programs).toHaveLength(1);
         expect(programs[0].getId()).toBe(2);
@@ -109,7 +106,7 @@ describe('MockProgramRepository', () => {
 
     //deleteProgram by an author
     it('should return unauthorized', () => {
-        const deleteProgramCall = () => programService.deleteProgram(1, 1);
+        const deleteProgramCall = () => programService.deleteProgram(userRepository.users[0], 1);
         expect(deleteProgramCall).toThrow(Error);
     });
 
@@ -117,29 +114,25 @@ describe('MockProgramRepository', () => {
     //addPerformanceToProgram by an editor or administrator
     it('should add a performance to a program', () => {      
         const performance = performanceRepository.performances[0];
-        programService.addPerformanceToProgram(2, 1, performance);
+        programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
         const program = programService.getProgramById(1);
         const performances = program.getPerformances();        
         expect(performances).toHaveLength(1);
-        expect(performances[0]).toEqual(expect.objectContaining({
-            _bandId: expect.objectContaining({_name: "band1"}),
-            _stageId: expect.objectContaining({_name: "roxy"}),
-            _timeFrameId: expect.objectContaining({_id : 1}),
-        }))
+        expect(performances[0]).toEqual(performance)
     });
 
     //addPerformanceToProgram by an author
     it('should return unauthorized', () => {
         const performance = performanceRepository.performances[0];
-        const addPerfCall = () => programService.addPerformanceToProgram(1, 1, performance);        
+        const addPerfCall = () => programService.addPerformanceToProgram(userRepository.users[0], 1, performance);        
         expect(addPerfCall).toThrow(Error);
     });
 
     //addPerformanceToProgram by an editor or administrator with a conflict
     it('should return an error due to this performance already in the program', () => {    
         const performance = performanceRepository.performances[0];
-        programService.addPerformanceToProgram(2, 1, performance);
-        const checkConflictCall = () => programService.addPerformanceToProgram(2, 1, performance);        
+        programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
+        const checkConflictCall = () => programService.addPerformanceToProgram(userRepository.users[1], 1, performance);        
         expect(checkConflictCall).toThrow(new Error ('This performance is already in the program'));
     });
 
@@ -147,8 +140,8 @@ describe('MockProgramRepository', () => {
     it('should return an error due to the band already playing', () => {  
         const performance1 = performanceRepository.performances[0];
         const performance2 = new Performance (bandRepository.bands[0], 2, timeFrameRepository.timeFrameArray[0], stageRepository.stages[0])
-        programService.addPerformanceToProgram(2, 1, performance1);
-        const checkConflictCall = () => programService.addPerformanceToProgram(2, 1, performance2);        
+        programService.addPerformanceToProgram(userRepository.users[1], 1, performance1);
+        const checkConflictCall = () => programService.addPerformanceToProgram(userRepository.users[1], 1, performance2);        
         expect(checkConflictCall).toThrow(new Error ('This band is planned to perform more than once'));
     });
 
@@ -156,16 +149,16 @@ describe('MockProgramRepository', () => {
     it('should return an error due to another band already planned at this stage, day and timeFrame', () => {  
         const performance1 = performanceRepository.performances[0];
         const performance2 = new Performance (bandRepository.bands[1], 1, timeFrameRepository.timeFrameArray[0], stageRepository.stages[0])
-        programService.addPerformanceToProgram(2, 1, performance1);
-        const checkConflictCall = () => programService.addPerformanceToProgram(2, 1, performance2);        
+        programService.addPerformanceToProgram(userRepository.users[1], 1, performance1);
+        const checkConflictCall = () => programService.addPerformanceToProgram(userRepository.users[1], 1, performance2);        
         expect(checkConflictCall).toThrow(new Error ('Another band is already planned at this stage, time & day'));
     });
 
     //deletePerformanceFromProgram by an admin or editor
     it('should delete a performance from a program', () => {
         const performance = performanceRepository.performances[0];
-        programService.addPerformanceToProgram(3, 1, performance);
-        programService.deletePerformanceFromProgram(3, 1, performance.getId());
+        programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
+        programService.deletePerformanceFromProgram(userRepository.users[1], 1, performance.getId());
         const program = programService.getProgramById(1);
         const performances = program.getPerformances();
         expect(performances).toHaveLength(0);
@@ -173,7 +166,7 @@ describe('MockProgramRepository', () => {
 
     //deletePerformanceFromProgram by an author
     it('should return unauthorized', () => {
-        const delPerfCall = () => programService.deletePerformanceFromProgram(1, 1, 1);        
+        const delPerfCall = () => programService.deletePerformanceFromProgram(userRepository.users[0], 1, 1);        
         expect(delPerfCall).toThrow(Error);
     });
 

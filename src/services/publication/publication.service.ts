@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { PublicationRepository } from "../../domain/repositories/publication/publication.repository";
 import { Publication } from "../../domain/models/publication/publication.model";
-import { AdministratorService } from "../user/administrator.service";
-import { EditorService } from "../user/editor.service";
+import { RoleService } from "../user/role.service";
+import { User } from "../../domain/models/user/user.model";
 
 @Injectable()
 export class PublicationService {
@@ -10,8 +10,7 @@ export class PublicationService {
 
     constructor(
         private publicationRepository: PublicationRepository,
-        private administratorService: AdministratorService,
-        private editorService: EditorService,
+        private roleService: RoleService,
         ){};
 
 
@@ -33,16 +32,16 @@ export class PublicationService {
         return publication;
     }
 
-    deletePublication(requestingUserId: number, publicationId: number): void | Error { 
-        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+    deletePublication(requestingUser: User, publicationId: number): void | Error { 
+        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
             this.publicationRepository.deletePublication(publicationId);
         } else {
             throw new Error ('Unauthorized')
         };
     };
 
-    changeStatus(requestingUserId: number, publicationId: number, newStatus: boolean): void | Error {
-        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+    changeStatus(requestingUser: User, publicationId: number, newStatus: boolean): void | Error {
+        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
             this.getPublicationById(publicationId).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')

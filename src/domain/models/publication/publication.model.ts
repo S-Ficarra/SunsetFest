@@ -4,14 +4,14 @@ import { User } from "../user/user.model";
 export class Publication {
 
     private _id: number;
-    private _userId: User;
+    private _user: User;
     private _createdAt: Date;
     private _modifiedAt: Date;
     private _status : boolean;
     private _type : string;
 
-    constructor (userId: User, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
-        this._userId = userId;
+    constructor (user: User, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
+        this._user = user;
         this._createdAt = createdAt;
         this._modifiedAt = modifiedAt;
         this._status = status;
@@ -26,12 +26,12 @@ export class Publication {
         return this._id;
     };
 
-    setUserID(userId: User): void {
-        this._userId = userId;
+    setUserID(user: User): void {
+        this._user = user;
     };
 
     getUserId(): User {
-        return this._userId;
+        return this._user;
     };
 
     setCreatedAt(createdAt: Date) {

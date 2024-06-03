@@ -6,17 +6,17 @@ import { TimeFrame } from "./timeFrame.model";
 export class Performance {
 
     private _id: number;
-    private _bandId: Band;
+    private _band: Band;
     private _day: number
-    private _timeFrameId: TimeFrame;
-    private _stageId: Stage;
+    private _timeFrame: TimeFrame;
+    private _stage: Stage;
 
 
-    constructor(bandId: Band, day: number, timeFrameId: TimeFrame, stageId: Stage) {
-        this._bandId = bandId;
+    constructor(band: Band, day: number, timeFrame: TimeFrame, stage: Stage) {
+        this._band = band;
         this._day = day,
-        this._timeFrameId = timeFrameId;
-        this._stageId = stageId;
+        this._timeFrame = timeFrame;
+        this._stage = stage;
     };
 
     setId(id: number) {
@@ -27,12 +27,12 @@ export class Performance {
         return this._id;
     };
 
-    setBand(bandId: Band) {
-        this._bandId = bandId;
+    setBand(band: Band) {
+        this._band = band;
     };
 
     getBand(): Band {
-        return this._bandId;
+        return this._band;
     };
 
     getDay(): string {
@@ -43,20 +43,20 @@ export class Performance {
         this._day = day;
     };
 
-    setTimeFrame(timeFrameId: TimeFrame) {
-        this._timeFrameId = timeFrameId;
+    setTimeFrame(timeFrame: TimeFrame) {
+        this._timeFrame = timeFrame;
     };
 
     getTimeFrame(): TimeFrame {
-        return this._timeFrameId;
+        return this._timeFrame;
     };
 
-    setStage(stageId: Stage) {
-        this._stageId = stageId;
+    setStage(stage: Stage) {
+        this._stage = stage;
     };
 
     getStage(): Stage {
-        return this._stageId;
+        return this._stage;
     };
     
 };

@@ -1,15 +1,14 @@
 import { Program } from "src/domain/models/program/program.model";
 import { ProgramRepository } from "src/domain/repositories/program/program.repository";
-import { AdministratorService } from "../user/administrator.service";
-import { EditorService } from "../user/editor.service";
+import { RoleService } from "../user/role.service";
 import { Performance } from "src/domain/models/program/performance/performance.model";
+import { User } from "src/domain/models/user/user.model";
 
 export class ProgramService {
 
     constructor(
         private programRepository: ProgramRepository,
-        private adminService: AdministratorService,
-        private editorService: EditorService,
+        private roleService: RoleService,
     ){};
 
     getAllPrograms(): Program[] {
@@ -20,8 +19,8 @@ export class ProgramService {
         return this.programRepository.getProgramById(programId);
     };
 
-    createProgram(requestingUserId: number, program: Program): void | Program {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+    createProgram(requestingUser: User, program: Program): void | Program {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.createProgram(program);
             return program;
         } else {
@@ -29,8 +28,8 @@ export class ProgramService {
         };
     };
 
-    editProgram(requestingUserId: number, program: Program): void | Program {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+    editProgram(requestingUser: User, program: Program): void | Program {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.editProgram(program);
             return program;
         } else {
@@ -38,12 +37,37 @@ export class ProgramService {
         };
     };
 
-    deleteProgram(requestingUserId: number, programId: number): void {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+    deleteProgram(requestingUser: User, programId: number): void {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.deleteProgram(programId);
         } else {
             throw new Error ('Unauthorized');
         };
+    };
+
+    addPerformanceToProgram(requestingUser: User, programId: number, performance: Performance): any {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
+            let program = this.programRepository.getProgramById(programId);
+            const isConflict = this.checkConflict(performance, program);
+            if (!isConflict) {
+                this.programRepository.addPerformanceToProgram(programId, performance);
+                return performance;
+            };
+        } else {
+            throw new Error ('Unauthorized');
+        };
+    }; 
+
+    private checkConflict(performance: Performance, program: Program): boolean {
+        const performances = program.getPerformances();
+        for (let i = 0; i < performances.length; i++) {
+            const performanceA = performances[i];
+            const performanceB = performance;
+                if (this.hasConflict(performanceA, performanceB)) {
+                    return true
+                };
+            };
+        return false;
     };
 
     private hasConflict(performanceA: Performance, performanceB: Performance): any {
@@ -60,33 +84,8 @@ export class ProgramService {
         }
     };
 
-    private checkConflict(performance: Performance, program: Program): boolean {
-        const performances = program.getPerformances();
-        for (let i = 0; i < performances.length; i++) {
-            const performanceA = performances[i];
-            const performanceB = performance;
-                if (this.hasConflict(performanceA, performanceB)) {
-                    return true
-                };
-            };
-        return false;
-    };
-    
-    addPerformanceToProgram(requestingUserId: number, programId: number, performance: Performance): any {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
-            let program = this.programRepository.getProgramById(programId);
-            const isConflict = this.checkConflict(performance, program);
-            if (!isConflict) {
-                this.programRepository.addPerformanceToProgram(programId, performance);
-            }
-            return isConflict;
-        } else {
-            throw new Error ('Unauthorized');
-        };
-    }; 
-
-    deletePerformanceFromProgram(requestingUserId: number, programId: number, performanceId: number): void {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+    deletePerformanceFromProgram(requestingUser: User, programId: number, performanceId: number): void {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.deletePerformanceFromProgram(programId, performanceId);
         } else {
             throw new Error ('Unauthorized');
