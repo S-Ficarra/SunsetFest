@@ -1,10 +1,10 @@
-import { UserTypes } from './UserType';
-import { Editor } from './editor.model'; 
+import { UserRole } from './UserRole';
+import { User } from './user.model';
 
-export class Administrator extends Editor {
+export class Administrator extends User {
 
-    constructor(name: string, firstName: string, email: string, password: string, role: number) {
-        super(name, firstName, email, password, UserTypes.Administrator);
+    constructor(name: string, firstName: string, email: string, password: string, role: UserRole.Administrator) {
+        super(name, firstName, email, password, role);
     };
 
 

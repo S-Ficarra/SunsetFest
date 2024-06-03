@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user/user.repository';
 import { User } from '../../domain/models/user/user.model';
-import { AdministratorService } from './administrator.service';
+import { RoleService } from './role.service';
 
 
 @Injectable()
@@ -9,7 +9,7 @@ export class UserService {
 
     constructor (
         private userRepository: UserRepository,
-        private administratorService: AdministratorService
+        private administratorService: RoleService
     ){};
 
 
@@ -21,24 +21,24 @@ export class UserService {
         return this.userRepository.getUserById(userId);
     };
 
-    createUser(requestingUserId: number, user: User): User | Error {
-        if (this.administratorService.isAdmin(requestingUserId)) {
+    createUser(requestingUser: User, user: User): User | Error {
+        if (this.administratorService.isAdmin(requestingUser)) {
             this.userRepository.createUser(user);
             return user
         };
         throw new Error('Unauthorized');
     };
 
-    editUser(requestingUserId: number, user: User): User | Error {
-        if (this.administratorService.isAdmin(requestingUserId)) {
+    editUser(requestingUser: User, user: User): User | Error {
+        if (this.administratorService.isAdmin(requestingUser)) {
             this.userRepository.editUser(user);
             return user
         };
         throw new Error('Unauthorized');
     };
 
-    deleteUser(requestingUserId: number, userId: number): void | Error {
-        if (this.administratorService.isAdmin(requestingUserId)) {
+    deleteUser(requestingUser: User, userId: number): void | Error {
+        if (this.administratorService.isAdmin(requestingUser)) {
             this.userRepository.deleteUser(userId);
         } else {
             throw new Error('Unauthorized');

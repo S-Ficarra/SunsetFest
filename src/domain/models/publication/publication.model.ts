@@ -1,16 +1,17 @@
 import { PublicationType } from "./PublicationTypes";
+import { User } from "../user/user.model";
 
 export class Publication {
 
     private _id: number;
-    private _userId: number;
+    private _user: User;
     private _createdAt: Date;
     private _modifiedAt: Date;
     private _status : boolean;
     private _type : string;
 
-    constructor (userId: number, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
-        this._userId = userId;
+    constructor (user: User, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
+        this._user = user;
         this._createdAt = createdAt;
         this._modifiedAt = modifiedAt;
         this._status = status;
@@ -25,12 +26,12 @@ export class Publication {
         return this._id;
     };
 
-    setAuthorId(userId: number): void {
-        this._userId = userId;
+    setUserID(user: User): void {
+        this._user = user;
     };
 
-    getAuthorId(): number {
-        return this._userId;
+    getUserId(): User {
+        return this._user;
     };
 
     setCreatedAt(createdAt: Date) {

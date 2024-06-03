@@ -29,14 +29,16 @@ export class MockTimeFrameRepository implements TimeFrameRepository {
         return this.timeFrameArray.find(tf => tf.getId() === timeFrameId);
     };
 
-    saveTimeFrame(timeFrame: TimeFrame): void {
-        timeFrame.setId(3);
+    createTimeFrame(timeFrame: TimeFrame): TimeFrame {
+        timeFrame.setId(this.timeFrameArray.length);
         this.timeFrameArray.push(timeFrame);
+        return timeFrame
     };
 
-    editTimeFrame(timeFrame: TimeFrame): void {
+    editTimeFrame(timeFrame: TimeFrame): TimeFrame {
         let timeFrameId = timeFrame.getId();
         this.timeFrameArray[timeFrameId - 1] = timeFrame;
+        return timeFrame
     }
 
     deleteTimeFrame(timeFrameId: number): void {

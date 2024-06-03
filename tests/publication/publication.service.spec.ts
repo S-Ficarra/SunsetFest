@@ -1,25 +1,22 @@
-import { AdministratorService } from "../../src/services/user/administrator.service";
 import { Publication } from "../../src/domain/models/publication/publication.model";
 import { PublicationService } from "../../src/services/publication/publication.service";
 import { MockPublicationRepository } from "./mockRepositories/mock.publication.repository";
-import { EditorService } from "../../src/services/user/editor.service";
+import { RoleService } from "../../src/services/user/role.service";
 import { MockUserRepository } from "../user/mock.user.repository";
 
  
 describe('PublicationService', () => {
     let userRepository : MockUserRepository;
-    let administratorService: AdministratorService;
-    let editorService: EditorService;
+    let roleService: RoleService;
     let publicationService: PublicationService;
     let publicationRepository: MockPublicationRepository;
 
 
     beforeEach(() => {
         userRepository = new MockUserRepository();
-        publicationRepository = new MockPublicationRepository();
-        administratorService = new AdministratorService(userRepository);
-        editorService = new EditorService(userRepository);
-        publicationService = new PublicationService(publicationRepository, administratorService, editorService);
+        publicationRepository = new MockPublicationRepository(userRepository);
+        roleService = new RoleService();
+        publicationService = new PublicationService(publicationRepository, roleService);
         userRepository.setFakeIdToTest();
         publicationRepository.setFakeIdToTest();
     });
@@ -42,13 +39,13 @@ describe('PublicationService', () => {
 
     //createPublication
     it('should return a publication just created', () => {
-        const foundPublication = publicationService.createPublication(new Publication(3,new Date(), new Date(), false,'information'));
-        expect(foundPublication).toEqual(expect.objectContaining({ _type: 'information', _userId: 3}));
+        const foundPublication = publicationService.createPublication(new Publication(userRepository.users[0],new Date(), new Date(), false,'information'));
+        expect(foundPublication).toEqual(expect.objectContaining({ _type: 'information', _status: false, _user: (expect.objectContaining({ _id: 1}))}));
     });
 
     //editPublication
     it('should return the publication edited with the modification', () => {
-        const editedPublication = new Publication(3, new Date(), new Date(), true,'faq');
+        const editedPublication = new Publication(userRepository.users[1], new Date(), new Date(), true,'faq');
         editedPublication.setId(1)
         const editedPublicationFounded = publicationService.editPublication(editedPublication);
         expect(editedPublicationFounded).toEqual(expect.objectContaining({ _type: 'faq', _status: true}));
@@ -56,7 +53,7 @@ describe('PublicationService', () => {
 
     //deletePublication by an editor or admin
     it('should delete the publication with the id 1', () => {
-        publicationService.deletePublication(3, 1);        
+        publicationService.deletePublication(userRepository.users[1], 1);        
         const publications = publicationService.getAllPublication();
         expect(publications).toHaveLength(1);
         expect(publications.some(publication => publication.getId() === 1)).toBeFalsy();
@@ -64,20 +61,20 @@ describe('PublicationService', () => {
 
     //deletePublication by an author
     it('should delete the publication with the id 1', () => {
-        const deletePublicatonCall = () => publicationService.deletePublication(1, 1);        
+        const deletePublicatonCall = () => publicationService.deletePublication(userRepository.users[0], 1);        
         expect(deletePublicatonCall).toThrow(Error);
     });
 
 
     //changeStatus by an editor
     it ('Should change the status of the publication Id1 from false to true', () => {
-        publicationService.changeStatus(2,1,true);
+        publicationService.changeStatus(userRepository.users[1],1,true);
         expect(publicationService.getPublicationById(1)).toEqual(expect.objectContaining({ _status: true}));
     });
 
     //changeStatus by an author
     it ('Should change the status of the publication Id1 from false to true', () => {
-        const changeStatusCall = () => publicationService.changeStatus(1,1,true);
+        const changeStatusCall = () => publicationService.changeStatus(userRepository.users[0],1,true);
         expect(changeStatusCall).toThrow(Error);
     });
 

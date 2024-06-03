@@ -1,19 +1,22 @@
+import { Band } from "../../band/band.model";
+import { Stage } from "../../facility/stage.model";
 import { Days } from "./DayEnum";
+import { TimeFrame } from "./timeFrame.model";
 
 export class Performance {
 
     private _id: number;
-    private _bandId: number;
+    private _band: Band;
     private _day: number
-    private _timeFrameId: number;
-    private _stageId: number;
+    private _timeFrame: TimeFrame;
+    private _stage: Stage;
 
 
-    constructor(bandId: number, day: number, timeFrameId: number, stageId: number) {
-        this._bandId = bandId;
+    constructor(band: Band, day: number, timeFrame: TimeFrame, stage: Stage) {
+        this._band = band;
         this._day = day,
-        this._timeFrameId = timeFrameId;
-        this._stageId = stageId;
+        this._timeFrame = timeFrame;
+        this._stage = stage;
     };
 
     setId(id: number) {
@@ -24,12 +27,12 @@ export class Performance {
         return this._id;
     };
 
-    setBand(bandId: number) {
-        this._bandId = bandId;
+    setBand(band: Band) {
+        this._band = band;
     };
 
-    getBand(): number {
-        return this._bandId;
+    getBand(): Band {
+        return this._band;
     };
 
     getDay(): string {
@@ -40,20 +43,20 @@ export class Performance {
         this._day = day;
     };
 
-    setTimeFrame(timeFrameId: number) {
-        this._timeFrameId = timeFrameId;
+    setTimeFrame(timeFrame: TimeFrame) {
+        this._timeFrame = timeFrame;
     };
 
-    getTimeFrame(): number {
-        return this._timeFrameId;
+    getTimeFrame(): TimeFrame {
+        return this._timeFrame;
     };
 
-    setStage(stageId: number) {
-        this._stageId = stageId;
+    setStage(stage: Stage) {
+        this._stage = stage;
     };
 
-    getStage(): number {
-        return this._stageId;
+    getStage(): Stage {
+        return this._stage;
     };
     
 };

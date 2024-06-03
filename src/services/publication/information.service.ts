@@ -1,7 +1,7 @@
+import { User } from "../../domain/models/user/user.model";
 import { Information } from "../../domain/models/publication/information.model";
 import { InformationRepository } from "../../domain/repositories/publication/information.repository";
-import { AdministratorService } from "../user/administrator.service";
-import { EditorService } from "../user/editor.service";
+import { RoleService } from "../user/role.service";
 import { ContentService } from "./content.service";
 
 export class InformationService {
@@ -9,8 +9,7 @@ export class InformationService {
     constructor(
         private informationRepository: InformationRepository,
         private contentService: ContentService,
-        private administratorService : AdministratorService,
-        private editorService: EditorService,
+        private roleService : RoleService,
     ){};
 
     getAllInformation(): Information[]{
@@ -33,8 +32,9 @@ export class InformationService {
         return information;
     };
 
-    deleteInformation(requestingUserId: number, informationId: number): void | Error {
-        if (this.editorService.isEditor(requestingUserId) || this.administratorService.isAdmin(requestingUserId)){
+
+    deleteInformation(requestingUser: User, informationId: number): void | Error {
+        if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             let Information = this.informationRepository.getInformationById(informationId);
             let InformationContentId = Information.getContent();
             this.contentService.deleteContent(InformationContentId.getId());
@@ -44,8 +44,8 @@ export class InformationService {
         };
     };
 
-    changeStatus(requestingUserId: number, informationId: number, newStatus: boolean): void | Error {
-        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+    changeStatus(requestingUser: User, informationId: number, newStatus: boolean): void | Error {
+        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
             this.getInformationById(informationId).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')

@@ -4,8 +4,7 @@ import { MockNewsRepository } from "./mockRepositories/mock.news.repository";
 import { Content } from "../../src/domain/models/publication/content.model";
 import { ContentService } from "../../src/services/publication/content.service";
 import { MockContentRepository } from "./mockRepositories/mock.content.repository";
-import { AdministratorService } from "../../src/services/user/administrator.service";
-import { EditorService } from "../../src/services/user/editor.service";
+import { RoleService } from "../../src/services/user/role.service";
 import { MockUserRepository } from "../user/mock.user.repository";
 
 
@@ -15,19 +14,17 @@ describe('NewsService', () => {
     let contentRepository: MockContentRepository;
     let newsService: NewsService;
     let newsRepository: MockNewsRepository;
-    let administratorService : AdministratorService;
-    let editorService : EditorService
+    let roleService : RoleService;
     let userRepository : MockUserRepository
 
 
     beforeEach(() => {
         userRepository = new MockUserRepository;
-        administratorService = new AdministratorService(userRepository);
-        editorService = new EditorService(userRepository);
+        roleService = new RoleService();
         contentRepository = new MockContentRepository;
         contentService = new ContentService(contentRepository);
-        newsRepository= new MockNewsRepository(contentRepository);
-        newsService = new NewsService(newsRepository, contentService, administratorService, editorService);
+        newsRepository= new MockNewsRepository(contentRepository, userRepository);
+        newsService = new NewsService(newsRepository, contentService, roleService);
         newsRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         contentRepository.setFakeIdToTest();
         userRepository.setFakeIdToTest();
@@ -53,7 +50,7 @@ describe('NewsService', () => {
 
     //createNews
     it('should return a news just created', () => {
-        const foundNews3 = new News (1, new Date, new Date, true, new Content('title3', 'text3', new Blob));  
+        const foundNews3 = new News (userRepository.users[0], new Date, new Date, true, new Content('title3', 'text3', new Blob));  
         newsService.createNews(foundNews3); 
         expect(foundNews3).toEqual(expect.objectContaining({ _id: 3, _type: 'news', _content: expect.objectContaining({_title: 'title3'})}));
 
@@ -62,7 +59,7 @@ describe('NewsService', () => {
     
     //editNews
     it('should return a news with titleEdited and textEdited', () => {
-        const newsEdited = new News (1, new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
+        const newsEdited = new News (userRepository.users[0], new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
         newsEdited.setId(1)
         newsEdited.getContent().setId(1)
         const foundNewsEdited = newsService.editNews(newsEdited);
@@ -73,27 +70,27 @@ describe('NewsService', () => {
 
     //deleteNews by an editor or administrator
     it('should return the news list without the one with id 1', () => {
-        newsService.deleteNews(2, 1)
+        newsService.deleteNews(userRepository.users[1], 1)
         expect(newsRepository.news).toHaveLength(1);
         expect(newsRepository.news.some(news => news.getId() === 1)).toBeFalsy();
     })
 
     //deleteNews by an author
     it('should delete the publication with the id 1', () => {
-        const deleteNewsCall = () => newsService.deleteNews(1, 1);        
+        const deleteNewsCall = () => newsService.deleteNews(userRepository.users[0], 1);        
         expect(deleteNewsCall).toThrow(Error);
     });
 
 
     //changeStatus by an editor
     it ('Should change the status of the publication Id1 from false to true', () => {
-        newsService.changeStatus(2,1,false);
+        newsService.changeStatus(userRepository.users[1],1,false);
         expect(newsService.getNewsById(1)).toEqual(expect.objectContaining({ _status: false}));
     });
 
     //changeStatus by an author
     it ('Should change the status of the publication Id1 from false to true', () => {
-        const changeStatusCall = () => newsService.changeStatus(1,1,false);
+        const changeStatusCall = () => newsService.changeStatus(userRepository.users[0],1,false);
         expect(changeStatusCall).toThrow(Error);
     });
 

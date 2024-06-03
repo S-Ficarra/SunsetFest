@@ -1,14 +1,14 @@
 import { Program } from "src/domain/models/program/program.model";
 import { ProgramRepository } from "src/domain/repositories/program/program.repository";
-import { AdministratorService } from "../user/administrator.service";
-import { EditorService } from "../user/editor.service";
+import { RoleService } from "../user/role.service";
+import { Performance } from "src/domain/models/program/performance/performance.model";
+import { User } from "src/domain/models/user/user.model";
 
 export class ProgramService {
 
     constructor(
         private programRepository: ProgramRepository,
-        private adminService: AdministratorService,
-        private editorService: EditorService
+        private roleService: RoleService,
     ){};
 
     getAllPrograms(): Program[] {
@@ -19,8 +19,8 @@ export class ProgramService {
         return this.programRepository.getProgramById(programId);
     };
 
-    createProgram(requestingUserId: number, program: Program): void | Program {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+    createProgram(requestingUser: User, program: Program): void | Program {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.createProgram(program);
             return program;
         } else {
@@ -28,8 +28,8 @@ export class ProgramService {
         };
     };
 
-    editProgram(requestingUserId: number, program: Program): void | Program {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+    editProgram(requestingUser: User, program: Program): void | Program {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.editProgram(program);
             return program;
         } else {
@@ -37,29 +37,59 @@ export class ProgramService {
         };
     };
 
-    deleteProgram(requestingUserId: number, programId: number): void {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
+    deleteProgram(requestingUser: User, programId: number): void {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.deleteProgram(programId);
         } else {
             throw new Error ('Unauthorized');
         };
     };
 
-    addPerformanceToProgram(requestingUserId: number, performanceId: number): void {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
-            this.programRepository.addPerformanceToProgram(performanceId); 
+    addPerformanceToProgram(requestingUser: User, programId: number, performance: Performance): any {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
+            let program = this.programRepository.getProgramById(programId);
+            let isOk = this.noConflict(performance, program)
+            if (isOk) {
+                this.programRepository.addPerformanceToProgram(programId, performance);
+                return performance;
+            };
         } else {
             throw new Error ('Unauthorized');
         };
+    }; 
+
+    private noConflict(performance: Performance, program: Program): boolean {
+        const performances = program.getPerformances();
+        for (let i = 0; i < performances.length; i++) {
+            const performanceA = performances[i];
+            const performanceB = performance;
+                if (this.hasConflict(performanceA, performanceB)) {
+                    return false
+                };
+            };
+        return true;
     };
 
-    deletePerformanceFromProgram(requestingUserId: number, performanceId: number): void {
-        if(this.editorService.isEditor(requestingUserId) || this.adminService.isAdmin(requestingUserId)){
-            this.programRepository.deletePerformanceFromProgram(performanceId);
+    private hasConflict(performanceA: Performance, performanceB: Performance): any {
+        const sameDayStageTime = performanceA.getDay() == performanceB.getDay() && performanceA.getStage() == performanceB.getStage() && performanceA.getTimeFrame() == performanceB.getTimeFrame();
+        const sameBand = performanceA.getBand() == performanceB.getBand();        
+        if (sameBand && sameDayStageTime) {
+            throw new Error('This performance is already in the program');
+        } else if (sameBand) {
+            throw new Error ("This band is planned to perform more than once");
+        } else if (sameDayStageTime) {
+            throw new Error('Another band is already planned at this stage, time & day');
+        } else {
+            return false;
+        }
+    };
+
+    deletePerformanceFromProgram(requestingUser: User, programId: number, performanceId: number): void {
+        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
+            this.programRepository.deletePerformanceFromProgram(programId, performanceId);
         } else {
             throw new Error ('Unauthorized');
         };
-    };
-    
+    };    
 
 };

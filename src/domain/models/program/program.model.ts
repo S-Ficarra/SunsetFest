@@ -1,9 +1,6 @@
 import { Performance } from "./performance/performance.model";
 
 export class Program {
-    findIndex() {
-        throw new Error("Method not implemented.");
-    }
 
     private _id: number;
     private _performances: Performance[];

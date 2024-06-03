@@ -1,3 +1,4 @@
+import { User } from "../user/user.model";
 import { PublicationType } from "./PublicationTypes";
 import { Publication } from "./publication.model"; 
 
@@ -6,8 +7,8 @@ export class Faq extends Publication {
     private _question: string;
     private _answer: string
 
-    constructor (userId: number, createdAt: Date, modifiedAt: Date, status: boolean, question: string, answer: string) {
-        super (userId, createdAt, modifiedAt, status, PublicationType.Faq)
+    constructor (user: User, createdAt: Date, modifiedAt: Date, status: boolean, question: string, answer: string) {
+        super (user, createdAt, modifiedAt, status, PublicationType.Faq)
         this._question = question;
         this._answer = answer;
     };

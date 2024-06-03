@@ -1,29 +1,33 @@
+import { User } from "../user/user.model";
 import { Socials } from "./socials.model";
 
 export class Band {
+    socials(socials: any) {
+        throw new Error("Method not implemented.");
+    }
 
     private _id: number;
-    public name: string;
-    public country: string;
-    public text: string;
-    public socials: Socials;
-    public thumbnailImage: Blob;
-    public bannerImage: Blob;
-    public userId: number;
-    public createdAt: Date;
-    public modifiedAt: Date;
+    private _name: string;
+    private _country: string;
+    private _text: string;
+    private _socials: Socials;
+    private _thumbnailImage: Blob;
+    private _bannerImage: Blob;
+    private _user: User;
+    private _createdAt: Date;
+    private _modifiedAt: Date;
 
 
-    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, userId: number, createdAt: Date, modifiedAt: Date) {
-        this.name = name;
-        this.country = country;
-        this.text = text;
-        this.socials = socials;
-        this.thumbnailImage = thumbnailImage;
-        this.bannerImage = bannerImage;
-        this.userId = userId;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
+    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, user: User, createdAt: Date, modifiedAt: Date) {
+        this._name = name;
+        this._country = country;
+        this._text = text;
+        this._socials = socials;
+        this._thumbnailImage = thumbnailImage;
+        this._bannerImage = bannerImage;
+        this._user = user;
+        this._createdAt = createdAt;
+        this._modifiedAt = modifiedAt;
     };
 
     setId(id: number) {
@@ -35,75 +39,75 @@ export class Band {
     };
 
     setName(name: string) {
-        this.name = name;
+        this._name = name;
     };
 
     getName(): string {
-        return this.name;
+        return this._name;
     };
 
     setCountry(country: string) {
-        this.country = country;
+        this._country = country;
     };
 
     getCountry(): string {
-        return this.country;
+        return this._country;
     };
 
     setText(text: string) {
-        this.text = text;
+        this._text = text;
     };
 
     getText(): string {
-        return this.text;
+        return this._text;
     };
 
     setSocials(socials: Socials) {
-        this.socials = socials;
+        this._socials = socials;
     };
 
     getSocials(): Socials {
-        return this.socials;
+        return this._socials;
     };
 
     setThumbnailImage(thumbnailImage: Blob) {
-        this.thumbnailImage = thumbnailImage;
+        this._thumbnailImage = thumbnailImage;
     };
 
     getThumbnailImage(): Blob {
-        return this.thumbnailImage;
+        return this._thumbnailImage;
     };
 
     setBannerImage(bannerImage: Blob) {
-        this.bannerImage = bannerImage;
+        this._bannerImage = bannerImage;
     };
 
     getBannerImage(): Blob {
-        return this.bannerImage;
+        return this._bannerImage;
     };
 
-    setAuthorId(userId: number) {
-        this.userId = userId;
+    setAuthorId(userId: User) {
+        this._user = userId;
     };
 
-    getAuthorId(): number {
-        return this.userId;
+    getAuthorId(): User {
+        return this._user;
     };
 
     setCreatedAt(createdAt: Date) {
-        this.createdAt = createdAt;
+        this._createdAt = createdAt;
     };
 
     getCreatedAt(): Date {
-        return this.createdAt;
+        return this._createdAt;
     };
 
     setModifiedAt(modifiedAt: Date) {
-        this.modifiedAt = modifiedAt;
+        this._modifiedAt = modifiedAt;
     };
 
     getModifiedAt(): Date {
-        return this.modifiedAt;
+        return this._modifiedAt;
     };
 
 };

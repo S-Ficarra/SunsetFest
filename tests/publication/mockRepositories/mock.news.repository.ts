@@ -1,15 +1,19 @@
+import { MockUserRepository } from "../../user/mock.user.repository";
 import { News } from "../../../src/domain/models/publication/news.model";
 import { NewsRepository } from "../../../src/domain/repositories/publication/news.repository";
 import { MockContentRepository } from "./mock.content.repository";
 
 export class MockNewsRepository implements NewsRepository {
 
+    public userRepository: MockUserRepository;
     public contentRepository: MockContentRepository; //import content mock repo to use Content created in it
     public news: News[] = [];//initialize empty array
 
 
 
-    constructor(contentRepository: MockContentRepository) {
+    constructor(contentRepository: MockContentRepository, userRepository: MockUserRepository) {
+        this. userRepository = userRepository;
+        userRepository.setFakeIdToTest();
         this.contentRepository = contentRepository;
         this.initializeNews();//fill the array once contentlRepository is defined
     };
@@ -17,8 +21,8 @@ export class MockNewsRepository implements NewsRepository {
 
     private initializeNews(): void {
         this.news.push(
-            new News(77, new Date(), new Date(), true, this.contentRepository.getContentById(1)),
-            new News(66, new Date(), new Date(), true, this.contentRepository.getContentById(2))
+            new News(this.userRepository.users[0], new Date(), new Date(), true, this.contentRepository.getContentById(1)),
+            new News(this.userRepository.users[0], new Date(), new Date(), true, this.contentRepository.getContentById(2))
         );
     };
     

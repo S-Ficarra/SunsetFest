@@ -7,8 +7,8 @@ export class MockCountdownRepository implements CountdownRepository {
 
     constructor() {
         this.countdowns.push(
-            new Countdown(new Date("2024-06-01T00:00:00"), new Date("2024-06-10T00:00:00")),
-            new Countdown(new Date("2024-07-01T00:00:00"), new Date("2024-07-15T00:00:00"))
+            new Countdown("2024", new Date("2024-06-01T00:00:00"), new Date("2024-06-10T00:00:00")),
+            new Countdown("2025", new Date("2024-07-01T00:00:00"), new Date("2024-07-15T00:00:00"))
         );
     };
 

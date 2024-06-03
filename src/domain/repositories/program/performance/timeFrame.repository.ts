@@ -3,8 +3,8 @@ import { TimeFrame } from "../../../models/program/performance/timeFrame.model"
 export interface TimeFrameRepository {
 
     getTimeFrameById(timeFrameId: number): TimeFrame | undefined;
-    saveTimeFrame(timeFrame: TimeFrame): void;
-    editTimeFrame(timeFrame: TimeFrame): void;
+    createTimeFrame(timeFrame: TimeFrame): TimeFrame;
+    editTimeFrame(timeFrame: TimeFrame): TimeFrame;
     deleteTimeFrame(timeFrameId: number): void;
     
 };

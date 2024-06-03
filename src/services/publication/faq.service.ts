@@ -1,15 +1,14 @@
+import { User } from "../../domain/models/user/user.model";
 import { Faq } from "../../domain/models/publication/faq.model";
 import { FaqRepository } from "../../domain/repositories/publication/faq.repository";
-import { AdministratorService } from "../user/administrator.service";
-import { EditorService } from "../user/editor.service";
+import { RoleService } from "../user/role.service";
 
 export class FaqService {
 
 
     constructor(
         private faqRepository: FaqRepository,
-        private administratorService : AdministratorService,
-        private editorService: EditorService,
+        private roleService : RoleService,
     ){};
 
     getAllFaq(): Faq[] {
@@ -32,16 +31,16 @@ export class FaqService {
     };
 
 
-    deleteFaq(requestingUserId: number, faqId: number): void | Error {
-        if (this.editorService.isEditor(requestingUserId) || this.administratorService.isAdmin(requestingUserId)){
+    deleteFaq(requestingUser: User, faqId: number): void | Error {
+        if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.faqRepository.deleteFaq(faqId);
         } else {
             throw new Error('Unauthorized');
         };
     };
 
-    changeStatus(requestingUserId: number, faqId: number, newStatus: boolean): void | Error {
-        if (this.administratorService.isAdmin(requestingUserId) || this.editorService.isEditor(requestingUserId)){
+    changeStatus(requestingUser: User, faqId: number, newStatus: boolean): void | Error {
+        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
             this.getFaqById(faqId).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')

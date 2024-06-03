@@ -3,20 +3,39 @@ import { PerformanceRepository } from "../../../src/domain/repositories/program/
 import { MockBandRepository } from "../../band/mock.band.repository";
 import { MockTimeFrameRepository } from "./mock.timeFrame.repository";
 import { MockStageRepository } from "../../facility/mockRepositories/mock.stage.repository";
+import { MockUserRepository } from "../../user/mock.user.repository";
 
 export class MockPerformanceRepository implements PerformanceRepository{
 
+    public userRepository: MockUserRepository;
+    public bandRepository : MockBandRepository;
+    public timeFrameRepository : MockTimeFrameRepository;
+    public stageRepository: MockStageRepository;
+    public performances: Performance [] = [];
 
     constructor(
-        private bandRepository : MockBandRepository,
-        private timeFrameRepository : MockTimeFrameRepository,
-        private stageRepository: MockStageRepository,
-    ){};
+        userRepository: MockUserRepository,
+        bandRepository : MockBandRepository,
+        timeFrameRepository : MockTimeFrameRepository,
+        stageRepository: MockStageRepository,) {
+            this.userRepository = userRepository;
+            this.bandRepository = bandRepository;
+            this.timeFrameRepository = timeFrameRepository;
+            this.stageRepository = stageRepository;
+            userRepository.setFakeIdToTest();
+            bandRepository.setFakeIdToTest();
+            timeFrameRepository.setFakeIdToTest();
+            stageRepository.setFakeIdToTest();
+            this.initializePerformances();
+        };
 
-    public performances: Performance[] = [
-        new Performance (this.bandRepository.getBandById(1).getId(), 1, this.timeFrameRepository.getTimeFrameById(1).getId(), this.stageRepository.getStageById(1).getId()),
-        new Performance (this.bandRepository.getBandById(2).getId(), 2, this.timeFrameRepository.getTimeFrameById(2).getId(), this.stageRepository.getStageById(2).getId())
-    ];
+
+    private initializePerformances(): void {
+        this.performances.push(
+            new Performance (this.bandRepository.bands[0], 1, this.timeFrameRepository.timeFrameArray[0], this.stageRepository.stages[0]),
+            new Performance (this.bandRepository.bands[1], 2, this.timeFrameRepository.timeFrameArray[1], this.stageRepository.stages[1])
+        );
+        };
     
     setFakeIdToTest(): void {
         this.performances[0].setId(1)
