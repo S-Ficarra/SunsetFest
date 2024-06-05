@@ -43,28 +43,28 @@ export class MockPerformanceRepository implements PerformanceRepository{
     };
 
 
-    getAllPerformances(): Performance[] {
+    async getAllPerformances(): Promise<Performance[]> {
         return this.performances;
     };
 
-    getPerformanceById(performanceId: number): Performance | undefined {
+    async getPerformanceById(performanceId: number): Promise<Performance> {
         return this.performances[performanceId -1 ];
     };
 
-    createPerformance(performance: Performance): Performance {
+    async createPerformance(performance: Performance): Promise<Performance> {
         this.performances.push(performance);
         const index = this.performances.length;
         performance.setId(index);
         return performance
     };
 
-    editPerformance(performance: Performance): Performance {
+    async editPerformance(performance: Performance): Promise<Performance> {
         let performanceId = performance.getId();
         this.performances[performanceId - 1] = performance;
         return performance
     };
 
-    deletePerformance(performanceId: number): void {
+    async deletePerformance(performanceId: number): Promise<void> {
         this.performances = this.performances.filter(performance => performance.getId() !== performanceId);
     };
 }

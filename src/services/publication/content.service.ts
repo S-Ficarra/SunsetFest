@@ -7,23 +7,25 @@ export class ContentService {
 
     constructor(private contentRepository: ContentRepository){};
 
-    getAllContent(): Content[] {
+    async getAllContent(): Promise<Content[]> {
         return this.contentRepository.getAllContent();
     };
 
-    getContentById(contentId: number): Content | undefined {
+    async getContentById(contentId: number): Promise<Content> {
         return this.contentRepository.getContentById(contentId);
     };
 
-    createContent(content: Content): void {
+    async createContent(content: Content): Promise<Content> {
         this.contentRepository.createContent(content);
+        return content;
     };
 
-    editContent(content: Content): void {
+    async editContent(content: Content): Promise<Content> {
         this.contentRepository.editContent(content);
+        return content;
     };
 
-    deleteContent(contentId: number): void {
+    async deleteContent(contentId: number): Promise<void> {
         this.contentRepository.deleteContent(contentId)
     };
 

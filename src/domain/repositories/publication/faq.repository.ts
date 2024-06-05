@@ -2,10 +2,10 @@ import { Faq } from "../../models/publication/faq.model";
 
 export interface FaqRepository {
 
-    getAllFaq(): Faq[];
-    getFaqById(faqId: number): Faq | undefined;
-    createFaq(faq: Faq): void;
-    editFaq(faq: Faq): void;
-    deleteFaq(faqId: number): void;
+    getAllFaq(): Promise <Faq[]>;
+    getFaqById(faqId: number): Promise <Faq | undefined>;
+    createFaq(faq: Faq): Promise <Faq>;
+    editFaq(faq: Faq): Promise <Faq>;
+    deleteFaq(faqId: number): Promise <void>;
 
 };

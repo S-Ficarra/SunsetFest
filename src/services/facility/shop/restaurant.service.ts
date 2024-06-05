@@ -5,25 +5,25 @@ export class RestaurantService{
 
     constructor(private restaurantRepository : RestaurantRepository){};
 
-    getAllRestaurants(): Restaurant[] {
+    async getAllRestaurants(): Promise<Restaurant[]> {
         return this.restaurantRepository.getAllRestaurants();
     };
 
-    getRestaurantById(restaurantId: number): Restaurant {
+    async getRestaurantById(restaurantId: number): Promise<Restaurant> {
         return this.restaurantRepository.getRestaurantById(restaurantId);
     };
 
-    createRestaurant(restaurant: Restaurant): Restaurant {
+    async createRestaurant(restaurant: Restaurant): Promise<Restaurant> {
         this.restaurantRepository.createRestaurant(restaurant);
         return restaurant;
     };
 
-    editRestaurant(restaurant: Restaurant): Restaurant {
+    async editRestaurant(restaurant: Restaurant): Promise<Restaurant> {
         this.restaurantRepository.editRestaurant(restaurant);
         return restaurant;
     };
 
-    deleteRestaurant(restaurantId: number): void {
+    async deleteRestaurant(restaurantId: number): Promise<void> {
         this.restaurantRepository.deleteRestaurant(restaurantId);
     };
 

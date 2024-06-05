@@ -25,24 +25,26 @@ export class MockFaqRepository implements FaqRepository {
         this.faqs[1].setId(2)
     };
 
-    getAllFaq(): Faq[] {
+    async getAllFaq(): Promise<Faq[]> {
         return this.faqs;
     };
 
-    getFaqById(faqId: number): Faq {
+    async getFaqById(faqId: number): Promise<Faq> {
         return this.faqs[faqId - 1];
     };
 
-    createFaq(faq: Faq): void {
+    async createFaq(faq: Faq): Promise<Faq> {
         this.faqs.push(faq);
+        return faq;
     };
 
-    editFaq(faq: Faq): void {
+    async editFaq(faq: Faq): Promise<Faq> {
         let faqId = faq.getId();
         this.faqs[faqId - 1] = faq;
+        return faq;
     };
     
-    deleteFaq(faqId: number): void {
+    async deleteFaq(faqId: number): Promise<void> {
         this.faqs = this.faqs.filter(faq => faq.getId() !== faqId);
     };
 

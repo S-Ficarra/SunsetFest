@@ -12,30 +12,30 @@ export class InformationService {
         private roleService : RoleService,
     ){};
 
-    getAllInformation(): Information[]{
+    async getAllInformation(): Promise<Information[]>{
         return this.informationRepository.getAllInformation();
     };
 
-    getInformationById(informationId: number): Information | undefined{
+    async getInformationById(informationId: number): Promise<Information>{
         return this.informationRepository.getInformationById(informationId);
     };
 
-    createInformation(information: Information): Information {
+    async createInformation(information: Information): Promise<Information> {
         this.contentService.createContent(information.getContent());
         this.informationRepository.createInformation(information);  
         return information;      
     };
 
-    editInformation(information: Information): Information {
+    async editInformation(information: Information): Promise<Information> {
         this.contentService.editContent(information.getContent());
         this.informationRepository.editInformation(information);    
         return information;
     };
 
 
-    deleteInformation(requestingUser: User, informationId: number): void | Error {
+    async deleteInformation(requestingUser: User, informationId: number): Promise<void> {
         if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            let Information = this.informationRepository.getInformationById(informationId);
+            let Information = await this.informationRepository.getInformationById(informationId);
             let InformationContentId = Information.getContent();
             this.contentService.deleteContent(InformationContentId.getId());
             this.informationRepository.deleteInformation(informationId);
@@ -44,9 +44,9 @@ export class InformationService {
         };
     };
 
-    changeStatus(requestingUser: User, informationId: number, newStatus: boolean): void | Error {
+    async changeStatus(requestingUser: User, informationId: number, newStatus: boolean): Promise<void> {
         if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            this.getInformationById(informationId).setStatus(newStatus)
+            (await this.getInformationById(informationId)).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')
         };

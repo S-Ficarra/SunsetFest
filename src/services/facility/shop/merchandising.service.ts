@@ -5,25 +5,25 @@ export class MerchandisingService{
 
     constructor(private merchandisingRepository : MerchandisingRepository){};
 
-    getAllMerchandising(): Merchandising[] {
+    async getAllMerchandising(): Promise<Merchandising[]> {
         return this.merchandisingRepository.getAllMerchandising();
     };
 
-    getMerchandisingById(merchandisingId: number): Merchandising {
+    async getMerchandisingById(merchandisingId: number): Promise<Merchandising> {
         return this.merchandisingRepository.getMerchandisingById(merchandisingId);
     };
 
-    createMerchandising(merchandising: Merchandising): Merchandising {
+    async createMerchandising(merchandising: Merchandising): Promise<Merchandising> {
         this.merchandisingRepository.createMerchandising(merchandising);
         return merchandising;
     };
 
-    editMerchandising(merchandising: Merchandising): Merchandising {
+    async editMerchandising(merchandising: Merchandising): Promise<Merchandising> {
         this.merchandisingRepository.editMerchandising(merchandising);
         return merchandising;
     };
 
-    deleteMerchandising(merchandisingId: number): void {
+    async deleteMerchandising(merchandisingId: number): Promise<void> {
         this.merchandisingRepository.deleteMerchandising(merchandisingId);
     };
 

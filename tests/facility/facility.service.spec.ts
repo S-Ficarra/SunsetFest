@@ -14,14 +14,14 @@ describe('FacilityService', () => {
     });
 
     //getFacilityById
-    it("Sould return a facility by it's id", () => {
-        const foundFacility1 = facilityService.getFacilityById(1);
+    it("Sould return a facility by it's id", async () => {
+        const foundFacility1 = await facilityService.getFacilityById(1);
         expect(foundFacility1).toEqual(expect.objectContaining({ _id: 1, _name: 'hell bar'}));
     });
 
     //getAllFacilities
-    it('should return all facility', () => {
-        const facilitys = facilityService.getAllFacilities();
+    it('should return all facility', async () => {
+        const facilitys = await facilityService.getAllFacilities();
         expect(facilitys).toHaveLength(2);
         expect(facilitys).toEqual(expect.arrayContaining([
             expect.objectContaining({_id: 1, _name: 'hell bar'}),
@@ -30,27 +30,27 @@ describe('FacilityService', () => {
     });
 
     //createFacility
-    it('should return a facility just created', () => {
+    it('should return a facility just created', async () => {
         facilityService.createFacility(new Facility('hell tacos', 159.753, 875.132, 'restaurant'));
-        const foundFacility = facilityService.getFacilityById(3);
+        const foundFacility = await facilityService.getFacilityById(3);
         expect(foundFacility).toEqual(expect.objectContaining({ _id: 3, _name: 'hell tacos'}));
     });
 
     //editFacility
-    it('should return the facility edited with the modification', () => {
+    it('should return the facility edited with the modification', async () => {
         const editedFacility = new Facility('hell tacos', 159.753, 875.132, 'restaurant');
         editedFacility.setId(1)
         facilityService.editFacility(editedFacility);
-        const editedFacilityFounded = facilityService.getFacilityById(1)
+        const editedFacilityFounded = await facilityService.getFacilityById(1)
         expect(editedFacilityFounded).toEqual(expect.objectContaining({ _id: 1, _name: 'hell tacos'}));
     });
 
-    //deletePublicatio 
-    it('should delete the facility with the id 1', () => {
+    //deletePublication 
+    it('should delete the facility with the id 1', async () => {
         facilityService.deleteFacility(1);
-        const facilitys = facilityService.getAllFacilities();
+        const facilitys = await facilityService.getAllFacilities();
         expect(facilitys).toHaveLength(1);
-        expect(facilitys.some(facility => facility.getId() === 1)).toBeFalsy();
+        expect((facilitys).some(facility => facility.getId() === 1)).toBeFalsy();
     });
 
 });

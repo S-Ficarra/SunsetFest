@@ -16,25 +16,27 @@ export class MockUserRepository implements UserRepository {
 
     };
 
-    getUserById(id: number): User | undefined {
+    async getUserById(id: number): Promise<User | undefined> {
         return this.users.find(user => user.getId() === id);
     }
 
-    getAllUsers(): User[] {
+    async getAllUsers(): Promise<User[]> {
         return this.users;
     }
 
-    createUser(user: User):void {
+    async createUser(user: User): Promise<User> {
         user.setId(this.users.length + 1)        
         this.users.push(user);
+        return user
     };
 
-    editUser(user: User): void {
+    async editUser(user: User): Promise<User> {
         let userId = user.getId();
         this.users[userId - 1] = user;
+        return user
     };
 
-    deleteUser(userId: number): void {
+    async deleteUser(userId: number): Promise<void> {
         this.users = this.users.filter(user => user.getId() !== userId);
     };
 

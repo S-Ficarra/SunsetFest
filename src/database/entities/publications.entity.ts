@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
-import { publication_contents } from './publication_contents';
-import { publication_details } from './publication_details';
-import { publication_types } from './publication_types';
-import { images } from './images';
+import { publication_contents } from './publication_contents.entity';
+import { publication_details } from './publication_details.entity';
+import { publication_types } from './publication_types.entity';
+import { images } from './images.entity';
 
 
 @Entity()
@@ -13,19 +13,19 @@ export class publications {
 
     @ManyToOne(() => publication_contents)
     @JoinColumn()
-    publication_contents_id: publication_contents;
+    publication__contents_: number;
 
     @ManyToOne(() => publication_details)
     @JoinColumn()
-    publication_details_id: publication_details;
+    publication__details_: number;
 
     @ManyToOne(() => publication_types)
     @JoinColumn()
-    publication_types_id: publication_types;
+    publication__types_: number;
 
     @ManyToOne(() => images, { nullable: true })
     @JoinColumn()
-    images_id: images | null;
+    images_: number | null;
 
 
 };

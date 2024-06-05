@@ -15,26 +15,27 @@ export class MockFacilityRepository implements FacilityRepository {
         this.facilities[1].setId(2)
     };
 
-    getAllFacilities(): Facility[] {
+    async getAllFacilities(): Promise<Facility[]> {
         return this.facilities;
     }
 
-    getFacilityById(facilityId: number): Facility | undefined {
+    async getFacilityById(facilityId: number): Promise<Facility> {
         return this.facilities[facilityId -1];
     };
 
-    createFacility(facility: Facility): void {
+    async createFacility(facility: Facility): Promise<Facility> {
         facility.setId(this.facilities.length + 1)
         this.facilities.push(facility);
-        
+        return facility;
     };
 
-    editFacility(facility: Facility): void {
+    async editFacility(facility: Facility): Promise<Facility> {
         let facilityid = facility.getId();
         this.facilities[facilityid - 1] = facility;
+        return facility;
     };
 
-    deleteFacility(facilityId: number): void {
+    async deleteFacility(facilityId: number): Promise<void> {
         this.facilities = this.facilities.filter(facility => facility.getId() !== facilityId);
     };
 

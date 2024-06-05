@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
-import { locations } from './locations';
-import { opening_times } from './opening_times';
+import { locations } from './locations.entity';
+import { opening_times } from './opening_times.entity';
 
 @Entity()
-export class bars {
+export class merchandisings {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -13,11 +13,14 @@ export class bars {
 
     @ManyToOne(() => locations)
     @JoinColumn()
-    location_id: locations;
+    location_: number;
+
+    @Column()
+    merch_type: string;
 
     @ManyToOne(() => opening_times)
     @JoinColumn()
-    opening_times_id: opening_times;
+    opening__times_: number;
 
 
 };

@@ -8,23 +8,25 @@ export class FacilityService {
     constructor(private facilityRepository: FacilityRepository){}
     
     
-    getAllFacilities(): Facility[] {
+    async getAllFacilities(): Promise<Facility[]> {
         return this.facilityRepository.getAllFacilities();
     };
 
-    getFacilityById(facilityid: number): Facility {
+    async getFacilityById(facilityid: number): Promise<Facility> {
         return this.facilityRepository.getFacilityById(facilityid);
     };
 
-    createFacility(facility: Facility): void {
+    async createFacility(facility: Facility): Promise<Facility> {
         this.facilityRepository.createFacility(facility);
+        return facility;
     };
 
-    editFacility(facility: Facility): void {
+    async editFacility(facility: Facility): Promise<Facility> {
         this.facilityRepository.editFacility(facility);
+        return facility;
     };
 
-    deleteFacility(facilityid: number): void {
+    async deleteFacility(facilityid: number): Promise<void> {
         this.facilityRepository.deleteFacility(facilityid);
     };
 

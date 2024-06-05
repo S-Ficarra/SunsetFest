@@ -21,7 +21,7 @@ export class RoleService {
         return false;
     };
 
-    changeRole(requestingUser: User, user: User, newRoleId: number): void | Error{
+    async changeRole(requestingUser: User, user: User, newRoleId: number): Promise<void | Error>{
         if (this.isAdmin(requestingUser)) {
             user.setRole(newRoleId);
         } else {

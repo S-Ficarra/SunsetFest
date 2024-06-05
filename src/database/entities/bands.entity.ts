@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
-import { publication_details } from './publication_details';
-import { images } from './images';
+import { publication_details } from './publication_details.entity';
+import { images } from './images.entity';
 
 
 @Entity()
@@ -15,7 +15,7 @@ export class bands {
     @Column()
     country: string;
     
-    @Column()
+    @Column({type: 'text'})
     text: string;
     
     @Column()
@@ -44,14 +44,14 @@ export class bands {
 
     @ManyToOne(() => images)
     @JoinColumn()
-    thumbnail_image_id: images;
+    thumbnail__image_: number;
 
     @ManyToOne(() => images)
     @JoinColumn()
-    banner_image_id: images;
+    banner__image_: number;
 
     @ManyToOne(() => publication_details)
     @JoinColumn()
-    publication_details_id: publication_details;
+    publication__details_: number;
 
 };

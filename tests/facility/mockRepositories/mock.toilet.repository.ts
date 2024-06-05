@@ -14,24 +14,26 @@ export class MockToiletRepository implements ToiletRepository {
         this.toilets[1].setId(2)
     };
 
-    getAllToilets(): Toilet[] {
+    async getAllToilets(): Promise<Toilet[]> {
         return this.toilets;
     };
 
-    getToiletById(toiletId: number): Toilet {
+    async getToiletById(toiletId: number): Promise<Toilet> {
         return this.toilets[toiletId - 1];
     };
 
-    createToilet(toilet: Toilet): void {
+    async createToilet(toilet: Toilet): Promise<Toilet> {
         this.toilets.push(toilet);
+        return toilet;
     };
 
-    editToilet(toilet: Toilet): void {
+    async editToilet(toilet: Toilet): Promise<Toilet> {
         let toiletId = toilet.getId();
         this.toilets[toiletId - 1] = toilet;
+        return toilet;
     };
     
-    deleteToilet(toiletId: number): void {
+    async deleteToilet(toiletId: number): Promise<void> {
         this.toilets = this.toilets.filter(toilet => toilet.getId() !== toiletId);
     };
 

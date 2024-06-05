@@ -12,29 +12,29 @@ export class NewsService{
         private roleService : RoleService,
     ){};
 
-    getAllNews(): News[]{
+    async getAllNews(): Promise<News[]>{
         return this.newsRepository.getAllNews();
     };
 
-    getNewsById(newsId: number): News | undefined{
+    async getNewsById(newsId: number): Promise<News>{
         return this.newsRepository.getNewsById(newsId);
     };
 
-    createNews(news: News): News {
+    async createNews(news: News): Promise<News> {
         this.contentService.createContent(news.getContent());
         this.newsRepository.createNews(news);   
         return news;     
     };
 
-    editNews(news: News): News {
+    async editNews(news: News): Promise<News> {
         this.contentService.editContent(news.getContent());
         this.newsRepository.editNews(news);    
         return news;         
     };
 
-    deleteNews(requestingUser: User, newsId: number): void | Error {
+    async deleteNews(requestingUser: User, newsId: number): Promise<void> {
         if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            let news = this.newsRepository.getNewsById(newsId);
+            let news = await this.newsRepository.getNewsById(newsId);
             let newsContentId = news.getContent();
             this.contentService.deleteContent(newsContentId.getId());
             this.newsRepository.deleteNews(newsId);
@@ -43,9 +43,9 @@ export class NewsService{
         };
     };
 
-    changeStatus(requestingUser: User, newsId: number, newStatus: boolean): void | Error {
+    async changeStatus(requestingUser: User, newsId: number, newStatus: boolean): Promise<void> {
         if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            this.getNewsById(newsId).setStatus(newStatus)
+            (await this.getNewsById(newsId)).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')
         };

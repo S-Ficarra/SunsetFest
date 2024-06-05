@@ -2,10 +2,10 @@ import { Performance } from "../../../models/program/performance/performance.mod
 
 export interface PerformanceRepository {
 
-    getAllPerformances(): Performance[];
-    getPerformanceById(performanceId: number): Performance | undefined;
-    createPerformance(performance: Performance): Performance;
-    editPerformance(performance: Performance): Performance;
-    deletePerformance(performanceId: number): void;
+    getAllPerformances(): Promise <Performance[]>;
+    getPerformanceById(performanceId: number): Promise <Performance | undefined>;
+    createPerformance(performance: Performance): Promise <Performance>;
+    editPerformance(performance: Performance): Promise <Performance>;
+    deletePerformance(performanceId: number): Promise <void>;
 
 };

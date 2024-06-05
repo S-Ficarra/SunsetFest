@@ -15,37 +15,28 @@ export class MockSocialsRepository implements SocialsRepository {
     };
 
 
-    getAllSocials(): Socials[] {
+    async getAllSocials(): Promise<Socials[]> {
         return this.socials;
     };
 
-    getSocialsById(socialsId: number): Socials {
-        return this.socials[socialsId - 1];
+    async getSocialsById(socialsId: number): Promise<Socials> {
+        return Promise.resolve(this.socials[socialsId - 1]); // Or however you are fetching the socials
     };
 
-    createSocials(socials: Socials): void {
+    async createSocials(socials: Socials): Promise<Socials> {
         this.socials.push(socials);
+        return socials;
     };
 
-    editSocials(socials: Socials): void {
+    async editSocials(socials: Socials): Promise<Socials> {
         let socialsId = socials.getId();
         this.socials[socialsId - 1] = socials;
+        return socials;
     };
     
-    deleteSocials(socialsId: number): void {
+    async deleteSocials(socialsId: number): Promise<void> {
         this.socials = this.socials.filter(socials => socials.getId() !== socialsId);
     };
 
 
-
-
-
-
-
-
-
-
-
-
-
-}
+};

@@ -2,52 +2,47 @@ import { OpeningTimesService } from "../../../../src/services/facility/openingTi
 import { Restaurant } from "../../../../src/domain/models/facility/shop/restaurant.model";
 import { RestaurantRepository } from "../../../../src/domain/repositories/facility/shop/restaurant.repository";
 import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
+import { MockOpeningTimesRepository } from "../mock.openingTimes.repository";
 
 
 export class MockRestaurantRepository implements RestaurantRepository {
 
-    constructor(public openingTimesService : OpeningTimesService){};
-
-
-    public restaurant1OT = this.openingTimesService.createOpeningTimes('08:00', '17:00');
-    public restaurant2OT = this.openingTimesService.createOpeningTimes('09:00', '20:00');
-    
+    constructor(public openingTimesService : OpeningTimesService,
+        public openingTimesRepository : MockOpeningTimesRepository
+    ){};
 
     public restaurants: Restaurant[] = [
-        new Restaurant ('hell burger', 123.546, 356.214, this.restaurant1OT, 'burger'),
-        new Restaurant ('hell hotdog', 987.654, 456.951, this.restaurant2OT, 'hotdog')
+        new Restaurant ('hell burger', 123.546, 356.214, this.openingTimesRepository.openingTimesArray[0], 'burger'),
+        new Restaurant ('hell hotdog', 987.654, 456.951, this.openingTimesRepository.openingTimesArray[1], 'hotdog')
     ];
 
-    createOpeningTimes(): OpeningTimes {
-        let newOpeningTime = this.openingTimesService.createOpeningTimes('11:30', '23:00');
-        return newOpeningTime;
-    }
 
     setFakeIdToTest(): void {
         this.restaurants[0].setId(1)
         this.restaurants[1].setId(2)
     };
 
-    getAllRestaurants(): Restaurant[] {
+    async getAllRestaurants(): Promise<Restaurant[]> {
         return this.restaurants;
     }
 
-    getRestaurantById(restaurantId: number): Restaurant | undefined {
+    async getRestaurantById(restaurantId: number): Promise<Restaurant> {
         return this.restaurants[restaurantId -1];
     };
 
-    createRestaurant(restaurant: Restaurant): void {
+    async createRestaurant(restaurant: Restaurant): Promise<Restaurant> {
         restaurant.setId(this.restaurants.length + 1)
         this.restaurants.push(restaurant);
-        
+        return restaurant;
     };
 
-    editRestaurant(restaurant: Restaurant): void {
+    async editRestaurant(restaurant: Restaurant): Promise<Restaurant> {
         let restaurantid = restaurant.getId();
         this.restaurants[restaurantid - 1] = restaurant;
+        return restaurant;
     };
 
-    deleteRestaurant(restaurantId: number): void {
+    async deleteRestaurant(restaurantId: number): Promise<void> {
         this.restaurants = this.restaurants.filter(restaurant => restaurant.getId() !== restaurantId);
     };
 

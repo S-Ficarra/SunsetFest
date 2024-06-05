@@ -14,24 +14,26 @@ export class MockVipRepository implements VipRepository {
         this.vips[1].setId(2)
     };
 
-    getAllVips(): Vip[] {
+    async getAllVips(): Promise<Vip[]> {
         return this.vips;
     };
 
-    getVipById(vipId: number): Vip {
+    async getVipById(vipId: number): Promise<Vip> {
         return this.vips[vipId - 1];
     };
 
-    createVip(vip: Vip): void {
+    async createVip(vip: Vip): Promise<Vip> {
         this.vips.push(vip);
+        return vip;
     };
 
-    editVip(vip: Vip): void {
+    async editVip(vip: Vip): Promise<Vip> {
         let vipId = vip.getId();
         this.vips[vipId - 1] = vip;
+        return vip;
     };
     
-    deleteVip(vipId: number): void {
+    async deleteVip(vipId: number): Promise<void> {
         this.vips = this.vips.filter(vip => vip.getId() !== vipId);
     };
 

@@ -2,6 +2,7 @@ import { User } from "../user/user.model";
 import { Socials } from "./socials.model";
 
 export class Band {
+    await: any;
     socials(socials: any) {
         throw new Error("Method not implemented.");
     }

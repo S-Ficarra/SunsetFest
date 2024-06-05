@@ -2,10 +2,10 @@ import { Toilet } from "../../models/facility/toilet.model";
 
 export interface ToiletRepository {
 
-    getAllToilets(): Toilet[];
-    getToiletById(toiletId: number): Toilet | undefined;
-    createToilet(toilet: Toilet): void;
-    editToilet(toilet: Toilet): void;
-    deleteToilet(toiletId: number): void;
+    getAllToilets(): Promise <Toilet[]>;
+    getToiletById(toiletId: number): Promise <Toilet | undefined>;
+    createToilet(toilet: Toilet): Promise <Toilet>;
+    editToilet(toilet: Toilet): Promise <Toilet>;
+    deleteToilet(toiletId: number): Promise <void>;
 
 };

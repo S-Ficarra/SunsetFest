@@ -14,15 +14,17 @@ export class MockBandRepository implements BandRepository {
         this.userRepository= userRepository;
         this.userRepository.setFakeIdToTest();
         this.socialsRepository = socialsRepository;
+        this.socialsRepository.setFakeIdToTest();
         this.initializeBands(); //fill the array once socialRepository is defined
     };
 
-    private initializeBands(): void {
-        this.bands.push(
-            new Band ('band1', 'country1', 'text1', this.socialsRepository.getSocialsById(1), new Blob, new Blob, this.userRepository.users[0], new Date, new Date),
-            new Band ('band2', 'country2', 'text2', this.socialsRepository.getSocialsById(2), new Blob, new Blob, this.userRepository.users[1], new Date, new Date)    
-        );
-    };
+    private async initializeBands(): Promise<void> {
+
+        this.bands = [
+            new Band ('band1', 'country1', 'text1', this.socialsRepository.socials[0], new Blob, new Blob, this.userRepository.users[0], new Date, new Date),
+            new Band ('band2', 'country2', 'text2', this.socialsRepository.socials[1], new Blob, new Blob, this.userRepository.users[1], new Date, new Date)    
+        ];
+    }
 
 
     setFakeIdToTest(): void {
@@ -30,28 +32,28 @@ export class MockBandRepository implements BandRepository {
         this.bands[1].setId(2)
     };
 
-    getAllBands(): Band[] {
+    async getAllBands(): Promise<Band[]> {
         return this.bands;
     };
 
-    getBandById(bandId: number): Band | undefined {
+    async getBandById(bandId: number): Promise<Band> {
         return this.bands[bandId -1 ];
     };
 
-    createBand(band: Band): Band {
+    async createBand(band: Band): Promise<Band> {
         this.bands.push(band);
         const index = this.bands.length;
         band.setId(index);
         return band;
     };
 
-    editBand(band: Band): Band {
+    async editBand(band: Band): Promise<Band> {
         let bandId = band.getId();
         this.bands[bandId - 1] = band;
         return band;
     };
 
-    deleteBand(bandId: number): void {
+    async deleteBand(bandId: number): Promise<void> {
         this.bands = this.bands.filter(band => band.getId() !== bandId);
     };
 

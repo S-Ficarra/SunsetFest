@@ -3,9 +3,9 @@ import { Map } from "../../models/facility/map.model";
 
 export interface MapRepository {
 
-    getMap(): Map | undefined;
-    createMap(map: Map): void;
-    addFacilityToMap(facility: Facility): void;
-    deleteFacilityFromMap(facilityId: number): void;    
+    getMap(): Promise <Map | undefined>;
+    createMap(map: Map): Promise <Map>;
+    addFacilityToMap(facility: Facility): Promise <void>;
+    deleteFacilityFromMap(facilityId: number): Promise <void>;    
 
 };

@@ -6,25 +6,25 @@ export class ShopService implements ShopRepository {
     constructor(private shopRepository : ShopRepository){}
     
     
-    getAllShops(): Shop[] {
+    async getAllShops(): Promise<Shop[]> {
         return this.shopRepository.getAllShops();
     };
 
-    getShopById(shopId: number): Shop {
+    async getShopById(shopId: number): Promise<Shop> {
         return this.shopRepository.getShopById(shopId);
     };
 
-    createShop(shop: Shop): Shop {
+    async createShop(shop: Shop): Promise<Shop> {
         this.shopRepository.createShop(shop);
         return shop;
     };
 
-    editShop(shop: Shop): Shop {
+    async editShop(shop: Shop): Promise<Shop> {
         this.shopRepository.editShop(shop);
         return shop;
     };
 
-    deleteShop(shopId: number): void {
+    async deleteShop(shopId: number): Promise<void> {
         this.shopRepository.deleteShop(shopId);
     };
 

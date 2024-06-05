@@ -2,10 +2,10 @@ import { Camping } from "../../models/facility/camping.model";
 
 export interface CampingRepository {
 
-    getAllCampings(): Camping[];
-    getCampingById(campingId: number): Camping | undefined;
-    createCamping(camping: Camping): void;
-    editCamping(camping: Camping): void;
-    deleteCamping(campingId: number): void;
+    getAllCampings(): Promise <Camping[]>;
+    getCampingById(campingId: number): Promise <Camping | undefined>;
+    createCamping(camping: Camping): Promise <Camping>;
+    editCamping(camping: Camping): Promise <Camping>;
+    deleteCamping(campingId: number): Promise <void>;
 
 };

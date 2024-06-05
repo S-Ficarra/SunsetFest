@@ -7,25 +7,25 @@ export class PerformanceService {
         private performanceRepository: PerformanceRepository,
         ){};
 
-    getAllPerformances(): Performance[] {
+    async getAllPerformances(): Promise<Performance[]> {
         return this.performanceRepository.getAllPerformances();
     };
 
-    getPerformanceById(performanceId: number): Performance {
+    async getPerformanceById(performanceId: number): Promise<Performance> {
         return this.performanceRepository.getPerformanceById(performanceId);
     };
 
-    createPerformance(performance: Performance): Performance {
+    async createPerformance(performance: Performance): Promise<Performance> {
         this.performanceRepository.createPerformance(performance);
         return performance
     };
 
-    editPerformance(performance: Performance): Performance {
+    async editPerformance(performance: Performance): Promise<Performance> {
         this.performanceRepository.editPerformance(performance);
         return performance
     };
 
-    deletePerformance(performanceId: number): void {
+    async deletePerformance(performanceId: number): Promise<void> {
         this.performanceRepository.deletePerformance(performanceId);
     }
 

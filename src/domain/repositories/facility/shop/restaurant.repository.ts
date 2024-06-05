@@ -2,10 +2,10 @@ import { Restaurant } from "../../../models/facility/shop/restaurant.model";
 
 export interface RestaurantRepository {
 
-    getAllRestaurants(): Restaurant[];
-    getRestaurantById(restaurantId: number): Restaurant | undefined;
-    createRestaurant(restaurant: Restaurant): void;
-    editRestaurant(restaurant: Restaurant): void;
-    deleteRestaurant(restaurantId: number): void;
+    getAllRestaurants(): Promise <Restaurant[]>;
+    getRestaurantById(restaurantId: number): Promise <Restaurant | undefined>;
+    createRestaurant(restaurant: Restaurant): Promise <Restaurant>;
+    editRestaurant(restaurant: Restaurant): Promise <Restaurant>;
+    deleteRestaurant(restaurantId: number): Promise <void>;
 
 };

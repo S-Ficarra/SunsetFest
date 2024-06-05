@@ -27,25 +27,27 @@ export class MockPublicationRepository implements PublicationRepository {
         this.publications[1].setId(2)
     };
 
-    getAllPublication(): Publication[] {
+    async getAllPublication(): Promise<Publication[]> {
         return this.publications;
     };
 
-    getPublicationById(publicationId: number): Publication | undefined {
+    async getPublicationById(publicationId: number): Promise<Publication> {
         return this.publications[publicationId -1];
     };
 
-    createPublication(publication: Publication): void {
+    async createPublication(publication: Publication): Promise<Publication> {
         publication.setId(this.publications.length + 1)        
         this.publications.push(publication);
+        return publication;
     };
 
-    editPublication(publication: Publication): void {
+    async editPublication(publication: Publication): Promise<Publication> {
         let publicationid = publication.getId();
         this.publications[publicationid - 1] = publication;
+        return publication;
     };
 
-    deletePublication(publicationId: number): void {
+    async deletePublication(publicationId: number): Promise<void> {
         this.publications = this.publications.filter(publication => publication.getId() !== publicationId);
     };
 

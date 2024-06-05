@@ -36,8 +36,8 @@ describe('PerformanceService', () => {
 
     
     //getAllPerformance
-    it('should return all performance', () => {
-        const performance = performanceService.getAllPerformances();
+    it('should return all performance', async () => {
+        const performance = await performanceService.getAllPerformances();
         expect(performance).toHaveLength(2);
         expect(performance).toEqual(expect.arrayContaining([
             expect.objectContaining({_day: 1, _band: 
@@ -50,8 +50,8 @@ describe('PerformanceService', () => {
     });
 
     //getPerformanceById
-    it("should return a performance by it's id", () => {
-        let foundPerformance1 = performanceService.getPerformanceById(1);
+    it("should return a performance by it's id", async () => {
+        let foundPerformance1 = await performanceService.getPerformanceById(1);
         expect(foundPerformance1).toEqual(
             expect.objectContaining({_day: 1, _band: 
             expect.objectContaining({_id: 1}), _stage: 
@@ -61,26 +61,26 @@ describe('PerformanceService', () => {
 
 
     //createPerformance
-    it('should return a performance just created', () => {
+    it('should return a performance just created', async () => {
         const performanceCreated = new Performance (bandRepository.bands[0], 3, timeFrameRepository.timeFrameArray[0], stageRepository.stages[0]);
         performanceService.createPerformance(performanceCreated); 
-        const foundPerformance3 = performanceService.getPerformanceById(3)
+        const foundPerformance3 = await performanceService.getPerformanceById(3)
         expect(foundPerformance3).toEqual(performanceCreated);
     });
 
     
     //editPerformance
-    it('should return a performance edited', () => {
+    it('should return a performance edited', async () => {
         const performanceEdited = new Performance (bandRepository.bands[1], 2, timeFrameRepository.timeFrameArray[0], stageRepository.stages[1]);
         performanceEdited.setId(1)
         performanceService.editPerformance(performanceEdited);  
-        const foundPerformanceEdited = performanceService.getPerformanceById(1)  
+        const foundPerformanceEdited = await performanceService.getPerformanceById(1)  
         expect(foundPerformanceEdited).toEqual(performanceEdited)
     });
 
     //deletePerformance
-    it('should return the performance list without the one with id 1', () => {
-        performanceService.deletePerformance(1)
+    it('should return the performance list without the one with id 1', async () => {
+        await performanceService.deletePerformance(1)
         expect(performanceRepository.performances).toHaveLength(1);
         expect(performanceRepository.performances.some(performance => performance.getId() === 1)).toBeFalsy();
     });

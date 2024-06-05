@@ -19,10 +19,11 @@ export class MockNewsRepository implements NewsRepository {
     };
 
 
-    private initializeNews(): void {
+    private async initializeNews(): Promise<void> {
+    
         this.news.push(
-            new News(this.userRepository.users[0], new Date(), new Date(), true, this.contentRepository.getContentById(1)),
-            new News(this.userRepository.users[0], new Date(), new Date(), true, this.contentRepository.getContentById(2))
+            new News(this.userRepository.users[0], new Date(), new Date(), true, this.contentRepository.content[0]),
+            new News(this.userRepository.users[0], new Date(), new Date(), true, this.contentRepository.content[1])
         );
     };
     
@@ -33,26 +34,28 @@ export class MockNewsRepository implements NewsRepository {
     };
 
 
-    getAllNews(): News[] {
+    async getAllNews(): Promise<News[]> {
         return this.news;
     };
 
-    getNewsById(newsId: number): News | undefined {
+    async getNewsById(newsId: number): Promise<News> {
         return this.news[newsId -1 ];
     };
 
-    createNews(news: News): void {
+    async createNews(news: News): Promise<News> {
         this.news.push(news);
         const index = this.news.length;
         news.setId(index);
+        return news;
     };
 
-    editNews(news: News): void {
+    async editNews(news: News): Promise<News> {
         let newsId = news.getId();
         this.news[newsId - 1] = news;
+        return news;
     };
 
-    deleteNews(newsId: number): void {
+    async deleteNews(newsId: number): Promise<void> {
         this.news = this.news.filter(news => news.getId() !== newsId);
     };
 

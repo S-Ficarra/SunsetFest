@@ -6,25 +6,25 @@ export class CampingService{
     constructor(private campingRepository : CampingRepository){};
     
 
-    getAllCampings(): Camping[] {
+    async getAllCampings(): Promise<Camping[]> {
         return this.campingRepository.getAllCampings();
     };
 
-    getCampingById(campingId: number): Camping {
+    async getCampingById(campingId: number): Promise<Camping> {
         return this.campingRepository.getCampingById(campingId);
     };
 
-    createCamping(camping: Camping): Camping {
+    async createCamping(camping: Camping): Promise<Camping> {
         this.campingRepository.createCamping(camping);
         return camping;
     };
 
-    editCamping(camping: Camping): Camping {
+    async editCamping(camping: Camping): Promise<Camping> {
         this.campingRepository.editCamping(camping);
         return camping;
     };
 
-    deleteCamping(campingId: number): void {
+    async deleteCamping(campingId: number): Promise<void> {
         this.campingRepository.deleteCamping(campingId);
     };
 

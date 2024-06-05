@@ -2,10 +2,10 @@ import { Publication } from "../../models/publication/Publication.model";
 
 export interface PublicationRepository {
 
-    getAllPublication(): Publication[];
-    getPublicationById(publicationId: number): Publication | undefined;
-    createPublication(publication: Publication): void;
-    editPublication(publication: Publication): void;
-    deletePublication(publicationId: number): void;
+    getAllPublication(): Promise <Publication[]>;
+    getPublicationById(publicationId: number): Promise <Publication | undefined>;
+    createPublication(publication: Publication): Promise <Publication>;
+    editPublication(publication: Publication): Promise <Publication>;
+    deletePublication(publicationId: number): Promise <void>;
 
 };

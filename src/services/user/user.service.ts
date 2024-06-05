@@ -13,33 +13,33 @@ export class UserService {
     ){};
 
 
-    getAllUsers(): User[] {
+    async getAllUsers(): Promise<User[]> {
         return this.userRepository.getAllUsers();
     };
 
-    getUserById(userId: number): User| undefined {
+    async getUserById(userId: number): Promise<User> {
         return this.userRepository.getUserById(userId);
     };
 
-    createUser(requestingUser: User, user: User): User | Error {
+    async createUser(requestingUser: User, user: User): Promise<User> {
         if (this.administratorService.isAdmin(requestingUser)) {
-            this.userRepository.createUser(user);
+            await this.userRepository.createUser(user);
             return user
         };
         throw new Error('Unauthorized');
     };
 
-    editUser(requestingUser: User, user: User): User | Error {
+    async editUser(requestingUser: User, user: User): Promise<User> {
         if (this.administratorService.isAdmin(requestingUser)) {
-            this.userRepository.editUser(user);
+            await this.userRepository.editUser(user);
             return user
         };
         throw new Error('Unauthorized');
     };
 
-    deleteUser(requestingUser: User, userId: number): void | Error {
+    async deleteUser(requestingUser: User, userId: number): Promise<void> {
         if (this.administratorService.isAdmin(requestingUser)) {
-            this.userRepository.deleteUser(userId);
+            await this.userRepository.deleteUser(userId);
         } else {
             throw new Error('Unauthorized');
         };

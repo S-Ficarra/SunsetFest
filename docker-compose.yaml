@@ -4,10 +4,15 @@ services:
   db:
     image: mariadb
     restart: always
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
     environment:
-      MARIADB_USER: ${MARIADB_USER}
-      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
-      MARIADB_DATABASE: sunsetfestdb
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: sunset_fest
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER_PRIVILEGES: "*.*:ALL PRIVILEGES"
+
     volumes:
       - db_data:/var/lib/mysql
 
@@ -16,9 +21,6 @@ services:
     restart: always
     ports:
       - "8080:80"
-    environment:
-      PMA_HOST: db
-      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
 
 volumes:
   db_data:

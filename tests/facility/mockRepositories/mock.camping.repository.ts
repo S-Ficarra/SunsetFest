@@ -14,24 +14,26 @@ export class MockCampingRepository implements CampingRepository {
         this.campings[1].setId(2)
     };
 
-    getAllCampings(): Camping[] {
+    async getAllCampings(): Promise<Camping[]> {
         return this.campings;
     };
 
-    getCampingById(campingId: number): Camping {
+    async getCampingById(campingId: number): Promise<Camping> {
         return this.campings[campingId - 1];
     };
 
-    createCamping(camping: Camping): void {
+    async createCamping(camping: Camping): Promise<Camping> {
         this.campings.push(camping);
+        return camping;
     };
 
-    editCamping(camping: Camping): void {
+    async editCamping(camping: Camping): Promise<Camping> {
         let campingId = camping.getId();
         this.campings[campingId - 1] = camping;
+        return camping;
     };
     
-    deleteCamping(campingId: number): void {
+    async deleteCamping(campingId: number): Promise<void> {
         this.campings = this.campings.filter(camping => camping.getId() !== campingId);
     };
 };

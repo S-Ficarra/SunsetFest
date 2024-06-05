@@ -26,11 +26,11 @@ export class Publication {
         return this._id;
     };
 
-    setUserID(user: User): void {
+    setUser(user: User): void {
         this._user = user;
     };
 
-    getUserId(): User {
+    getUser(): User {
         return this._user;
     };
 

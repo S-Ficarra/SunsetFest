@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
-import { bands } from './bands';
-import { timeframes } from './timeframes';
-import { stages } from './stages';
+import { bands } from './bands.entity';
+import { timeframes } from './timeframes.entity';
+import { stages } from './stages.entity';
 
 @Entity()
 export class performances {
@@ -11,18 +11,18 @@ export class performances {
 
     @OneToOne(() => bands)
     @JoinColumn()
-    band_id: bands;
+    band_: number;
 
     @Column()
     day: number;
 
     @ManyToOne(() => timeframes)
     @JoinColumn()
-    timeframe_id: timeframes;
+    timeframe_: number;
 
     @ManyToOne(() => stages)
     @JoinColumn()
-    stage_id: stages;
+    stage_: number;
 
 
 };

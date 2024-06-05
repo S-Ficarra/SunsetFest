@@ -14,24 +14,26 @@ export class MockStageRepository implements StageRepository {
         this.stages[1].setId(2)
     };
 
-    getAllStages(): Stage[] {
+    async getAllStages(): Promise<Stage[]> {
         return this.stages;
     };
 
-    getStageById(stageId: number): Stage {
+    async getStageById(stageId: number): Promise<Stage> {
         return this.stages[stageId - 1];
     };
 
-    createStage(stage: Stage): void {
+    async createStage(stage: Stage): Promise<Stage> {
         this.stages.push(stage);
+        return stage;
     };
 
-    editStage(stage: Stage): void {
+    async editStage(stage: Stage): Promise<Stage> {
         let stageId = stage.getId();
         this.stages[stageId - 1] = stage;
+        return stage;
     };
     
-    deleteStage(stageId: number): void {
+    async deleteStage(stageId: number): Promise<void> {
         this.stages = this.stages.filter(stage => stage.getId() !== stageId);
     };
 };

@@ -11,46 +11,46 @@ export class ProgramService {
         private roleService: RoleService,
     ){};
 
-    getAllPrograms(): Program[] {
+    async getAllPrograms(): Promise<Program[]> {
         return this.programRepository.getAllPrograms();
     };
 
-    getProgramById(programId: number): Program {
+    async getProgramById(programId: number): Promise<Program> {
         return this.programRepository.getProgramById(programId);
     };
 
-    createProgram(requestingUser: User, program: Program): void | Program {
+    async createProgram(requestingUser: User, program: Program): Promise<Program> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.programRepository.createProgram(program);
+            await this.programRepository.createProgram(program);
             return program;
         } else {
             throw new Error ('Unauthorized');
         };
     };
 
-    editProgram(requestingUser: User, program: Program): void | Program {
+    async editProgram(requestingUser: User, program: Program): Promise<Program> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.programRepository.editProgram(program);
+            await this.programRepository.editProgram(program);
             return program;
         } else {
             throw new Error ('Unauthorized');
         };
     };
 
-    deleteProgram(requestingUser: User, programId: number): void {
+    async deleteProgram(requestingUser: User, programId: number): Promise<void> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.programRepository.deleteProgram(programId);
+            await this.programRepository.deleteProgram(programId);
         } else {
             throw new Error ('Unauthorized');
         };
     };
 
-    addPerformanceToProgram(requestingUser: User, programId: number, performance: Performance): any {
+    async addPerformanceToProgram(requestingUser: User, programId: number, performance: Performance): Promise<Performance> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            let program = this.programRepository.getProgramById(programId);
+            let program = await this.programRepository.getProgramById(programId);
             let isOk = this.noConflict(performance, program)
             if (isOk) {
-                this.programRepository.addPerformanceToProgram(programId, performance);
+                await this.programRepository.addPerformanceToProgram(programId, performance);
                 return performance;
             };
         } else {
@@ -84,7 +84,7 @@ export class ProgramService {
         }
     };
 
-    deletePerformanceFromProgram(requestingUser: User, programId: number, performanceId: number): void {
+    async deletePerformanceFromProgram(requestingUser: User, programId: number, performanceId: number): Promise<void> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.programRepository.deletePerformanceFromProgram(programId, performanceId);
         } else {

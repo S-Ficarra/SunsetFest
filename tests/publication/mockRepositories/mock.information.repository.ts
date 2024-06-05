@@ -34,26 +34,28 @@ export class MockInformationRepository implements InformationRepository {
     };
 
 
-    getAllInformation(): Information[] {
+    async getAllInformation(): Promise<Information[]> {
         return this.informations;
     };
 
-    getInformationById(informationId: number): Information | undefined {
+    async getInformationById(informationId: number): Promise<Information> {
         return this.informations[informationId -1 ];
     };
 
-    createInformation(information: Information): void {
+    async createInformation(information: Information): Promise<Information> {
         this.informations.push(information);
         const index = this.informations.length;
         information.setId(index);
+        return information;
     };
 
-    editInformation(information: Information): void {
+    async editInformation(information: Information): Promise<Information> {
         let informationId = information.getId();
         this.informations[informationId - 1] = information;
+        return information;
     };
 
-    deleteInformation(informationId: number): void {
+    async deleteInformation(informationId: number): Promise<void> {
         this.informations = this.informations.filter(information => information.getId() !== informationId);
     };
 

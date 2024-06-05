@@ -17,27 +17,29 @@ export class MockCountdownRepository implements CountdownRepository {
         this.countdowns[1].setId(2)
     };
 
-    getAllCountdowns(): Countdown[] {
+    async getAllCountdowns(): Promise<Countdown[]> {
         return this.countdowns;
     };
 
-    getCountdownById(countdownId: number): Countdown | undefined {
+    async getCountdownById(countdownId: number): Promise<Countdown> {
         return this.countdowns.find(countdown => countdown.getId() === countdownId);
     };
 
-    createCountdown(countdown: Countdown): void | Countdown {
+    async createCountdown(countdown: Countdown): Promise<Countdown> {
         countdown.setId(this.countdowns.length + 1);
         this.countdowns.push(countdown);
+        return countdown;
     };
 
-    editCountdown(countdown: Countdown): void | Countdown {
+    async editCountdown(countdown: Countdown): Promise<Countdown> {
         const index = this.countdowns.findIndex(c => c.getId() === countdown.getId());
         if (index !== -1) {
             this.countdowns[index] = countdown;
         };
+        return countdown;
     };
 
-    deleteCountdown(countdownId: number): void {
+    async deleteCountdown(countdownId: number): Promise<void> {
         const index = this.countdowns.findIndex(countdown => countdown.getId() === countdownId);
         if (index !== -1) {
             this.countdowns.splice(index, 1);

@@ -5,25 +5,25 @@ export class ToiletService {
 
     constructor(private toiletRepository: ToiletRepository){};
 
-    getAllToilets(): Toilet[] {
+    async getAllToilets(): Promise<Toilet[]> {
         return this.toiletRepository.getAllToilets();
     };
 
-    getToiletById(toiletId: number): Toilet {
+    async getToiletById(toiletId: number): Promise<Toilet> {
         return this.toiletRepository.getToiletById(toiletId);
     };
 
-    createToilet(toilet: Toilet): Toilet {
+    async createToilet(toilet: Toilet): Promise<Toilet> {
         this.toiletRepository.createToilet(toilet);
         return toilet;
     };
 
-    editToilet(toilet: Toilet): Toilet {
+    async editToilet(toilet: Toilet): Promise<Toilet> {
         this.toiletRepository.editToilet(toilet);
         return toilet;
     };
 
-    deleteToilet(toiletId: number): void {
+    async deleteToilet(toiletId: number): Promise<void> {
         this.toiletRepository.deleteToilet(toiletId);
     };
 

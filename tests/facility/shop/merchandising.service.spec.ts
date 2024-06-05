@@ -16,14 +16,14 @@ describe('MerchandisingService', () => {
     beforeEach(() => {
         openingTimesRepository = new MockOpeningTimesRepository();
         openingTimesService = new OpeningTimesService(openingTimesRepository);
-        merchandisingRepository = new MockMerchandisingRepository(openingTimesService);
+        merchandisingRepository = new MockMerchandisingRepository(openingTimesRepository, openingTimesService);
         merchandisingService = new MerchandisingService(merchandisingRepository);
         merchandisingRepository.setFakeIdToTest();
     });
 
     //getAllMerchandisings
-    it('Should return all merchandisings', () => {
-        const merchandisings = merchandisingService.getAllMerchandising();
+    it('Should return all merchandisings', async () => {
+        const merchandisings = await merchandisingService.getAllMerchandising();
         expect(merchandisings).toHaveLength(2);
         expect(merchandisings).toEqual(expect.arrayContaining([
             expect.objectContaining({_name: 'hell tattoo', _merchType: 'tattoo'}),
@@ -33,33 +33,33 @@ describe('MerchandisingService', () => {
 
 
     //getMerchandisingById
-    it('Should return the merchandising id 1', () => {
-        const foundMerchandising1 = merchandisingService.getMerchandisingById(1);
+    it('Should return the merchandising id 1', async () => {
+        const foundMerchandising1 = await merchandisingService.getMerchandisingById(1);
         expect(foundMerchandising1).toEqual(expect.objectContaining({_name: 'hell tattoo', _merchType: 'tattoo'}));
     });
 
 
     //createMerchandising
-    it('should return the new merchandising created', () => {
-        let merchandising3OT = merchandisingRepository.createOpeningTimes();
+    it('should return the new merchandising created', async () => {
+        let merchandising3OT = openingTimesRepository.openingTimesArray[1];
         let foundMerchandising3 = new Merchandising ('hell jewel', 987.654, 456.951, merchandising3OT, 'jewel');
-        merchandisingService.createMerchandising(foundMerchandising3);
+        await merchandisingService.createMerchandising(foundMerchandising3);
         expect(foundMerchandising3).toEqual(expect.objectContaining({_name:'hell jewel', _merchType: 'jewel'}));
     });
 
 
     //editMerchandising
-    it('should return the merchandising1 with name and foddType edited', () => {
-        let merchandising3OT = merchandisingRepository.createOpeningTimes();
+    it('should return the merchandising1 with name and foddType edited', async () => {
+        let merchandising3OT = openingTimesRepository.openingTimesArray[0];
         let editedMerchandising = new Merchandising ('hell jewel', 987.654, 456.951, merchandising3OT, 'jewel');
         editedMerchandising.setId(1);
-        let foundMerchandisingEdited = merchandisingService.editMerchandising(editedMerchandising);
+        let foundMerchandisingEdited = await merchandisingService.editMerchandising(editedMerchandising);
         expect(foundMerchandisingEdited).toEqual(expect.objectContaining({_name: 'hell jewel', _merchType: 'jewel'}));        
     });
 
 
     //deleteMerchandising
-    it('should return the merchandisings array without the merchandising with id 1', () => {
+    it('should return the merchandisings array without the merchandising with id 1', async () => {
         merchandisingService.deleteMerchandising(1)
         let allMerchandisings = merchandisingRepository.merchandisings
         expect(allMerchandisings.some(merchandisings => merchandisings.getId() === 1)).toBeFalsy();

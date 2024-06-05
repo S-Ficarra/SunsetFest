@@ -2,10 +2,10 @@ import { Vip } from "../../models/facility/vip.model";
 
 export interface VipRepository {
 
-    getAllVips(): Vip[];
-    getVipById(vipId: number): Vip | undefined;
-    createVip(vip: Vip): void;
-    editVip(vip: Vip): void;
-    deleteVip(vipId: number): void;
+    getAllVips(): Promise <Vip[]>;
+    getVipById(vipId: number): Promise <Vip | undefined>;
+    createVip(vip: Vip): Promise <Vip>;
+    editVip(vip: Vip): Promise <Vip>;
+    deleteVip(vipId: number): Promise <void>;
     
 };

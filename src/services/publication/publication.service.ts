@@ -14,25 +14,25 @@ export class PublicationService {
         ){};
 
 
-    getAllPublication(): Publication[] {
+    async getAllPublication(): Promise<Publication[]> {
         return this.publicationRepository.getAllPublication();
     };
 
-    getPublicationById(publicationId: number): Publication | undefined {
+    async getPublicationById(publicationId: number): Promise<Publication> {
         return this.publicationRepository.getPublicationById(publicationId);
     };
 
-    createPublication(publication: Publication): Publication {
+    async createPublication(publication: Publication): Promise<Publication> {
         this.publicationRepository.createPublication(publication);
         return publication;
     };
 
-    editPublication(publication: Publication): Publication {
+    async editPublication(publication: Publication): Promise<Publication> {
         this.publicationRepository.editPublication(publication);
         return publication;
     }
 
-    deletePublication(requestingUser: User, publicationId: number): void | Error { 
+    async deletePublication(requestingUser: User, publicationId: number): Promise<void>{ 
         if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
             this.publicationRepository.deletePublication(publicationId);
         } else {
@@ -40,9 +40,9 @@ export class PublicationService {
         };
     };
 
-    changeStatus(requestingUser: User, publicationId: number, newStatus: boolean): void | Error {
+    async changeStatus(requestingUser: User, publicationId: number, newStatus: boolean): Promise<void> {
         if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            this.getPublicationById(publicationId).setStatus(newStatus)
+            (await this.getPublicationById(publicationId)).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')
         };

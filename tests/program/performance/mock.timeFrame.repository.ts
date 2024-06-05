@@ -25,23 +25,23 @@ export class MockTimeFrameRepository implements TimeFrameRepository {
         return this.timeFrameArray;
     };
 
-    getTimeFrameById(timeFrameId: number): TimeFrame {
+    async getTimeFrameById(timeFrameId: number): Promise<TimeFrame> {
         return this.timeFrameArray.find(tf => tf.getId() === timeFrameId);
     };
 
-    createTimeFrame(timeFrame: TimeFrame): TimeFrame {
+    async createTimeFrame(timeFrame: TimeFrame): Promise<TimeFrame> {
         timeFrame.setId(this.timeFrameArray.length);
         this.timeFrameArray.push(timeFrame);
         return timeFrame
     };
 
-    editTimeFrame(timeFrame: TimeFrame): TimeFrame {
+    async editTimeFrame(timeFrame: TimeFrame): Promise<TimeFrame> {
         let timeFrameId = timeFrame.getId();
         this.timeFrameArray[timeFrameId - 1] = timeFrame;
         return timeFrame
     }
 
-    deleteTimeFrame(timeFrameId: number): void {
+    async deleteTimeFrame(timeFrameId: number): Promise<void> {
         this.timeFrameArray = this.timeFrameArray.filter(tf => tf.getId() !== timeFrameId);
     };
 };

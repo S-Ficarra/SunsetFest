@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
-import { publication_details } from './publication_details';
+import { publication_details } from './publication_details.entity';
 
 @Entity()
 export class faqs {
@@ -15,6 +15,6 @@ export class faqs {
 
     @OneToOne(() => publication_details)
     @JoinColumn()
-    publication_details_id: publication_details;
+    publication__details_: number;
 
 };

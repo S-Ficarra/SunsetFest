@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
-import { performances } from './performances';
+import { performances } from './performances.entity';
 
 @Entity()
 export class programs {
@@ -9,6 +9,6 @@ export class programs {
 
     @ManyToOne(() => performances)
     @JoinColumn()
-    performance_id: performances;
+    performance_: number;
 
 };

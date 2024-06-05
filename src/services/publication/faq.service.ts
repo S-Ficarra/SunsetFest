@@ -11,27 +11,27 @@ export class FaqService {
         private roleService : RoleService,
     ){};
 
-    getAllFaq(): Faq[] {
+    async getAllFaq(): Promise<Faq[]> {
         return this.faqRepository.getAllFaq();
     };
 
 
-    getFaqById(faqId: number): Faq | undefined {   
+    async getFaqById(faqId: number): Promise<Faq> {   
         return this.faqRepository.getFaqById(faqId);
     };
 
-    createFaq(faq: Faq): Faq {
+    async createFaq(faq: Faq): Promise<Faq> {
         this.faqRepository.createFaq(faq);
         return faq;
     };
 
-    editFaq(faq: Faq): Faq {
+    async editFaq(faq: Faq): Promise<Faq> {
         this.faqRepository.editFaq(faq);
         return faq;
     };
 
 
-    deleteFaq(requestingUser: User, faqId: number): void | Error {
+    async deleteFaq(requestingUser: User, faqId: number): Promise<void> {
         if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             this.faqRepository.deleteFaq(faqId);
         } else {
@@ -39,9 +39,9 @@ export class FaqService {
         };
     };
 
-    changeStatus(requestingUser: User, faqId: number, newStatus: boolean): void | Error {
+    async changeStatus(requestingUser: User, faqId: number, newStatus: boolean): Promise<void> {
         if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            this.getFaqById(faqId).setStatus(newStatus)
+            (await this.getFaqById(faqId)).setStatus(newStatus)
         } else {
             throw new Error ('Unauthorized')
         };

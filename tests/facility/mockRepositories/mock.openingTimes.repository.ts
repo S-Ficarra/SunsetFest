@@ -21,25 +21,23 @@ export class MockOpeningTimesRepository implements OpeningTimesRepository {
     };
 
 
-    getAllOpeningTimes(): OpeningTimes[] {
-        return this.openingTimesArray;
-    };
-
-    getOpeningTimesById(openingTimesId: number): OpeningTimes {
+    async getOpeningTimesById(openingTimesId: number): Promise<OpeningTimes> {
         return this.openingTimesArray.find(ot => ot.getId() === openingTimesId);
     };
 
-    saveOpeningTimes(openingTimes: OpeningTimes): void {
+    async createOpeningTimes(openingTimes: OpeningTimes): Promise<OpeningTimes> {
         openingTimes.setId(3);
         this.openingTimesArray.push(openingTimes);
+        return openingTimes;
     };
 
-    editOpeningTimes(openingTimes: OpeningTimes): void {
+    async editOpeningTimes(openingTimes: OpeningTimes): Promise<OpeningTimes> {
         let openingTimesId = openingTimes.getId();
         this.openingTimesArray[openingTimesId - 1] = openingTimes;
-    }
+        return openingTimes;
+    };
 
-    deleteOpeningTimes(openingTimesId: number): void {
+    async deleteOpeningTimes(openingTimesId: number): Promise<void> {
         this.openingTimesArray = this.openingTimesArray.filter(ot => ot.getId() !== openingTimesId);
     };
 };

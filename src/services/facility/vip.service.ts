@@ -5,25 +5,25 @@ export class VipService {
 
     constructor(private vipRepository : VipRepository){};
 
-    getAllVips(): Vip[] {
+    async getAllVips(): Promise<Vip[]> {
         return this.vipRepository.getAllVips();
     };
 
-    getVipById(vipId: number): Vip {
+    async getVipById(vipId: number): Promise<Vip> {
         return this.vipRepository.getVipById(vipId);
     };
 
-    createVip(vip: Vip): Vip {
+    async createVip(vip: Vip): Promise<Vip> {
         this.vipRepository.createVip(vip);
         return vip;
     };
 
-    editVip(vip: Vip): Vip {
+    async editVip(vip: Vip): Promise<Vip> {
         this.vipRepository.editVip(vip);
         return vip;
     };
 
-    deleteVip(vipId: number): void {
+    async deleteVip(vipId: number): Promise<void> {
         this.vipRepository.deleteVip(vipId);
     };
 

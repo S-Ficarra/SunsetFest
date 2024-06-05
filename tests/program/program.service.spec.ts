@@ -44,8 +44,8 @@ describe('MockProgramRepository', () => {
 
 
     //getAllPrograms
-    it('should return all programs', () => {
-        const programs = programService.getAllPrograms();
+    it('should return all programs', async () => {
+        const programs = await programService.getAllPrograms();
         expect(programs).toHaveLength(2);      
         expect(programs[0].getId()).toBe(1);
         expect(programs[1].getId()).toBe(2);
@@ -53,121 +53,116 @@ describe('MockProgramRepository', () => {
 
 
     //getProgramById
-    it('should return the program with id 1', () => {
-        const program = programService.getProgramById(1);
+    it('should return the program with id 1', async () => {
+        const program = await programService.getProgramById(1);
         expect(program.getId()).toBe(1);
     });
 
 
     //CreateProgram by an admin or editor
-    it('should create a program', () => {
+    it('should create a program', async () => {
         const program = new Program([]);
-        programService.createProgram(userRepository.users[1], program);
-        const programs = programService.getAllPrograms();
+        await programService.createProgram(userRepository.users[1], program);
+        const programs = await programService.getAllPrograms();
         expect(programs).toHaveLength(3);
         expect(programs[2]).toBe(program);
     });
 
 
     //createProgram by an author
-    it('should return unauthorized', () => {
+    it('should return unauthorized', async () => {
         const program = new Program([]);
-        const createProgramCall = () => programService.createProgram(userRepository.users[0], program);
-        expect(createProgramCall).toThrow(Error);
+        expect(programService.createProgram(userRepository.users[0], program)).rejects.toThrow('Unauthorized');
     });
 
 
     //editProgram by an admin or editor
-    it('should edit a program', () => {
+    it('should edit a program', async () => {
         const program = new Program([]);
         program.setId(1);
-        programService.editProgram(userRepository.users[1], program);
-        const editedProgram = programService.getProgramById(1);
+        await programService.editProgram(userRepository.users[1], program);
+        const editedProgram = await programService.getProgramById(1);
         expect(editedProgram).toBe(program);
     });
 
 
     //editProgram by an author
-    it('should return unauthorized', () => {
+    it('should return unauthorized', async () => {
         const program = new Program([]);
-        const editProgramCall = () => programService.editProgram(userRepository.users[0], program);
-        expect(editProgramCall).toThrow(Error);
+        expect(programService.editProgram(userRepository.users[0], program)).rejects.toThrow('Unauthorized');
     });
 
 
     //deleteProgram by an admin or editor
-    it('should delete a program', () => {
-        programService.deleteProgram(userRepository.users[1], 1);
-        const programs = programService.getAllPrograms();
+    it('should delete a program', async () => {
+        await programService.deleteProgram(userRepository.users[1], 1);
+        const programs = await programService.getAllPrograms();
         expect(programs).toHaveLength(1);
         expect(programs[0].getId()).toBe(2);
     });
 
 
     //deleteProgram by an author
-    it('should return unauthorized', () => {
-        const deleteProgramCall = () => programService.deleteProgram(userRepository.users[0], 1);
-        expect(deleteProgramCall).toThrow(Error);
+    it('should return unauthorized', async () => {
+        expect(programService.deleteProgram(userRepository.users[0], 1)).rejects.toThrow('Unauthorized');
     });
 
 
     //addPerformanceToProgram by an editor or administrator
-    it('should add a performance to a program', () => {      
+    it('should add a performance to a program', async () => {      
         const performance = performanceRepository.performances[0];
-        programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
-        const program = programService.getProgramById(1);
+        await programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
+        const program = await programService.getProgramById(1);
         const performances = program.getPerformances();        
         expect(performances).toHaveLength(1);
         expect(performances[0]).toEqual(performance)
     });
 
     //addPerformanceToProgram by an author
-    it('should return unauthorized', () => {
+    it('should return unauthorized', async () => {
         const performance = performanceRepository.performances[0];
-        const addPerfCall = () => programService.addPerformanceToProgram(userRepository.users[0], 1, performance);        
-        expect(addPerfCall).toThrow(Error);
+        expect(programService.addPerformanceToProgram(userRepository.users[0], 1, performance)).rejects.toThrow('Unauthorized');
     });
 
     //addPerformanceToProgram by an editor or administrator with a conflict
-    it('should return an error due to this performance already in the program', () => {    
+    it('should return an error due to this performance already in the program', async () => {    
         const performance = performanceRepository.performances[0];
-        programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
-        const checkConflictCall = () => programService.addPerformanceToProgram(userRepository.users[1], 1, performance);        
-        expect(checkConflictCall).toThrow(new Error ('This performance is already in the program'));
+        await programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
+        const checkConflictCall = async () => await programService.addPerformanceToProgram(userRepository.users[1], 1, performance);        
+        expect(checkConflictCall).rejects.toThrow(new Error ('This performance is already in the program'));
     });
 
     //addPerformanceToProgram by an editor or administrator with a conflict
-    it('should return an error due to the band already playing', () => {  
+    it('should return an error due to the band already playing', async () => {  
         const performance1 = performanceRepository.performances[0];
         const performance2 = new Performance (bandRepository.bands[0], 2, timeFrameRepository.timeFrameArray[0], stageRepository.stages[0])
-        programService.addPerformanceToProgram(userRepository.users[1], 1, performance1);
-        const checkConflictCall = () => programService.addPerformanceToProgram(userRepository.users[1], 1, performance2);        
-        expect(checkConflictCall).toThrow(new Error ('This band is planned to perform more than once'));
+        await programService.addPerformanceToProgram(userRepository.users[1], 1, performance1);
+        const checkConflictCall = async () => await programService.addPerformanceToProgram(userRepository.users[1], 1, performance2);        
+        expect(checkConflictCall).rejects.toThrow(new Error ('This band is planned to perform more than once'));
     });
 
     //addPerformanceToProgram by an editor or administrator with a conflict
-    it('should return an error due to another band already planned at this stage, day and timeFrame', () => {  
+    it('should return an error due to another band already planned at this stage, day and timeFrame', async () => {  
         const performance1 = performanceRepository.performances[0];
         const performance2 = new Performance (bandRepository.bands[1], 1, timeFrameRepository.timeFrameArray[0], stageRepository.stages[0])
-        programService.addPerformanceToProgram(userRepository.users[1], 1, performance1);
-        const checkConflictCall = () => programService.addPerformanceToProgram(userRepository.users[1], 1, performance2);        
-        expect(checkConflictCall).toThrow(new Error ('Another band is already planned at this stage, time & day'));
+        await programService.addPerformanceToProgram(userRepository.users[1], 1, performance1);
+        const checkConflictCall = async () => await programService.addPerformanceToProgram(userRepository.users[1], 1, performance2);        
+        expect(checkConflictCall).rejects.toThrow(new Error ('Another band is already planned at this stage, time & day'));
     });
 
     //deletePerformanceFromProgram by an admin or editor
-    it('should delete a performance from a program', () => {
+    it('should delete a performance from a program', async () => {
         const performance = performanceRepository.performances[0];
-        programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
-        programService.deletePerformanceFromProgram(userRepository.users[1], 1, performance.getId());
-        const program = programService.getProgramById(1);
+        await programService.addPerformanceToProgram(userRepository.users[1], 1, performance);
+        await programService.deletePerformanceFromProgram(userRepository.users[1], 1, performance.getId());
+        const program = await programService.getProgramById(1);
         const performances = program.getPerformances();
         expect(performances).toHaveLength(0);
     });
 
     //deletePerformanceFromProgram by an author
-    it('should return unauthorized', () => {
-        const delPerfCall = () => programService.deletePerformanceFromProgram(userRepository.users[0], 1, 1);        
-        expect(delPerfCall).toThrow(Error);
+    it('should return unauthorized', async () => {
+        expect(programService.deletePerformanceFromProgram(userRepository.users[0], 1, 1)).rejects.toThrow(Error);
     });
 
 });

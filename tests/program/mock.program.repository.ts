@@ -18,40 +18,40 @@ export class MockProgramRepository implements ProgramRepository {
         this.programList[1].setId(2)
     };
     
-    getAllPrograms(): Program[] {
+    async getAllPrograms(): Promise<Program[]> {
         return this.programList;
     };
 
-    getProgramById(programId: number): Program {
+    async getProgramById(programId: number): Promise<Program> {
         return this.programList[programId -1 ];
     };
 
-    createProgram(program: Program): void | Program {
+    async createProgram(program: Program): Promise<Program> {
         this.programList.push(program);
         const index = this.programList.length;
         program.setId(index);
         return program
     };
 
-    editProgram(program: Program): void | Program {
+    async editProgram(program: Program): Promise<Program> {
         let programId = program.getId();
         this.programList[programId - 1] = program;
         return program
     };
 
-    deleteProgram(programId: number): void {
+    async deleteProgram(programId: number): Promise<void> {
         this.programList = this.programList.filter(program => program.getId() !== programId);
     };
 
 
-    addPerformanceToProgram(performanceId: number): void {
-        const performanceToAdd = this.performanceRepository.getPerformanceById(performanceId);
-        const program1 = this.getProgramById(1)
+    async addPerformanceToProgram(performanceId: number): Promise<void> {
+        const performanceToAdd = await this.performanceRepository.getPerformanceById(performanceId);
+        const program1 = await this.getProgramById(1);
         program1.addPerformance(performanceToAdd);
     };
 
-    deletePerformanceFromProgram(performanceId: number): void {
-        const program1 = this.getProgramById(1);
+    async deletePerformanceFromProgram(performanceId: number): Promise<void> {
+        const program1 = await this.getProgramById(1);
         for (const index in program1.getPerformances()) {
             const performance = program1.getPerformances()[index];
             if (performance.getId() === performanceId) {

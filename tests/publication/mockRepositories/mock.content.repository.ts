@@ -14,24 +14,26 @@ export class MockContentRepository implements ContentRepository {
         this.content[1].setId(2)
     };
 
-    getAllContent(): Content[] {
+    async getAllContent(): Promise<Content[]> {
         return this.content;
     };
 
-    getContentById(contentId: number): Content {
+    async getContentById(contentId: number): Promise<Content> {
         return this.content[contentId - 1];
     };
 
-    createContent(content: Content): void {
+    async createContent(content: Content): Promise<Content> {
         this.content.push(content);
+        return content;
     };
 
-    editContent(content: Content): void {
+    async editContent(content: Content): Promise<Content> {
         let contentId = content.getId();
         this.content[contentId - 1] = content;
+        return content;
     };
     
-    deleteContent(contentId: number): void {
+    async deleteContent(contentId: number): Promise<void> {
         this.content = this.content.filter(content => content.getId() !== contentId);
     };
 

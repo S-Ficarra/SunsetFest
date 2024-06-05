@@ -2,10 +2,10 @@ import { Information } from "../../models/publication/information.model";
 
 export interface InformationRepository{
 
-    getAllInformation(): Information[];
-    getInformationById(informationId: number): Information | undefined;
-    createInformation(information: Information): void;
-    editInformation(information: Information): void;
-    deleteInformation(informationId: number): void;
+    getAllInformation(): Promise <Information[]>;
+    getInformationById(informationId: number): Promise <Information | undefined>;
+    createInformation(information: Information): Promise <Information>;
+    editInformation(information: Information): Promise <Information>;
+    deleteInformation(informationId: number): Promise <void>;
 
 };

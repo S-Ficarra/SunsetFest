@@ -7,19 +7,19 @@ export class SocialsService {
 
     constructor (private socialsRepository: SocialsRepository){};
 
-    getSocialsById(socialsId: number): Socials | undefined { 
+    async getSocialsById(socialsId: number): Promise<Socials> { 
         return this.socialsRepository.getSocialsById(socialsId);
     };
 
-    createSocials(socials: Socials): void {
-        this.socialsRepository.createSocials(socials);
+    async createSocials(socials: Socials): Promise<Socials> {
+        return this.socialsRepository.createSocials(socials);
     };
 
-    editSocials(socials: Socials): void {
-        this.socialsRepository.editSocials(socials);
+    async editSocials(socials: Socials): Promise<Socials> {
+        return this.socialsRepository.editSocials(socials);
     };
 
-    deleteSocials(socialId: number): void {
+    async deleteSocials(socialId: number): Promise<void> {
         this.socialsRepository.deleteSocials(socialId);
     };
 

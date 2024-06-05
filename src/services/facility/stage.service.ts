@@ -5,25 +5,25 @@ export class StageService {
 
     constructor(private stageRepository : StageRepository){};
 
-    getAllStages(): Stage[] {
+    async getAllStages(): Promise<Stage[]> {
         return this.stageRepository.getAllStages();
     };
 
-    getStageById(stageId: number): Stage {
+    async getStageById(stageId: number): Promise<Stage> {
         return this.stageRepository.getStageById(stageId);
     };
 
-    createStage(stage: Stage): Stage {
+    async createStage(stage: Stage): Promise<Stage> {
         this.stageRepository.createStage(stage);
         return stage;
     };
 
-    editStage(stage: Stage): Stage {
+    async editStage(stage: Stage): Promise<Stage> {
         this.stageRepository.editStage(stage);
         return stage;
     };
 
-    deleteStage(stageId: number): void {
+    async deleteStage(stageId: number): Promise<void> {
         this.stageRepository.deleteStage(stageId);
     };
 

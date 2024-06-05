@@ -2,10 +2,10 @@ import { User } from '../../models/user/user.model';
 
 export interface UserRepository {
 
-    getUserById(id: number): User | undefined;
-    getAllUsers(): User[];
-    createUser(user: User): void;
-    editUser(user: User): void;
-    deleteUser(userId: number): void;
+    getUserById(id: number): Promise <User | undefined>;
+    getAllUsers(): Promise <User[]>;
+    createUser(user: User): Promise <User>;
+    editUser(user: User): Promise <User>;
+    deleteUser(userId: number): Promise <void>;
 
 };

@@ -6,22 +6,22 @@ export class TimeFrameService{
     constructor(private timeFrameRepository : TimeFrameRepository){};
 
 
-    getTimeFrameById(timeFrameId: number): TimeFrame {
+    async getTimeFrameById(timeFrameId: number): Promise<TimeFrame> {
         return this.timeFrameRepository.getTimeFrameById(timeFrameId);
     };
 
-    createTimeFrame(startingAt: Date, endingAt: Date): TimeFrame {
+    async createTimeFrame(startingAt: Date, endingAt: Date): Promise<TimeFrame> {
         let timeFrame = new TimeFrame(startingAt, endingAt)
         return this.timeFrameRepository.createTimeFrame(timeFrame);
     };
 
 
-    editTimeFrame(timeFrame: TimeFrame): TimeFrame {
+    async editTimeFrame(timeFrame: TimeFrame): Promise<TimeFrame> {
         this.timeFrameRepository.editTimeFrame(timeFrame);
         return timeFrame;
     };
 
-    deleteTimeFrame(timeFrameId: number): void {
+    async deleteTimeFrame(timeFrameId: number): Promise<void> {
         this.timeFrameRepository.deleteTimeFrame(timeFrameId);
     };
     

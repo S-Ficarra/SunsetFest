@@ -7,23 +7,25 @@ export class CountdownService{
     constructor(private countdownRepository: CountdownRepository){};
 
 
-    getAllCountdowns(): Countdown[] {
+    async getAllCountdowns(): Promise<Countdown[]> {
         return this.countdownRepository.getAllCountdowns();
     };
 
-    getCountdownById(countdownId: number): Countdown {
+    async getCountdownById(countdownId: number): Promise<Countdown> {
         return this.countdownRepository.getCountdownById(countdownId);
     };
 
-    createCountdown(countdown: Countdown): void | Countdown {
+    async createCountdown(countdown: Countdown): Promise<Countdown> {
         this.countdownRepository.createCountdown(countdown);
+        return countdown;
     };
 
-    editCountdown(countdown: Countdown): void | Countdown {
+    async editCountdown(countdown: Countdown): Promise<Countdown> {
         this.countdownRepository.editCountdown(countdown);
+        return countdown;
     };
 
-    deleteCountdown(countdownId: number): void {
+    async deleteCountdown(countdownId: number): Promise<void> {
         this.countdownRepository.deleteCountdown(countdownId);
     };
 

@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
-import { locations } from './locations';
+import { locations } from './locations.entity';
 
 @Entity()
-export class campings {
+export class toilets {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -10,11 +10,8 @@ export class campings {
     @Column()
     name: string;
 
-    @Column()
-    capacity: number;
-
     @ManyToOne(() => locations)
     @JoinColumn()
-    location_id: locations;
+    location_: number;
 
 };

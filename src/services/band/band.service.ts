@@ -12,31 +12,31 @@ export class BandService{
         private roleService: RoleService,
     ){};
 
-    getAllBand(): Band[]{
+    async getAllBand(): Promise<Band[]>{
         return this.bandRepository.getAllBands();
     };
 
-    getBandById(bandId: number): Band | undefined{
+    async getBandById(bandId: number): Promise<Band>{
         return this.bandRepository.getBandById(bandId);
     };
 
-    createBand(band: Band): Band {
+    async createBand(band: Band): Promise<Band> {
         this.socialsService.createSocials(band.getSocials())
         this.bandRepository.createBand(band);    
         return band;    
     };
 
-    editBand(band: Band): Band {
+    async editBand(band: Band): Promise<Band> {
         this.socialsService.editSocials(band.getSocials())
         this.bandRepository.editBand(band);   
         return band;     
     };
 
-    deleteBand(requestingUser: User, bandId: number): void | Error {
+    async deleteBand(requestingUser: User, bandId: number): Promise<void> {
         if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            let band = this.bandRepository.getBandById(bandId)
+            let band = await this.bandRepository.getBandById(bandId)
             let bandSocialsId = band.getSocials()
-            this.socialsService.deleteSocials(bandSocialsId.getId())
+            await this.socialsService.deleteSocials(bandSocialsId.getId())
             this.bandRepository.deleteBand(bandId)
         } else {
             throw new Error ('Unauthorized');

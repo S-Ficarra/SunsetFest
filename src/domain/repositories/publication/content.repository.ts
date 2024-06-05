@@ -2,10 +2,10 @@ import { Content } from "../../models/publication/content.model";
 
 export interface ContentRepository {
 
-    getAllContent(): Content[];
-    getContentById(contentId: number): Content | undefined;
-    createContent(content: Content): void;
-    editContent(content: Content): void;
-    deleteContent(contentId: number): void;
+    getAllContent(): Promise <Content[]>;
+    getContentById(contentId: number): Promise <Content | undefined>;
+    createContent(content: Content): Promise <Content>;
+    editContent(content: Content): Promise <Content>;
+    deleteContent(contentId: number): Promise <void>;
     
 }; 
