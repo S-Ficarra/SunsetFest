@@ -3,9 +3,7 @@ import { CountdownRepository } from "src/domain/repositories/countdown.repositor
 
 export class CountdownService{
 
-
     constructor(private countdownRepository: CountdownRepository){};
-
 
     async getAllCountdowns(): Promise<Countdown[]> {
         return this.countdownRepository.getAllCountdowns();

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
 import { users } from './users.entity';
 
 @Entity()
@@ -7,7 +7,7 @@ export class publication_details {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => users)
+    @ManyToOne(() => users)
     @JoinColumn()
     author_: number;
 
@@ -19,6 +19,5 @@ export class publication_details {
 
     @Column({ nullable: true})
     status: boolean | null;
-
-
+    
 };

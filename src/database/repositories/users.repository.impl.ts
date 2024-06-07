@@ -1,8 +1,9 @@
-/* import { Repository, DeepPartial } from 'typeorm';
-import { User } from 'src/domain/models/user/user.model';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../../domain/models/user/user.model';
 import { users } from '../entities/users.entity';
-import { UserRepository } from 'src/domain/repositories/user/user.repository';
+import { UserRepository } from '../../domain/repositories/user/user.repository';
+import { mapUserEntityToModel, mapUserModelToEntity } from './mappers/user.mapper';
 
 export class UserRepositoryImpl implements UserRepository {
   
@@ -11,31 +12,32 @@ export class UserRepositoryImpl implements UserRepository {
         private userRepository: Repository<users>,
     ) {}
 
-    async getUserById(id: number): Promise<User> {
-        return await this.userRepository.findOne(id);
+    async getUserById(id: number): Promise<User | undefined> {
+        const userEntity = await this.userRepository.findOneBy({id: id});
+        if (userEntity) {
+            return mapUserEntityToModel(userEntity);
+        }
+        return undefined;
     }
 
     async getAllUsers(): Promise<User[]> {
-        return await this.userRepository.find();
+        const allUsers = await this.userRepository.find();
+        return allUsers.map(mapUserEntityToModel);
     }
 
-    async createUser(user: User): Promise<void> {
-        const userEntity: DeepPartial<users> = {
-            id: user.getId(),
-            name: user.getName(),
-            firstName: user.getFirstName(),
-            email: user.getEmail(),
-            password: user.getPassword(),
-            role: user.getRole()
-        };
+    async createUser(user: User): Promise<User> {
+        const userEntity = mapUserModelToEntity(user);
         await this.userRepository.save(userEntity);
+        return user;
     }
 
-    async editUser(user: User): Promise<void> {
-        await this.userRepository.save(user);
+    async editUser(user: User): Promise<User> {
+        const userEntity = mapUserModelToEntity(user);
+        await this.userRepository.save(userEntity);
+        return user;
     }
 
     async deleteUser(userId: number): Promise<void> {
         await this.userRepository.delete(userId);
     }
-}  */
+}
