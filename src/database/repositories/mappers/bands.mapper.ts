@@ -5,29 +5,19 @@ import { users } from "src/database/entities/users.entity";
 import { Band } from "src/domain/models/band/band.model"
 import { Socials } from "src/domain/models/band/socials.model"
 import { User } from "src/domain/models/user/user.model";
-import { AppDataSource } from "src/database/ormconfig";
 
 
-export async function mapBandEntityToModel (band_entity: bands): Promise<Band> {
+export async function mapBandEntityToModel (band_entity: bands, thumbnail_image: Blob, banner_image: Blob, publication_details: publication_details, user: users): Promise<Band> {
 
-    const imageRepository = AppDataSource.manager.getRepository(images)
-    const thumbnail_image = await imageRepository.findOneBy({id: band_entity.thumbnail__image_})
-    const banner_image = await imageRepository.findOneBy({id: band_entity.banner__image_})
 
-    const publicationDetailsRepository = AppDataSource.manager.getRepository(publication_details);
-    const bandPublicationDetails = await publicationDetailsRepository.findOneBy({id: band_entity.publication__details_})
-
-    const usersRepository = AppDataSource.manager.getRepository(users);
-    const bandUser = await usersRepository.findOneBy({id: bandPublicationDetails.author_})
-
-    const user = new User (
-        bandUser.name,
-        bandUser.first_name,
-        bandUser.email,
-        bandUser.password,
-        bandUser.role
+    const bandUser = new User (
+        user.name,
+        user.first_name,
+        user.email,
+        user.password,
+        user.role
     )
-    user.setId(bandUser.id)
+    bandUser.setId(user.id)
 
     const socials = new Socials (
         band_entity.facebook,
@@ -45,11 +35,11 @@ export async function mapBandEntityToModel (band_entity: bands): Promise<Band> {
         band_entity.country,
         band_entity.text,
         socials,
-        thumbnail_image.image,
-        banner_image.image,
-        user,
-        bandPublicationDetails.created_at,
-        bandPublicationDetails.modified_at,
+        thumbnail_image,
+        banner_image,
+        bandUser,
+        publication_details.created_at,
+        publication_details.modified_at,
     );
 
     band.setId(band_entity.id)
