@@ -11,11 +11,11 @@ export class bars {
     @Column()
     name: string;
 
-    @ManyToOne(() => locations)
+    @ManyToOne(() => locations, {cascade: true})
     @JoinColumn()
     location_: number;
 
-    @ManyToOne(() => opening_times)
+    @ManyToOne(() => opening_times, {cascade: true})
     @JoinColumn()
     opening__times_: number;
 

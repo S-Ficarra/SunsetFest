@@ -7,7 +7,7 @@ import { Socials } from "src/domain/models/band/socials.model"
 import { User } from "src/domain/models/user/user.model";
 
 
-export async function mapBandEntityToModel (band_entity: bands, thumbnail_image: Blob, banner_image: Blob, publication_details: publication_details, user: users): Promise<Band> {
+export function mapBandEntityToModel (band_entity: bands, thumbnail_image: Blob, banner_image: Blob, publication_details: publication_details, user: users): Band {
 
 
     const bandUser = new User (
@@ -48,7 +48,7 @@ export async function mapBandEntityToModel (band_entity: bands, thumbnail_image:
 
 
 
-export async function mapBandModelToEntity (model: Band, fkPublicationDetails: number, fkThumbnailImage: number, fkBannerImage : number): Promise<bands> {
+export function mapBandModelToEntity (model: Band, fkPublicationDetails: number, fkThumbnailImage: number, fkBannerImage : number): bands {
 
     const entity = new bands();
     entity.name = model.getName();
@@ -70,7 +70,7 @@ export async function mapBandModelToEntity (model: Band, fkPublicationDetails: n
 };
 
 
-export async function mapBandPubliDetailsToEntity (model: Band): Promise<publication_details>{
+export function mapBandPubliDetailsToEntity (model: Band): publication_details{
     const entity = new publication_details();
     entity.author_ = model.getAuthorId().getId(),
     entity.created_at = new Date();
@@ -78,7 +78,7 @@ export async function mapBandPubliDetailsToEntity (model: Band): Promise<publica
     return entity;
 };
 
-export async function mapBandPubliDetailsToEntityEdit (model: Band): Promise<publication_details>{
+export function mapBandPubliDetailsToEntityEdit (model: Band): publication_details{
     const entity = new publication_details();
     entity.author_ = model.getAuthorId().getId(),
     entity.created_at = model.getCreatedAt();
@@ -87,13 +87,13 @@ export async function mapBandPubliDetailsToEntityEdit (model: Band): Promise<pub
 };
 
 
-export async function mapBandBannerToEntity (model: Band): Promise<images>{
+export function mapBandBannerToEntity (model: Band): images{
     const entity = new images();
     entity.image = model.getBannerImage();
     return entity;
 };
 
-export async function mapBandThumbnailToEntity (model: Band): Promise<images>{
+export function mapBandThumbnailToEntity (model: Band): images{
     const entity = new images();
     entity.image = model.getThumbnailImage();
     return entity;

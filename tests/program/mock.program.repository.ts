@@ -26,13 +26,13 @@ export class MockProgramRepository implements ProgramRepository {
         return this.programList[programId -1 ];
     };
 
-    async createProgram(program: Program): Promise<Program> {
-        this.programList.push(program);
-        const index = this.programList.length;
-        program.setId(index);
-        return program
+    async createProgram(id: number): Promise<Program> {
+        const prog = new Program([])
+        prog.setId(id);
+        this.programList.push(prog);
+        return prog;
     };
-
+/*
     async editProgram(program: Program): Promise<Program> {
         let programId = program.getId();
         this.programList[programId - 1] = program;
@@ -42,7 +42,7 @@ export class MockProgramRepository implements ProgramRepository {
     async deleteProgram(programId: number): Promise<void> {
         this.programList = this.programList.filter(program => program.getId() !== programId);
     };
-
+*/
 
     async addPerformanceToProgram(performanceId: number): Promise<void> {
         const performanceToAdd = await this.performanceRepository.getPerformanceById(performanceId);

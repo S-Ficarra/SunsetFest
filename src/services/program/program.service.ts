@@ -19,15 +19,15 @@ export class ProgramService {
         return this.programRepository.getProgramById(programId);
     };
 
-    async createProgram(requestingUser: User, program: Program): Promise<Program> {
+    async createProgram(requestingUser: User, id: number): Promise<Program> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            await this.programRepository.createProgram(program);
+            const program = await this.programRepository.createProgram(id);
             return program;
         } else {
             throw new Error ('Unauthorized');
         };
     };
-
+/*
     async editProgram(requestingUser: User, program: Program): Promise<Program> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             await this.programRepository.editProgram(program);
@@ -44,7 +44,7 @@ export class ProgramService {
             throw new Error ('Unauthorized');
         };
     };
-
+*/
     async addPerformanceToProgram(requestingUser: User, programId: number, performance: Performance): Promise<Performance> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
             let program = await this.programRepository.getProgramById(programId);

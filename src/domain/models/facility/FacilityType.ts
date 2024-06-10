@@ -5,4 +5,5 @@ export enum FacilityType {
     Camping = 'camping',
     Merchandising = 'merchandising',
     Restaurant = 'restaurant',
+    Bar = 'bar',
 };

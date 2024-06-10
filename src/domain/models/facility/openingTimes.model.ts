@@ -4,16 +4,6 @@ export class OpeningTimes {
     private _openAt: Date;
     private _closeAt: Date;
 
-    private formatTime(time: Date): string {
-        let hours: string | number = time.getHours();
-        let minutes: string | number = time.getMinutes();
-
-        hours = (hours < 10) ? '' + hours : hours;
-        minutes = (minutes < 10) ? '0' + minutes : minutes;
-
-        return `${hours}:${minutes}`;
-    }
-
     constructor(openAt: Date, closeAt: Date) {
         this._openAt = openAt;
         this._closeAt = closeAt;
@@ -31,16 +21,16 @@ export class OpeningTimes {
         this._openAt = openingTime;
     };
 
-    getOpenAt(): string {
-        return this.formatTime(this._openAt);
+    getOpenAt(): Date {
+        return this._openAt;
     };
 
     setCloseAt(closingTime: Date): void {
         this._closeAt = closingTime;
     };
 
-    getCloseAt(): string {
-        return this.formatTime(this._closeAt);
+    getCloseAt(): Date {
+        return this._closeAt;
     };
     
 };

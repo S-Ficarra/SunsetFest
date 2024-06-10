@@ -7,12 +7,12 @@ export class Performance {
 
     private _id: number;
     private _band: Band;
-    private _day: number
+    private _day: string;
     private _timeFrame: TimeFrame;
     private _stage: Stage;
 
 
-    constructor(band: Band, day: number, timeFrame: TimeFrame, stage: Stage) {
+    constructor(band: Band, day: string, timeFrame: TimeFrame, stage: Stage) {
         this._band = band;
         this._day = day,
         this._timeFrame = timeFrame;
@@ -39,7 +39,7 @@ export class Performance {
         return Days[this._day]
     };
 
-    setDay(day: number): void {
+    setDay(day: string): void {
         this._day = day;
     };
 

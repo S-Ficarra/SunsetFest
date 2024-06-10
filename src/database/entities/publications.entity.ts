@@ -11,19 +11,19 @@ export class publications {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => publication_contents)
+    @ManyToOne(() => publication_contents, {cascade: true})
     @JoinColumn()
     publication__contents_: number;
 
-    @ManyToOne(() => publication_details)
+    @ManyToOne(() => publication_details, {cascade: true})
     @JoinColumn()
     publication__details_: number;
 
-    @ManyToOne(() => publication_types)
+    @ManyToOne(() => publication_types, {cascade: true})
     @JoinColumn()
     publication__types_: number;
 
-    @ManyToOne(() => images, { nullable: true })
+    @ManyToOne(() => images, { cascade: true, nullable: true })
     @JoinColumn()
     images_: number | null;
 
