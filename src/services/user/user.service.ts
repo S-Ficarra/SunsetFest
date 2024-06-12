@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../../domain/repositories/user/user.repository';
 import { User } from '../../domain/models/user/user.model';
 import { RoleService } from './role.service';
@@ -8,7 +8,7 @@ import { RoleService } from './role.service';
 export class UserService {
 
     constructor (
-        private userRepository: UserRepository,
+        @Inject('UserRepository') private userRepository: UserRepository,
         private roleService: RoleService
     ){};
 
@@ -17,8 +17,12 @@ export class UserService {
         return this.userRepository.getAllUsers();
     };
 
-    async getUserById(userId: number): Promise<User> {
+    async getUserById(userId: number): Promise<User | undefined> {
         return this.userRepository.getUserById(userId);
+    };
+
+    async getUserByEmail(userEmail: string): Promise<User | undefined> {       
+        return this.userRepository.getUserByEmail(userEmail);
     };
 
     async createUser(requestingUser: User, user: User): Promise<User> {

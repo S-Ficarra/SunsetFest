@@ -1,5 +1,8 @@
-import { users } from '../../entities/users.entity';
-import { User } from '../../../domain/models/user/user.model'
+import { users } from '../entities/users.entity';
+import { User } from '../../domain/models/user/user.model'
+import { IsString, IsEmail, MinLength, Matches, IsNumber, IsInt, IsNumberString, IsIn,  } from 'class-validator';
+
+
 
 export function mapUserEntityToModel(entity: users): User {
     const user = new User(
@@ -23,3 +26,26 @@ export function mapUserModelToEntity(model: User): users {
     entity.role = model.getRole();
     return entity;
 }
+
+
+export class CreateUserDto {
+    @IsString()
+    name: string;
+  
+    @IsString()
+    firstName: string;
+  
+    @IsEmail({}, { message: 'L\'adresse email n\'est pas valide.' })
+    email: string;
+  
+    @IsString()
+    @MinLength(8, { message: 'Le mot de passe doit contenir au moins 8 caractères.' })
+    @Matches(/(?=.*[a-z])/, { message: 'Le mot de passe doit contenir au moins une lettre minuscule.' })
+    @Matches(/(?=.*[A-Z])/, { message: 'Le mot de passe doit contenir au moins une lettre majuscule.' })
+    @Matches(/(?=.*\d)/, { message: 'Le mot de passe doit contenir au moins un chiffre.' })
+    @Matches(/(?=.*[@$!%*?&])/, { message: 'Le mot de passe doit contenir au moins un caractère spécial.' })
+    password: string;
+  
+    @IsIn(["1", "2", "3"])
+    role: number;
+};

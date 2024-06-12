@@ -7,7 +7,7 @@ export class programs {
     @PrimaryColumn()
     id: number;
 
-    @ManyToOne(() => performances)
+    @ManyToOne(() => performances, {nullable: true})
     @JoinColumn()
     performance_: number;
 

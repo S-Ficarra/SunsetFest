@@ -20,6 +20,11 @@ export class MockUserRepository implements UserRepository {
         return this.users.find(user => user.getId() === id);
     }
 
+    async getUserByEmail(email: string): Promise<User> {
+        return this.users.find(user => email === email);
+
+    }
+
     async getAllUsers(): Promise<User[]> {
         return this.users;
     }
