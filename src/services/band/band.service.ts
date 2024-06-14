@@ -2,11 +2,12 @@ import { User } from "../../domain/models/user/user.model";
 import { Band } from "../../domain/models/band/band.model";
 import { BandRepository } from "../../domain/repositories/band/band.repository";
 import { RoleService } from "../user/role.service";
+import { Inject } from "@nestjs/common";
 
 export class BandService{
 
     constructor(
-        private bandRepository: BandRepository,
+        @Inject('BandRepository') private bandRepository: BandRepository,
         private roleService: RoleService,
     ){};
 
@@ -15,22 +16,40 @@ export class BandService{
     };
 
     async getBandById(bandId: number): Promise<Band>{
-        return this.bandRepository.getBandById(bandId);
+        const band = this.bandRepository.getBandById(bandId);
+        if (band) {
+            return band
+        };
+        throw new Error
     };
 
+    async getBandByName(name: string): Promise<Band>{
+        const band = this.bandRepository.getBandByName(name);
+        if (band) {
+            throw new Error ('Band with the same name already exist');
+        };
+        return undefined;
+    }
+
     async createBand(band: Band): Promise<Band> {
-        this.bandRepository.createBand(band);    
-        return band;    
+        if (!await this.bandRepository.getBandByName(band.getName())) {
+            this.bandRepository.createBand(band);    
+            return band;   
+        };
+        throw new Error ('Band with the same name already exist');
     };
 
     async editBand(band: Band): Promise<Band> {
-        this.bandRepository.editBand(band);   
-        return band;     
+        if (!await this.bandRepository.getBandByName(band.getName())) {
+            this.bandRepository.editBand(band);   
+            return band;   
+        };
+        throw new Error ('Band with the same name already exist');
     };
 
     async deleteBand(requestingUser: User, bandId: number): Promise<void> {
         if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-             await this.bandRepository.deleteBand(bandId)
+            await this.bandRepository.deleteBand(bandId)
         } else {
             throw new Error ('Unauthorized');
         };

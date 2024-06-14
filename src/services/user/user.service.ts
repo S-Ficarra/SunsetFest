@@ -13,20 +13,25 @@ export class UserService {
     ){};
 
 
-    async getAllUsers(): Promise<User[]> {
+    async getAllUsers(): Promise<any> {
         return this.userRepository.getAllUsers();
     };
 
-    async getUserById(userId: number): Promise<User | undefined> {
+    async getUserById(userId: number): Promise<any> {
         return this.userRepository.getUserById(userId);
     };
 
-    async getUserByEmail(userEmail: string): Promise<User | undefined> {       
+    async getUserByEmail(userEmail: string): Promise<User> {       
         return this.userRepository.getUserByEmail(userEmail);
     };
 
+
     async createUser(requestingUser: User, user: User): Promise<User> {
         if (this.roleService.isAdmin(requestingUser)) {
+            const existing_user = await this.userRepository.getUserByEmail(user.getEmail());            
+            if(existing_user){
+                throw new Error ('Email already exist')
+            };
             await this.userRepository.createUser(user);
             return user
         };
@@ -35,8 +40,12 @@ export class UserService {
 
     async editUser(requestingUser: User, user: User): Promise<User> {
         if (this.roleService.isAdmin(requestingUser)) {
-            await this.userRepository.editUser(user);
-            return user
+            const emailTaken = await this.userRepository.getUserByEmail(user.getEmail());
+            if(emailTaken){
+                throw new Error ('Email already exist')
+            };
+            const userEdited = await this.userRepository.editUser(user);
+            return userEdited
         };
         throw new Error('Unauthorized');
     };

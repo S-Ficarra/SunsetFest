@@ -42,16 +42,16 @@ export class bands {
     @Column()
     youtube_integration: string;
 
-    @ManyToOne(() => images, {cascade: true})
-    @JoinColumn()
-    thumbnail__image_: number;
+    @ManyToOne(() => images, {cascade: true, onDelete: 'CASCADE', eager: true})
+    @JoinColumn({ name: 'thumbnail_image_id' })
+    thumbnail__image_: images;
 
-    @ManyToOne(() => images, {cascade: true})
+    @ManyToOne(() => images, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    banner__image_: number;
+    banner__image_: images;
 
-    @ManyToOne(() => publication_details,{cascade: true})
-    @JoinColumn()
-    publication__details_: number;
+    @ManyToOne(() => publication_details,{cascade: true, onDelete: 'CASCADE', eager: true})
+    @JoinColumn({ name: 'publication_details_id' })
+    publication__details_: publication_details;
 
 };

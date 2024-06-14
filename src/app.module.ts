@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { UserModule } from './modules/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/authentification.module';
+import { BandModule } from './modules/band.module';
 require('dotenv').config();
 
 
@@ -19,7 +20,8 @@ require('dotenv').config();
       logging: false,
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    BandModule
   ],
 })
 export class AppModule {}

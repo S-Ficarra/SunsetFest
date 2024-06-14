@@ -6,7 +6,7 @@ export class images {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ type: "blob" })
-    image: Blob;
+    @Column({ type: "longblob" })
+    image: Buffer;
 
 };

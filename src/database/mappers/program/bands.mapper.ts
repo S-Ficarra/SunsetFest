@@ -1,3 +1,4 @@
+import { IsString, ValidationArguments, ValidationOptions, registerDecorator } from "class-validator";
 import { bands } from "src/database/entities/bands.entity"
 import { images } from "src/database/entities/images.entity";
 import { publication_details } from "src/database/entities/publication_details.entity"
@@ -7,7 +8,7 @@ import { Socials } from "src/domain/models/band/socials.model"
 import { User } from "src/domain/models/user/user.model";
 
 
-export function mapBandEntityToModel (band_entity: bands, thumbnail_image: Blob, banner_image: Blob, publication_details: publication_details, user: users): Band {
+export function mapBandEntityToModel (band_entity: bands, thumbnail_image: Buffer, banner_image: Buffer, publication_details: publication_details, user: users): Band {
 
 
     const bandUser = new User (
@@ -46,9 +47,7 @@ export function mapBandEntityToModel (band_entity: bands, thumbnail_image: Blob,
     return band;
 };
 
-
-
-export function mapBandModelToEntity (model: Band, fkPublicationDetails: number, fkThumbnailImage: number, fkBannerImage : number): bands {
+export function mapBandModelToEntity (model: Band, PublicationDetails: publication_details, ThumbnailImage: images, BannerImage : images): bands {
 
     const entity = new bands();
     entity.name = model.getName();
@@ -62,9 +61,32 @@ export function mapBandModelToEntity (model: Band, fkPublicationDetails: number,
     entity.website = model.getSocials().getWebsite();
     entity.spotify_integration = model.getSocials().getSpotifyIntegration();
     entity.youtube_integration = model.getSocials().getYoutubeIntegration();
-    entity.thumbnail__image_ = fkThumbnailImage;
-    entity.banner__image_ = fkBannerImage;
-    entity.publication__details_ = fkPublicationDetails;
+    entity.thumbnail__image_ = ThumbnailImage;
+    entity.banner__image_ = BannerImage;
+    entity.publication__details_ = PublicationDetails;
+    
+    return entity;
+};
+
+
+export function mapBandModelToEntityEdit (id: number, model: Band, PublicationDetails: publication_details, ThumbnailImage: images, BannerImage : images): bands {
+
+    const entity = new bands();
+    entity.id = id
+    entity.name = model.getName();
+    entity.country = model.getCountry();
+    entity.text = model.getText();
+    entity.facebook = model.getSocials().getFacebook();
+    entity.instagram = model.getSocials().getInstagram();
+    entity.twitter = model.getSocials().getTwitter();
+    entity.youtube = model.getSocials().getYoutube();
+    entity.spotify = model.getSocials().getSpotify();
+    entity.website = model.getSocials().getWebsite();
+    entity.spotify_integration = model.getSocials().getSpotifyIntegration();
+    entity.youtube_integration = model.getSocials().getYoutubeIntegration();
+    entity.thumbnail__image_ = ThumbnailImage;
+    entity.banner__image_ = BannerImage;
+    entity.publication__details_ = PublicationDetails;
     
     return entity;
 };
@@ -72,23 +94,30 @@ export function mapBandModelToEntity (model: Band, fkPublicationDetails: number,
 
 export function mapBandPubliDetailsToEntity (model: Band): publication_details{
     const entity = new publication_details();
-    entity.author_ = model.getAuthorId().getId(),
+    entity.author_ = model.getAuthor().getId(),
     entity.created_at = new Date();
     entity.modified_at = new Date();
     return entity;
 };
 
-export function mapBandPubliDetailsToEntityEdit (model: Band): publication_details{
+export function mapBandPubliDetailsToEntityEdit (model: Band, publiId: number): publication_details{
     const entity = new publication_details();
-    entity.author_ = model.getAuthorId().getId(),
+    entity.id = publiId
+    entity.author_ = model.getAuthor().getId(),
     entity.created_at = model.getCreatedAt();
     entity.modified_at = new Date();
     return entity;
 };
 
-
 export function mapBandBannerToEntity (model: Band): images{
     const entity = new images();
+    entity.image = model.getBannerImage();
+    return entity;
+};
+
+export function mapBandBannerToEntityEdit (model: Band, bannerId : number): images{
+    const entity = new images();
+    entity.id = bannerId;
     entity.image = model.getBannerImage();
     return entity;
 };
@@ -99,4 +128,48 @@ export function mapBandThumbnailToEntity (model: Band): images{
     return entity;
 };
 
+export function mapBandThumbnailToEntityEdit (model: Band, thumbnailId: number): images{
+    const entity = new images();
+    entity.id = thumbnailId;
+    entity.image = model.getThumbnailImage();
+    return entity;
+};
 
+
+export class CreateBandDto {
+    @IsString()
+    name: string;
+  
+    @IsString()
+    country: string;
+  
+    @IsString()
+    text: string;
+
+    @IsString()
+    facebook: string;
+
+    @IsString()
+    instagram: string;
+
+    @IsString()
+    twitter: string;
+
+    @IsString()
+    youtube: string;
+
+    @IsString()
+    spotify: string;
+
+    @IsString()
+    website: string;
+
+    @IsString()
+    spotifyIntegration: string;
+
+    @IsString()
+    youtubeIntegration: string;
+
+
+  
+};

@@ -15,8 +15,12 @@ export class AuthentificationController {
     if (!body.password) {
       throw new HttpException('Password is required', HttpStatus.BAD_REQUEST);
     };
-
+    
     const token = await this.authService.login(body.email, body.password); 
+    if (!token) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    };
+
     res.setHeader('Authorization', `Bearer ${token}`);
     return res.status(HttpStatus.OK).send('You are logged in');
 

@@ -21,11 +21,10 @@ export class MockBandRepository implements BandRepository {
     private async initializeBands(): Promise<void> {
 
         this.bands = [
-            new Band ('band1', 'country1', 'text1', this.socialsRepository.socials[0], new Blob, new Blob, this.userRepository.users[0], new Date, new Date),
-            new Band ('band2', 'country2', 'text2', this.socialsRepository.socials[1], new Blob, new Blob, this.userRepository.users[1], new Date, new Date)    
+            new Band ('band1', 'country1', 'text1', this.socialsRepository.socials[0], Buffer.from('thumbnail1'), Buffer.from('banner1'), this.userRepository.users[0], new Date, new Date),
+            new Band ('band2', 'country2', 'text2', this.socialsRepository.socials[1], Buffer.from('thumbnail2'), Buffer.from('banner2'), this.userRepository.users[1], new Date, new Date)    
         ];
     }
-
 
     setFakeIdToTest(): void {
         this.bands[0].setId(1)
@@ -39,6 +38,10 @@ export class MockBandRepository implements BandRepository {
     async getBandById(bandId: number): Promise<Band> {
         return this.bands[bandId -1 ];
     };
+
+    async  getBandByName(name: string): Promise<Band> {
+        throw new Error('method not implemented in mock repository')
+    }
 
     async createBand(band: Band): Promise<Band> {
         this.bands.push(band);
