@@ -2,24 +2,20 @@ import { Body, Controller, Get, Param, Post, Req, UploadedFiles, UseGuards, UseI
 import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
 import { Band } from "src/domain/models/band/band.model";
 import { BandService } from "src/services/band/band.service";
-import { UserService } from "src/services/user/user.service";
-import * as jwt from 'jsonwebtoken';
-import { CreateBandDto } from "src/database/mappers/program/bands.mapper";
-import { Socials } from "src/domain/models/band/socials.model";
+import { BandDto } from "./DTO/band.dto";
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from "multer.config";
-
-
+import { AuthentificationService } from "src/authentification/authentification.service";
+import { mapBandDtoToModelCreate, mapBandDtoToModelEdit } from "./mappers/band.mapper";
 
 
 
 @Controller()
 export class BandController {
 
-
     constructor(
         private readonly bandService: BandService,
-        private readonly userService: UserService,
+        private readonly authService: AuthentificationService,
     ){};
 
 
@@ -33,6 +29,7 @@ export class BandController {
         };
     };
 
+    
     @UseGuards(JwtAuthGuard)
     @Get('bands/:id')
     async getBandById(@Param('id') id: number): Promise<Band | {}> {      
@@ -53,46 +50,20 @@ export class BandController {
     async createBand( 
         @UploadedFiles() files: { thumbnailImage?: Express.Multer.File[], bannerImage?: Express.Multer.File[] },
         @Req()req: Request, 
-        @Body(new ValidationPipe()) createBandDto: CreateBandDto): Promise <Band | {} > {
+        @Body(new ValidationPipe()) createBandDto: BandDto): Promise <Band | {} > {
 
-            const authHeader = req.headers['authorization'];
-            const token = authHeader.substring(7); 
-            const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-            const userLoggedIn = await this.userService.getUserById(+decodedToken.sub)
+        try {
 
-            try {
+            const userLogged = await this.authService.getUserLogged(req)
+            const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0].buffer : null;
+            const bannerImage = files.bannerImage ? files.bannerImage[0].buffer : null;
+            const bandToCreate = mapBandDtoToModelCreate(createBandDto, thumbnailImage, bannerImage, userLogged);
 
-                const socials = new Socials (
-                    createBandDto.facebook,
-                    createBandDto.instagram,
-                    createBandDto.twitter,
-                    createBandDto.youtube,
-                    createBandDto.spotify,
-                    createBandDto.website,
-                    createBandDto.spotifyIntegration,
-                    createBandDto.youtubeIntegration
-                );
-
-                const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0].buffer : null;
-                const bannerImage = files.bannerImage ? files.bannerImage[0].buffer : null;
-
-                const bandToCreate = new Band (
-                    createBandDto.name,
-                    createBandDto.country,
-                    createBandDto.text,
-                    socials,
-                    thumbnailImage,
-                    bannerImage,
-                    userLoggedIn,
-                    new Date(),
-                    new Date()
-                );
-
-                return await this.bandService.createBand(bandToCreate);
-                
-            } catch (error) {
-                return {message : error.message};   
-            };    
+            return await this.bandService.createBand(bandToCreate);
+            
+        } catch (error) {
+            return {message : error.message};   
+        };    
     };
 
 
@@ -106,40 +77,16 @@ export class BandController {
         @Param('id')id: number,
         @UploadedFiles() files: { thumbnailImage?: Express.Multer.File[], bannerImage?: Express.Multer.File[] },
         @Req()req: Request, 
-        @Body(new ValidationPipe()) createBandDto: CreateBandDto): Promise <Band | {} > {
-
-            const authHeader = req.headers['authorization'];
-            const token = authHeader.substring(7); 
-            const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-            const userLoggedIn = await this.userService.getUserById(+decodedToken.sub)
-
-            const bandToEdit = await this.bandService.getBandById(id);
-            const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0].buffer : null;
-            const bannerImage = files.bannerImage ? files.bannerImage[0].buffer : null;
+        @Body(new ValidationPipe()) editBandDto: BandDto): Promise <Band | {} > {
 
             try {
-                const socials = new Socials (
-                    createBandDto.facebook,
-                    createBandDto.instagram,
-                    createBandDto.twitter,
-                    createBandDto.youtube,
-                    createBandDto.spotify,
-                    createBandDto.website,
-                    createBandDto.spotifyIntegration,
-                    createBandDto.youtubeIntegration
-                );                
+                const userLogged = await this.authService.getUserLogged(req)
+                const bandToEdit = await this.bandService.getBandById(id);
+                const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0].buffer : null;
+                const bannerImage = files.bannerImage ? files.bannerImage[0].buffer : null;
+                const mappedBandToEdit = mapBandDtoToModelEdit(bandToEdit, editBandDto, thumbnailImage, bannerImage, userLogged)
 
-                bandToEdit.setName(createBandDto.name);
-                bandToEdit.setCountry(createBandDto.country);
-                bandToEdit.setText(createBandDto.text)
-                bandToEdit.setSocials(socials),                    
-                bandToEdit.setThumbnailImage(thumbnailImage);
-                bandToEdit.setBannerImage(bannerImage)
-                bandToEdit.setAuthor(userLoggedIn);
-                bandToEdit.setCreatedAt(bandToEdit.getCreatedAt());
-                bandToEdit.setModifiedAt(new Date())              
-
-                return await this.bandService.editBand(bandToEdit)
+                return await this.bandService.editBand(mappedBandToEdit)
                 
             } catch (error) {
                 return {message : error.message}; 
@@ -151,10 +98,7 @@ export class BandController {
     @Post('bands/:id/deleteband')
     async deleteBand(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
     
-        const authHeader = req.headers['authorization'];
-        const token = authHeader.substring(7); 
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        const userLoggedIn = await this.userService.getUserById(+decodedToken.sub)
+        const userLogged = await this.authService.getUserLogged(req)
 
         try {
             const bandId = +id;
@@ -162,12 +106,13 @@ export class BandController {
             if (!band) {
                 return {message: `Band ${bandId} do not exist`};
             }
-            await this.bandService.deleteBand(userLoggedIn, id);
+            await this.bandService.deleteBand(userLogged, id);
             return {message: `Band ${bandId} deleted`};
         } catch (error) {
             return {message : error.message }; 
         }; 
     };
+
 
 };
 

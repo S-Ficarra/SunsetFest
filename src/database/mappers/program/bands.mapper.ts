@@ -1,4 +1,3 @@
-import { IsString, ValidationArguments, ValidationOptions, registerDecorator } from "class-validator";
 import { bands } from "src/database/entities/bands.entity"
 import { images } from "src/database/entities/images.entity";
 import { publication_details } from "src/database/entities/publication_details.entity"
@@ -17,8 +16,8 @@ export function mapBandEntityToModel (band_entity: bands, thumbnail_image: Buffe
         user.email,
         user.password,
         user.role
-    )
-    bandUser.setId(user.id)
+    );
+    bandUser.setId(user.id);
 
     const socials = new Socials (
         band_entity.facebook,
@@ -43,7 +42,7 @@ export function mapBandEntityToModel (band_entity: bands, thumbnail_image: Buffe
         publication_details.modified_at,
     );
 
-    band.setId(band_entity.id)
+    band.setId(band_entity.id);    
     return band;
 };
 
@@ -94,7 +93,7 @@ export function mapBandModelToEntityEdit (id: number, model: Band, PublicationDe
 
 export function mapBandPubliDetailsToEntity (model: Band): publication_details{
     const entity = new publication_details();
-    entity.author_ = model.getAuthor().getId(),
+    entity.author_ = model.getAuthor().getId();
     entity.created_at = new Date();
     entity.modified_at = new Date();
     return entity;
@@ -102,8 +101,8 @@ export function mapBandPubliDetailsToEntity (model: Band): publication_details{
 
 export function mapBandPubliDetailsToEntityEdit (model: Band, publiId: number): publication_details{
     const entity = new publication_details();
-    entity.id = publiId
-    entity.author_ = model.getAuthor().getId(),
+    entity.id = publiId;
+    entity.author_ = model.getAuthor().getId();
     entity.created_at = model.getCreatedAt();
     entity.modified_at = new Date();
     return entity;
@@ -136,40 +135,3 @@ export function mapBandThumbnailToEntityEdit (model: Band, thumbnailId: number):
 };
 
 
-export class CreateBandDto {
-    @IsString()
-    name: string;
-  
-    @IsString()
-    country: string;
-  
-    @IsString()
-    text: string;
-
-    @IsString()
-    facebook: string;
-
-    @IsString()
-    instagram: string;
-
-    @IsString()
-    twitter: string;
-
-    @IsString()
-    youtube: string;
-
-    @IsString()
-    spotify: string;
-
-    @IsString()
-    website: string;
-
-    @IsString()
-    spotifyIntegration: string;
-
-    @IsString()
-    youtubeIntegration: string;
-
-
-  
-};

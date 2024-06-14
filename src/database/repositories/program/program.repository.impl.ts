@@ -55,7 +55,7 @@ export class ProgramRepositoryImpl implements ProgramRepository {
         this.perfService = new PerformanceService(perfRepositoryImpl);
     };
 
-
+    // a supprimer
     async getAllPrograms(): Promise<Program[]> {
         const allPrograms = await this.progRepository.find();
         const programMap = new Map<number, Program>();

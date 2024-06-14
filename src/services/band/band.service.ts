@@ -33,8 +33,8 @@ export class BandService{
 
     async createBand(band: Band): Promise<Band> {
         if (!await this.bandRepository.getBandByName(band.getName())) {
-            this.bandRepository.createBand(band);    
-            return band;   
+            const bandCreated = this.bandRepository.createBand(band);    
+            return bandCreated;   
         };
         throw new Error ('Band with the same name already exist');
     };
