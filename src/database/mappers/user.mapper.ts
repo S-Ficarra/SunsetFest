@@ -1,5 +1,7 @@
-import { users } from '../../entities/users.entity';
-import { User } from '../../../domain/models/user/user.model'
+import { users } from '../entities/users.entity';
+import { User } from '../../domain/models/user/user.model'
+
+
 
 export function mapUserEntityToModel(entity: users): User {
     const user = new User(
