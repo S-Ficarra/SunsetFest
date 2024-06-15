@@ -14,7 +14,7 @@ export class performances {
     band_: number;
 
     @Column()
-    day: number;
+    day: string;
 
     @ManyToOne(() => timeframes)
     @JoinColumn()

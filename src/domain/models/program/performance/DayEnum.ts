@@ -1,5 +1,5 @@
 export enum Days {
-    Friday = 1,
-    Saturday = 2,
-    Sunday = 3,
+    'friday' = 1,
+    'saturday' = 2,
+    'sunday' = 3,
 }

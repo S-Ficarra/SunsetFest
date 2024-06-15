@@ -10,7 +10,7 @@ export class stages {
     @Column()
     name: string;
 
-    @ManyToOne(() => locations)
+    @ManyToOne(() => locations, {cascade: true})
     @JoinColumn()
     location_: number;
 

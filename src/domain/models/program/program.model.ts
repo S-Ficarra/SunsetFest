@@ -9,7 +9,7 @@ export class Program {
         this._performances = performances || [];
     };
 
-    setId(id: number) {
+    setId(id: number): void {
         this._id = id;
     };
 

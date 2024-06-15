@@ -24,7 +24,7 @@ describe('BandService', () => {
         socialsService = new SocialsService(socialsRepository);
         userRepository.setFakeIdToTest();
         bandRepository= new MockBandRepository(socialsRepository, userRepository);
-        bandService = new BandService(bandRepository, socialsService, roleService);
+        bandService = new BandService(bandRepository, roleService);
         socialsRepository.setFakeIdToTest();
         bandRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
     });

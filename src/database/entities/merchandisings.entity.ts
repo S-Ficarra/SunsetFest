@@ -11,14 +11,14 @@ export class merchandisings {
     @Column()
     name: string;
 
-    @ManyToOne(() => locations)
+    @ManyToOne(() => locations, {cascade: true})
     @JoinColumn()
     location_: number;
 
     @Column()
     merch_type: string;
 
-    @ManyToOne(() => opening_times)
+    @ManyToOne(() => opening_times, {cascade: true})
     @JoinColumn()
     opening__times_: number;
 

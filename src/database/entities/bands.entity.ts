@@ -42,15 +42,15 @@ export class bands {
     @Column()
     youtube_integration: string;
 
-    @ManyToOne(() => images)
+    @ManyToOne(() => images, {cascade: true})
     @JoinColumn()
     thumbnail__image_: number;
 
-    @ManyToOne(() => images)
+    @ManyToOne(() => images, {cascade: true})
     @JoinColumn()
     banner__image_: number;
 
-    @ManyToOne(() => publication_details)
+    @ManyToOne(() => publication_details,{cascade: true})
     @JoinColumn()
     publication__details_: number;
 

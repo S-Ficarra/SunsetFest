@@ -5,6 +5,9 @@ export class TimeFrameService{
 
     constructor(private timeFrameRepository : TimeFrameRepository){};
 
+    async getAllTimeFrame (): Promise<TimeFrame[]> {
+        return this.timeFrameRepository.getAllTimeFrame();
+    }
 
     async getTimeFrameById(timeFrameId: number): Promise<TimeFrame> {
         return this.timeFrameRepository.getTimeFrameById(timeFrameId);

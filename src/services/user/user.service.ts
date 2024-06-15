@@ -9,7 +9,7 @@ export class UserService {
 
     constructor (
         private userRepository: UserRepository,
-        private administratorService: RoleService
+        private roleService: RoleService
     ){};
 
 
@@ -22,7 +22,7 @@ export class UserService {
     };
 
     async createUser(requestingUser: User, user: User): Promise<User> {
-        if (this.administratorService.isAdmin(requestingUser)) {
+        if (this.roleService.isAdmin(requestingUser)) {
             await this.userRepository.createUser(user);
             return user
         };
@@ -30,7 +30,7 @@ export class UserService {
     };
 
     async editUser(requestingUser: User, user: User): Promise<User> {
-        if (this.administratorService.isAdmin(requestingUser)) {
+        if (this.roleService.isAdmin(requestingUser)) {
             await this.userRepository.editUser(user);
             return user
         };
@@ -38,7 +38,7 @@ export class UserService {
     };
 
     async deleteUser(requestingUser: User, userId: number): Promise<void> {
-        if (this.administratorService.isAdmin(requestingUser)) {
+        if (this.roleService.isAdmin(requestingUser)) {
             await this.userRepository.deleteUser(userId);
         } else {
             throw new Error('Unauthorized');

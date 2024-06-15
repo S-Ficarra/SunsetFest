@@ -21,7 +21,7 @@ export class MockTimeFrameRepository implements TimeFrameRepository {
     };
 
 
-    getAllTimeFrame(): TimeFrame[] {
+    async getAllTimeFrame(): Promise<TimeFrame[]> {
         return this.timeFrameArray;
     };
 
