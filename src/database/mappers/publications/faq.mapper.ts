@@ -5,16 +5,16 @@ import { users } from "src/database/entities/users.entity";
 import { User } from "src/domain/models/user/user.model";
 
 
-export function mapFaqModeltoEntity (model: Faq, fkPublicationDetails: number): faqs {
+export function mapFaqModeltoEntity (model: Faq, publiDetails: publication_details): faqs {
     const entity = new faqs();
     entity.question = model.getQuestion();
     entity.answer = model.getAnswer();
-    entity.publication__details_ = fkPublicationDetails;
+    entity.publication__details_ = publiDetails;
     return entity;
 
 };
 
-export function mapFaqEntitytoModel (entity: faqs, publication_details: publication_details, user: users): Faq {
+export function mapFaqEntitytoModel (entity: faqs, publiDetails: publication_details, user: users): Faq {
 
     const faqUser = new User (
         user.name,
@@ -27,11 +27,11 @@ export function mapFaqEntitytoModel (entity: faqs, publication_details: publicat
 
     const faq = new Faq (
         faqUser,
-        publication_details.created_at,
-        publication_details.modified_at,
-        publication_details.status,
+        publiDetails.created_at,
+        publiDetails.modified_at,
+        publiDetails.status,
         entity.question,
-        entity.answer
+        entity.answer,
     );
 
     faq.setId(entity.id);

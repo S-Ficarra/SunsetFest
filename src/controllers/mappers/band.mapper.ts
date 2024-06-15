@@ -51,7 +51,6 @@ export function mapBandDtoToModelEdit (bandToEdit: Band, bandDto : BandDto, thum
     bandToEdit.setThumbnailImage(thumbnailImage);
     bandToEdit.setBannerImage(bannerImage)
     bandToEdit.setAuthor(user);
-    bandToEdit.setCreatedAt(bandToEdit.getCreatedAt());
     bandToEdit.setModifiedAt(new Date())    
 
     return bandToEdit;

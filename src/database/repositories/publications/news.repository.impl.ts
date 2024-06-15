@@ -8,11 +8,12 @@ import { images } from "src/database/entities/images.entity";
 import { users } from 'src/database/entities/users.entity';
 import { publications } from 'src/database/entities/publications.entity';
 import { NewsRepository } from 'src/domain/repositories/publication/news.repository';
-import { mapNewsEntityToModel } from 'src/database/mappers/publications/news.mapper';
-import { mapPubliDetailsToEntity, mapPubliDetailsToEntityEdit, mapPublicationModelToEntity } from 'src/database/mappers/publications/publication.mapper';
-import { mapIllustratedImageToEntity, mapIllustratedPubliContentToEntity, mapIllustratedTypeToEntity } from 'src/database/mappers/publications/illustrated.mapper';
+import { mapNewsEntityToModel, mapNewsTypeToEntity, mapNewsTypeToEntityEdit } from 'src/database/mappers/publications/news.mapper';
+import { mapPubliDetailsToEntity, mapPubliDetailsToEntityEdit, mapPublicationModelToEntity, mapPublicationModelToEntityEdit } from 'src/database/mappers/publications/publication.mapper';
+import { mapIllustratedImageToEntity, mapIllustratedImageToEntityEdit, mapIllustratedPubliContentToEntity, mapIllustratedPubliContentToEntityEdit,  } from 'src/database/mappers/publications/illustrated.mapper';
+import { Injectable } from '@nestjs/common';
 
-
+@Injectable()
 export class NewsRepositoryImpl implements NewsRepository {
 
     constructor(
@@ -34,11 +35,9 @@ export class NewsRepositoryImpl implements NewsRepository {
     async getAllNews(): Promise<News[]> {
         const allNews = await this.publicationRepository.find();
         const mappedNews = allNews.map(async publi_entity => {
-            const [content_entity, image_entity, detail_entity] = await Promise.all ([
-                this.contentRepository.findOneBy({id: publi_entity.publication__contents_}),
-                this.imageRepository.findOneBy({id: publi_entity.images_}),
-                this.detailsRepository.findOneBy({id: publi_entity.publication__details_}),
-            ]);
+            const content_entity=  publi_entity.publication__contents_
+            const image_entity = publi_entity.images_
+            const detail_entity =  publi_entity.publication__details_
             const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
             return mapNewsEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
         })
@@ -47,13 +46,14 @@ export class NewsRepositoryImpl implements NewsRepository {
 
     async getNewsById(newsId: number): Promise<News> {
         const publi_entity = await this.publicationRepository.findOneBy({id: newsId});
-        const [content_entity, image_entity, detail_entity] = await Promise.all ([
-            this.contentRepository.findOneBy({id: publi_entity.publication__contents_}),
-            this.imageRepository.findOneBy({id: publi_entity.images_}),
-            this.detailsRepository.findOneBy({id: publi_entity.publication__details_}),
-        ]);
-        const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
-        return mapNewsEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
+        if (publi_entity) {
+            const content_entity=  publi_entity.publication__contents_
+            const image_entity = publi_entity.images_
+            const detail_entity =  publi_entity.publication__details_
+            const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
+            return mapNewsEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
+        }
+        throw new Error ('Publication do not exist');
     };
 
     async createNews(news: News): Promise<News> {
@@ -63,24 +63,26 @@ export class NewsRepositoryImpl implements NewsRepository {
         await this.imageRepository.save(image_entity);
         const detail_entity = mapPubliDetailsToEntity(news);
         await this.detailsRepository.save(detail_entity);
-        const type_entity = mapIllustratedTypeToEntity(news);
+        const type_entity = mapNewsTypeToEntity(news);        
         await this.publiTypeRepository.save(type_entity);
-        const createdNews = mapPublicationModelToEntity(content_entity.id, image_entity.id, type_entity.id, detail_entity.id);
+        const createdNews = mapPublicationModelToEntity(content_entity, image_entity, type_entity, detail_entity);
         await this.publicationRepository.save(createdNews);
         news.setId(createdNews.id);
         return news;
     };
 
     async editNews(news: News): Promise<News> {
-        const content_entity = mapIllustratedPubliContentToEntity(news);
+        const news_entity = await this.publicationRepository.findOneBy({id: news.getId()})
+
+        const content_entity = mapIllustratedPubliContentToEntityEdit(news, news_entity.publication__contents_.id);
         await this.contentRepository.save(content_entity);
-        const image_entity = mapIllustratedImageToEntity(news);
+        const image_entity = mapIllustratedImageToEntityEdit(news, news_entity.images_.id);
         await this.imageRepository.save(image_entity);
-        const detail_entity = mapPubliDetailsToEntityEdit(news);
+        const detail_entity = mapPubliDetailsToEntityEdit(news, news_entity.publication__details_.id);
         await this.detailsRepository.save(detail_entity);
-        const type_entity = mapIllustratedTypeToEntity(news);
+        const type_entity = mapNewsTypeToEntityEdit(news, news_entity.publication__types_.id);
         await this.publiTypeRepository.save(type_entity);
-        const editedNews = mapPublicationModelToEntity(content_entity.id, image_entity.id, type_entity.id, detail_entity.id);
+        const editedNews = mapPublicationModelToEntityEdit(news_entity.id, content_entity, image_entity, type_entity, detail_entity);
         await this.publicationRepository.save(editedNews);
         news.setId(editedNews.id);
         return news;

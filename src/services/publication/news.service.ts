@@ -2,11 +2,12 @@ import { User } from "../../domain/models/user/user.model";
 import { News } from "../../domain/models/publication/news.model";
 import { NewsRepository } from "../../domain/repositories/publication/news.repository";
 import { RoleService } from "../user/role.service";
+import { Inject } from "@nestjs/common";
 
 export class NewsService{
 
     constructor(
-        private newsRepository: NewsRepository,
+        @Inject('NewsRepository') private newsRepository: NewsRepository,
         private roleService : RoleService,
     ){};
 
@@ -15,17 +16,21 @@ export class NewsService{
     };
 
     async getNewsById(newsId: number): Promise<News>{
-        return this.newsRepository.getNewsById(newsId);
+        const news = this.newsRepository.getNewsById(newsId);
+        if(news){
+            return news;
+        };
+        throw new Error
     };
 
     async createNews(news: News): Promise<News> {
-        this.newsRepository.createNews(news);   
-        return news;     
+        const newsCreated = await this.newsRepository.createNews(news);   
+        return newsCreated;     
     };
 
     async editNews(news: News): Promise<News> {
-        this.newsRepository.editNews(news);    
-        return news;         
+        const newsEdited = await this.newsRepository.editNews(news);    
+        return newsEdited;         
     };
 
     async deleteNews(requestingUser: User, newsId: number): Promise<void> {

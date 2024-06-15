@@ -97,10 +97,9 @@ export class BandController {
     @UseGuards(JwtAuthGuard)
     @Post('bands/:id/deleteband')
     async deleteBand(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
-    
-        const userLogged = await this.authService.getUserLogged(req)
 
         try {
+            const userLogged = await this.authService.getUserLogged(req)
             const bandId = +id;
             const band = await this.bandService.getBandById(id);
             if (!band) {

@@ -6,6 +6,7 @@ import { Information } from "src/domain/models/publication/information.model";
 import { User } from "src/domain/models/user/user.model";
 import { users } from "src/database/entities/users.entity";
 import { Content } from "src/domain/models/publication/content.model";
+import { publication_types } from "src/database/entities/publication_types.entity";
 
 
 
@@ -37,3 +38,17 @@ export function mapInformationEntityToModel(publi_entity: publications, content_
     return information;
 
 };
+
+export function mapInformationTypeToEntity (model: Information): publication_types{
+    const entity = new publication_types();    
+    entity.type = model.getType();
+    return entity;
+};
+
+export function mapInformationTypeToEntityEdit (model: Information, typeId: number): publication_types{
+    const entity = new publication_types();   
+    entity.id = typeId 
+    entity.type = model.getType();
+    return entity;
+};
+

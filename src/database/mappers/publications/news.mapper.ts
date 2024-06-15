@@ -6,6 +6,8 @@ import { News } from "src/domain/models/publication/news.model";
 import { User } from "src/domain/models/user/user.model";
 import { users } from "src/database/entities/users.entity";
 import { Content } from "src/domain/models/publication/content.model";
+import { publication_types } from "src/database/entities/publication_types.entity";
+import { PublicationType } from "src/domain/models/publication/PublicationTypes";
 
 
 export function mapNewsEntityToModel(publi_entity: publications, content_entity: publication_contents, image_entity: images, detail_entity: publication_details, user_entity: users) : News {
@@ -35,4 +37,18 @@ export function mapNewsEntityToModel(publi_entity: publications, content_entity:
     news.setId(publi_entity.id)
     return news;
 
+};
+
+export function mapNewsTypeToEntity (model: News): publication_types{
+    const entity = new publication_types();       
+    entity.type = PublicationType.News
+    return entity;
+};
+
+
+export function mapNewsTypeToEntityEdit (model: News, typeId: number): publication_types{
+    const entity = new publication_types();       
+    entity.id = typeId;
+    entity.type = PublicationType.News
+    return entity;
 };

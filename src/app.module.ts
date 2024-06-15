@@ -3,6 +3,7 @@ import { UserModule } from './modules/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/authentification.module';
 import { BandModule } from './modules/band.module';
+import { NewsModule } from './modules/news.module';
 require('dotenv').config();
 
 
@@ -21,7 +22,8 @@ require('dotenv').config();
     }),
     UserModule,
     AuthModule,
-    BandModule
+    BandModule,
+    NewsModule,
   ],
 })
 export class AppModule {}

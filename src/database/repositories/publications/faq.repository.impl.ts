@@ -24,32 +24,31 @@ export class FaqRepositoryImpl implements FaqRepository {
     async getAllFaq(): Promise<Faq[]> {
         const allFaqs = await this.faqsRepository.find();
         const mappedFaqsPromises = allFaqs.map(async faq_entity => {
-            const publication_details = await this.publicationDetailsRepository.findOneBy({id: faq_entity.publication__details_});
-            const user_entity = await this.userRepository.findOneBy({id: publication_details.author_});
-            return mapFaqEntitytoModel(faq_entity, publication_details, user_entity);
+            const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.author_});
+            return mapFaqEntitytoModel(faq_entity, faq_entity.publication__details_, user_entity);
         });
         return Promise.all(mappedFaqsPromises);
     };
 
     async getFaqById(faqId: number): Promise<Faq> {
         const faq_entity = await this.faqsRepository.findOneBy({id: faqId});
-        const publication_details = await this.publicationDetailsRepository.findOneBy({id: faq_entity.publication__details_});
-        const user_entity = await this.userRepository.findOneBy({id: publication_details.author_});
-        return mapFaqEntitytoModel(faq_entity, publication_details, user_entity);
+        const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.author_});
+        return mapFaqEntitytoModel(faq_entity, faq_entity.publication__details_, user_entity);
     };
 
     async createFaq(faq: Faq): Promise<Faq> {
         const publication_details = mapPubliDetailsToEntity(faq);
         await this.publicationDetailsRepository.save(publication_details);
-        const createdFaq = mapFaqModeltoEntity(faq, publication_details.id);
+        const createdFaq = mapFaqModeltoEntity(faq, publication_details);
         faq.setId(createdFaq.id);
         return faq; 
     };
 
     async editFaq(faq: Faq): Promise<Faq> {
-        const publication_details = mapPubliDetailsToEntityEdit(faq);
+        const faq_entity = await this.faqsRepository.findOneBy({id: faq.getId()})
+        const publication_details = mapPubliDetailsToEntityEdit(faq, faq_entity.publication__details_.id);
         await this.publicationDetailsRepository.save(publication_details);
-        const editedFaq = mapFaqModeltoEntity(faq, publication_details.id);
+        const editedFaq = mapFaqModeltoEntity(faq, publication_details);
         faq.setId(editedFaq.id);
         return faq; 
     };
