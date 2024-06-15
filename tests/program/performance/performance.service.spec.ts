@@ -4,12 +4,10 @@ import { MockPerformanceRepository } from "../performance/mock.performance.repos
 import { MockTimeFrameRepository } from "./mock.timeFrame.repository";
 import { MockBandRepository } from "../../band/mock.band.repository";
 import { MockStageRepository } from "../../facility/mockRepositories/mock.stage.repository";
-import { MockSocialsRepository } from "../../band/mock.socials.repository";
 import { MockUserRepository } from "../../user/mock.user.repository";
 
 
 describe('PerformanceService', () => {
-    let socialRepository : MockSocialsRepository;
     let bandRepository : MockBandRepository;
     let stageRepository : MockStageRepository;
     let timeFrameRepository: MockTimeFrameRepository;
@@ -20,13 +18,12 @@ describe('PerformanceService', () => {
 
     beforeEach(() => {
         userRepository = new MockUserRepository();
-        socialRepository = new MockSocialsRepository();
-        bandRepository = new MockBandRepository(socialRepository, userRepository)
+        bandRepository = new MockBandRepository( userRepository)
         stageRepository = new MockStageRepository();
         timeFrameRepository = new MockTimeFrameRepository();
         userRepository.setFakeIdToTest();
-        socialRepository.setFakeIdToTest();
-        bandRepository.setFakeIdToTest();
+        bandRepository.setFakeIdToTestSocials();
+        bandRepository.setFakeIdToTestBand();
         timeFrameRepository.setFakeIdToTest();
         stageRepository.setFakeIdToTest();
         performanceRepository= new MockPerformanceRepository(userRepository, bandRepository, timeFrameRepository, stageRepository);

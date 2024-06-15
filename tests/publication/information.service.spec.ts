@@ -2,7 +2,6 @@ import { Information } from "../../src/domain/models/publication/information.mod
 import { InformationService } from "../../src/services/publication/information.service";
 import { MockInformationRepository } from "./mockRepositories/mock.information.repository";
 import { Content } from "../../src/domain/models/publication/content.model";
-import { ContentService } from "../../src/services/publication/content.service";
 import { MockContentRepository } from "./mockRepositories/mock.content.repository";
 import { RoleService } from "../../src/services/user/role.service";
 import { MockUserRepository } from "../user/mock.user.repository";
@@ -10,7 +9,6 @@ import { MockUserRepository } from "../user/mock.user.repository";
 
 
 describe('InformationService', () => {
-    let contentService: ContentService;
     let contentRepository: MockContentRepository;
     let informationService: InformationService;
     let informationRepository: MockInformationRepository;
@@ -23,9 +21,8 @@ describe('InformationService', () => {
         userRepository = new MockUserRepository;
         roleService = new RoleService();
         contentRepository = new MockContentRepository;
-        contentService = new ContentService(contentRepository);
         informationRepository= new MockInformationRepository(contentRepository, userRepository);
-        informationService = new InformationService(informationRepository, contentService, roleService);
+        informationService = new InformationService(informationRepository, roleService);
         informationRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
         userRepository.setFakeIdToTest();
     });
@@ -50,7 +47,7 @@ describe('InformationService', () => {
 
     //createInformation
     it('should return a information just created', async () => {
-        const foundInformation3 = new Information (userRepository.users[0], new Date, new Date, true, new Content('titleInformation3', 'textInformation3', new Blob));
+        const foundInformation3 = new Information (userRepository.users[0], new Date, new Date, true, new Content('titleInformation3', 'textInformation3', Buffer.from('image')));
         await informationService.createInformation(foundInformation3);
         expect(foundInformation3).toEqual(expect.objectContaining({ _id: 3, _type: 'information', _content: expect.objectContaining({_title: 'titleInformation3'})}));
 
@@ -59,7 +56,7 @@ describe('InformationService', () => {
     
     //editInformation
     it('should return a information with titleEdited and textEdited', async () => {
-        const informationEdited = new Information (userRepository.users[0], new Date, new Date, true, new Content('titleEdited', 'textEdited', new Blob));
+        const informationEdited = new Information (userRepository.users[0], new Date, new Date, true, new Content('titleEdited', 'textEdited', Buffer.from('image')));
         informationEdited.setId(1)
         const foundInformationEdited = await informationService.editInformation(informationEdited);
         expect(foundInformationEdited).toEqual(expect.objectContaining({ _content: expect.objectContaining({_title: 'titleEdited', _text: 'textEdited'})}));

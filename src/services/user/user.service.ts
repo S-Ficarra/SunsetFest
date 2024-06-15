@@ -28,7 +28,7 @@ export class UserService {
 
     async createUser(requestingUser: User, user: User): Promise<User> {
         if (this.roleService.isAdmin(requestingUser)) {
-            const existing_user = await this.userRepository.getUserByEmail(user.getEmail());            
+            const existing_user = await this.userRepository.getUserByEmail(user.getEmail());                        
             if(existing_user){
                 throw new Error ('Email already exist')
             };
@@ -41,7 +41,7 @@ export class UserService {
     async editUser(requestingUser: User, user: User): Promise<User> {
         if (this.roleService.isAdmin(requestingUser)) {
             const emailTaken = await this.userRepository.getUserByEmail(user.getEmail());
-            if(emailTaken){
+            if(emailTaken && emailTaken.getId() !== user.getId()){
                 throw new Error ('Email already exist')
             };
             const userEdited = await this.userRepository.editUser(user);

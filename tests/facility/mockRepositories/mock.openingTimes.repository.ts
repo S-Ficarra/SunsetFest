@@ -1,7 +1,6 @@
 import { OpeningTimes } from "../../../src/domain/models/facility/openingTimes.model";
-import { OpeningTimesRepository } from "../../../src/domain/repositories/facility/openingTimes.repository";
 
-export class MockOpeningTimesRepository implements OpeningTimesRepository {
+export class MockOpeningTimesRepository {
 
 
     public openingTimesArray: OpeningTimes[] = [
@@ -20,24 +19,4 @@ export class MockOpeningTimesRepository implements OpeningTimesRepository {
         this.openingTimesArray[1].setId(2)
     };
 
-
-    async getOpeningTimesById(openingTimesId: number): Promise<OpeningTimes> {
-        return this.openingTimesArray.find(ot => ot.getId() === openingTimesId);
-    };
-
-    async createOpeningTimes(openingTimes: OpeningTimes): Promise<OpeningTimes> {
-        openingTimes.setId(3);
-        this.openingTimesArray.push(openingTimes);
-        return openingTimes;
-    };
-
-    async editOpeningTimes(openingTimes: OpeningTimes): Promise<OpeningTimes> {
-        let openingTimesId = openingTimes.getId();
-        this.openingTimesArray[openingTimesId - 1] = openingTimes;
-        return openingTimes;
-    };
-
-    async deleteOpeningTimes(openingTimesId: number): Promise<void> {
-        this.openingTimesArray = this.openingTimesArray.filter(ot => ot.getId() !== openingTimesId);
-    };
 };

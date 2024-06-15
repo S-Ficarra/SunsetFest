@@ -2,15 +2,11 @@ import { Band } from "../../src/domain/models/band/band.model";
 import { BandService } from "../../src/services/band/band.service";
 import { MockBandRepository } from "./mock.band.repository";
 import { Socials } from "../../src/domain/models/band/socials.model";
-import { SocialsService } from "../../src/services/band/social.service";
-import { MockSocialsRepository } from "./mock.socials.repository";
 import { RoleService } from "../../src/services/user/role.service";
 import { MockUserRepository } from "../user/mock.user.repository";
 
 
 describe('BandService', () => {
-    let socialsService: SocialsService;
-    let socialsRepository: MockSocialsRepository;
     let bandService: BandService;
     let bandRepository: MockBandRepository;
     let roleService : RoleService;
@@ -20,13 +16,11 @@ describe('BandService', () => {
     beforeEach(() => {
         userRepository = new MockUserRepository;
         roleService = new RoleService();
-        socialsRepository = new MockSocialsRepository;
-        socialsService = new SocialsService(socialsRepository);
         userRepository.setFakeIdToTest();
-        bandRepository= new MockBandRepository(socialsRepository, userRepository);
+        bandRepository= new MockBandRepository(userRepository);
         bandService = new BandService(bandRepository, roleService);
-        socialsRepository.setFakeIdToTest();
-        bandRepository.setFakeIdToTest(); //attributes id to elements of the array where the methods are tested
+        bandRepository.setFakeIdToTestSocials();
+        bandRepository.setFakeIdToTestBand(); //attributes id to elements of the array where the methods are tested
     });
     
     //getAllBand
@@ -48,7 +42,7 @@ describe('BandService', () => {
 
     //createBand
     it('should return a band just created', async () => {
-        const foundBand3 = new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), new Blob, new Blob, userRepository.users[0], new Date, new Date);
+        const foundBand3 = new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), Buffer.from('thumbnail'), Buffer.from('banner'), userRepository.users[0], new Date, new Date);
         await bandService.createBand(foundBand3);       
         expect(foundBand3).toEqual(expect.objectContaining({ _id: 3, _country: 'country3', _socials: expect.objectContaining({_youtube: 'yout3'})}));
 
@@ -57,7 +51,7 @@ describe('BandService', () => {
     
     //editBand
     it('should return a band with country3 and socials yout3 & fb3', async () => {
-        const bandEdited = new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), new Blob, new Blob, userRepository.users[0], new Date, new Date);
+        const bandEdited = new Band ('band3', 'country3', 'text3', new Socials('fb3', 'insta3', 'twit3', 'yout3', 'spot3', 'site3', 'intspo3', 'intyout3'), Buffer.from('thumbnail'), Buffer.from('banner'), userRepository.users[0], new Date, new Date);
         bandEdited.setId(1)
         bandEdited.getSocials().setId(1);
         const foundBandEdited = await bandService.editBand(bandEdited);

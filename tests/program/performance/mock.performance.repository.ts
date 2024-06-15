@@ -23,7 +23,7 @@ export class MockPerformanceRepository implements PerformanceRepository{
             this.timeFrameRepository = timeFrameRepository;
             this.stageRepository = stageRepository;
             userRepository.setFakeIdToTest();
-            bandRepository.setFakeIdToTest();
+            bandRepository.setFakeIdToTestBand();
             timeFrameRepository.setFakeIdToTest();
             stageRepository.setFakeIdToTest();
             this.initializePerformances();

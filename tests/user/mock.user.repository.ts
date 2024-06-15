@@ -21,7 +21,7 @@ export class MockUserRepository implements UserRepository {
     }
 
     async getUserByEmail(email: string): Promise<User> {
-        return this.users.find(user => email === email);
+        return this.users.find(user => user.getEmail() === email);
 
     }
 
