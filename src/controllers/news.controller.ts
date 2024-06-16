@@ -12,8 +12,8 @@ import { AuthentificationService } from "src/authentification/authentification.s
 export class NewsController {
 
     constructor(
-        private readonly newsService : NewsService,
-        private readonly authService : AuthentificationService
+        private readonly newsServices : NewsService,
+        private readonly authServices : AuthentificationService
 
     ){};
 
@@ -21,7 +21,7 @@ export class NewsController {
     @Get('news')
     async getAllNews(): Promise <News[] | {}> {
         try {
-            return await this.newsService.getAllNews();
+            return await this.newsServices.getAllNews();
         } catch (error) {
             return {message : error.message}; 
         };
@@ -32,7 +32,7 @@ export class NewsController {
     @Get('news/:id')
     async getNewsById(@Param('id') id: number): Promise <News | {}> {
         try {
-            return await this.newsService.getNewsById(id);
+            return await this.newsServices.getNewsById(id);
         } catch (error) {
             return {message : error.message}; 
         }
@@ -48,11 +48,11 @@ export class NewsController {
         @Body(new ValidationPipe()) createNewsDto: IllustratedDto): Promise <News | {}> {
             
             try {         
-                const userLogged = await this.authService.getUserLogged(req)
+                const userLogged = await this.authServices.getUserLogged(req)
                 const image = files.image ? files.image[0].buffer : null;
                 const newsToCreate = mapNewsDtoToModelCreate(createNewsDto, image, userLogged);
 
-                return await this.newsService.createNews(newsToCreate);
+                return await this.newsServices.createNews(newsToCreate);
                 
             } catch (error) {
                 return {message : error.message};   
@@ -71,12 +71,12 @@ export class NewsController {
         @Body(new ValidationPipe()) editNewsDto: IllustratedDto): Promise <News | {}> {
             
             try {
-                const userLogged = await this.authService.getUserLogged(req);
-                const newstoEdit = await this.newsService.getNewsById(id);
+                const userLogged = await this.authServices.getUserLogged(req);
+                const newstoEdit = await this.newsServices.getNewsById(id);
                 const image = files.image ? files.image[0].buffer : null;
                 const mappedNewsToEdit = mapNewsDtoToModelEdit(newstoEdit, editNewsDto, image, userLogged);
 
-                return await this.newsService.editNews(mappedNewsToEdit);
+                return await this.newsServices.editNews(mappedNewsToEdit);
 
             } catch (error) {
                 return {message : error.message}; 
@@ -89,13 +89,13 @@ export class NewsController {
     async deleteNews(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
     
         try {
-            const userLogged = await this.authService.getUserLogged(req)
+            const userLogged = await this.authServices.getUserLogged(req)
             const newsId = +id;
-            const news = await this.newsService.getNewsById(newsId);
+            const news = await this.newsServices.getNewsById(newsId);
             if(!news){
                 return {message: `News ${newsId} do not exist`};
             };
-            await this.newsService.deleteNews(userLogged, newsId);
+            await this.newsServices.deleteNews(userLogged, newsId);
             return {message: `News ${newsId} deleted`};
         } catch (error) {
             return {message : error.message };             

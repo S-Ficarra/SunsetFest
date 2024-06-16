@@ -14,6 +14,16 @@ export function mapFaqModeltoEntity (model: Faq, publiDetails: publication_detai
 
 };
 
+export function mapFaqModeltoEntityEdit (faqId: number, model: Faq, publiDetails: publication_details): faqs {
+    const entity = new faqs();
+    entity.id = faqId;
+    entity.question = model.getQuestion();
+    entity.answer = model.getAnswer();
+    entity.publication__details_ = publiDetails;
+    return entity;
+
+};
+
 export function mapFaqEntitytoModel (entity: faqs, publiDetails: publication_details, user: users): Faq {
 
     const faqUser = new User (

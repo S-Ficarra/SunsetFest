@@ -1,5 +1,4 @@
 import { Content } from "src/domain/models/publication/content.model";
-import { News } from "src/domain/models/publication/news.model";
 import { User } from "src/domain/models/user/user.model";
 import { IllustratedDto } from "../DTO/illustrated.dto";
 import { Information } from "src/domain/models/publication/information.model";
@@ -34,7 +33,6 @@ export function mapInformationDtoToModelEdit (infoToEdit: Information, informati
     );
 
     const status = informationDto.status === 'true';
-
 
     infoToEdit.setContent(content);
     infoToEdit.setUser(user);
