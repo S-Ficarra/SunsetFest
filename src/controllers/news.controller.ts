@@ -4,7 +4,7 @@ import { multerConfig } from "multer.config";
 import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
 import { News } from "src/domain/models/publication/news.model";
 import { NewsService } from "src/services/publication/news.service";
-import { NewsDto } from "./DTO/news.dto";
+import { IllustratedDto } from "./DTO/illustrated.dto";
 import { mapNewsDtoToModelCreate, mapNewsDtoToModelEdit } from "./mappers/news.mapper";
 import { AuthentificationService } from "src/authentification/authentification.service";
 
@@ -45,10 +45,9 @@ export class NewsController {
     async createNews(
         @UploadedFiles() files: { image?: Express.Multer.File[] },
         @Req()req: Request, 
-        @Body(new ValidationPipe()) createNewsDto: NewsDto): Promise <News | {}> {
+        @Body(new ValidationPipe()) createNewsDto: IllustratedDto): Promise <News | {}> {
             
-            try {
-            
+            try {         
                 const userLogged = await this.authService.getUserLogged(req)
                 const image = files.image ? files.image[0].buffer : null;
                 const newsToCreate = mapNewsDtoToModelCreate(createNewsDto, image, userLogged);
@@ -69,7 +68,7 @@ export class NewsController {
         @Param('id')id: number,
         @UploadedFiles() files: { image?: Express.Multer.File[] },
         @Req()req: Request, 
-        @Body(new ValidationPipe()) editNewsDto: NewsDto): Promise <News | {}> {
+        @Body(new ValidationPipe()) editNewsDto: IllustratedDto): Promise <News | {}> {
             
             try {
                 const userLogged = await this.authService.getUserLogged(req);
@@ -87,7 +86,7 @@ export class NewsController {
 
     @UseGuards(JwtAuthGuard)
     @Post('news/:id/deletenews')
-    async deleteBand(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
+    async deleteNews(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
     
         try {
             const userLogged = await this.authService.getUserLogged(req)

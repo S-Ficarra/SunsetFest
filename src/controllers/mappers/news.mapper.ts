@@ -1,10 +1,10 @@
 import { User } from "src/domain/models/user/user.model";
-import { NewsDto } from "../DTO/news.dto";
+import { IllustratedDto } from "../DTO/illustrated.dto";
 import { Content } from "src/domain/models/publication/content.model";
 import { News } from "src/domain/models/publication/news.model";
 
 
-export function mapNewsDtoToModelCreate (newsDto : NewsDto, image: Buffer, user: User) {
+export function mapNewsDtoToModelCreate (newsDto : IllustratedDto, image: Buffer, user: User) {
 
     const content = new Content (
         newsDto.title,
@@ -12,18 +12,22 @@ export function mapNewsDtoToModelCreate (newsDto : NewsDto, image: Buffer, user:
         image
     );
 
+    const status = newsDto.status === 'true';
+    console.log(status);
+    
+
     const news = new News (
         user,
         new Date(),
         new Date(),
-        newsDto.status,
+        status,
         content
     );
 
     return news;
 };
 
-export function mapNewsDtoToModelEdit (newsToEdit: News, newsDto: NewsDto, image: Buffer, user: User) {
+export function mapNewsDtoToModelEdit (newsToEdit: News, newsDto: IllustratedDto, image: Buffer, user: User) {
 
     const content = new Content (
         newsDto.title,
@@ -31,9 +35,12 @@ export function mapNewsDtoToModelEdit (newsToEdit: News, newsDto: NewsDto, image
         image
     );
 
+    const status = newsDto.status === 'true';
+
+
     newsToEdit.setContent(content);
     newsToEdit.setUser(user);
-    newsToEdit.setStatus(newsDto.status);
+    newsToEdit.setStatus(status);
     newsToEdit.setModifiedAt(new Date());
 
     return newsToEdit;

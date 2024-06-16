@@ -2,30 +2,40 @@ import { User } from "../../domain/models/user/user.model";
 import { Information } from "../../domain/models/publication/information.model";
 import { InformationRepository } from "../../domain/repositories/publication/information.repository";
 import { RoleService } from "../user/role.service";
+import { Inject } from "@nestjs/common";
 
 export class InformationService {
 
     constructor(
-        private informationRepository: InformationRepository,
+        @Inject('InformationRepository') private informationRepository: InformationRepository,
         private roleService : RoleService,
     ){};
 
-    async getAllInformation(): Promise<Information[]>{
-        return this.informationRepository.getAllInformation();
+    async getAllInformation(): Promise<Information[]> {
+        const allInfo = await this.informationRepository.getAllInformation();
+        const allNull = allInfo.every(info => info === null);
+        if (allNull) {           
+            throw new Error ('No informations found');
+        }
+        return allInfo;
     };
 
     async getInformationById(informationId: number): Promise<Information>{
-        return this.informationRepository.getInformationById(informationId);
+        const info = await this.informationRepository.getInformationById(informationId);
+        if (info) {
+            return info;
+        };
+        throw new Error (`Information ${informationId} do not exist`);
     };
 
     async createInformation(information: Information): Promise<Information> {
-        this.informationRepository.createInformation(information);  
-        return information;      
+        const infoCreated = await this.informationRepository.createInformation(information);  
+        return infoCreated;      
     };
 
     async editInformation(information: Information): Promise<Information> {
-        this.informationRepository.editInformation(information);    
-        return information;
+        const infoEdited = await this.informationRepository.editInformation(information);    
+        return infoEdited;
     };
 
 
@@ -37,12 +47,5 @@ export class InformationService {
         };
     };
 
-    async changeStatus(requestingUser: User, informationId: number, newStatus: boolean): Promise<void> {
-        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            (await this.getInformationById(informationId)).setStatus(newStatus)
-        } else {
-            throw new Error ('Unauthorized')
-        };
-    };
 
 };

@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/authentification.module';
 import { BandModule } from './modules/band.module';
 import { NewsModule } from './modules/news.module';
+import { InformationModule } from './modules/information.module';
 require('dotenv').config();
 
 
@@ -24,6 +25,7 @@ require('dotenv').config();
     AuthModule,
     BandModule,
     NewsModule,
+    InformationModule
   ],
 })
 export class AppModule {}

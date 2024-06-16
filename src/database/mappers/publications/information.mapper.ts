@@ -7,6 +7,7 @@ import { User } from "src/domain/models/user/user.model";
 import { users } from "src/database/entities/users.entity";
 import { Content } from "src/domain/models/publication/content.model";
 import { publication_types } from "src/database/entities/publication_types.entity";
+import { PublicationType } from "src/domain/models/publication/PublicationTypes";
 
 
 
@@ -41,7 +42,7 @@ export function mapInformationEntityToModel(publi_entity: publications, content_
 
 export function mapInformationTypeToEntity (model: Information): publication_types{
     const entity = new publication_types();    
-    entity.type = model.getType();
+    entity.type = PublicationType.Information;
     return entity;
 };
 

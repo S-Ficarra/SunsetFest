@@ -11,8 +11,13 @@ export class NewsService{
         private roleService : RoleService,
     ){};
 
-    async getAllNews(): Promise<News[]>{
-        return this.newsRepository.getAllNews();
+    async getAllNews(): Promise<News[] | {}>{
+        const allNews = await this.newsRepository.getAllNews();
+        const allNull = allNews.every(news => news === null);
+        if (allNull) {
+            return ('No news found');
+        }
+        return allNews;
     };
 
     async getNewsById(newsId: number): Promise<News>{
@@ -20,7 +25,7 @@ export class NewsService{
         if(news){
             return news;
         };
-        throw new Error
+        throw new Error (`News ${newsId} do not exist`);
     };
 
     async createNews(news: News): Promise<News> {
@@ -41,12 +46,5 @@ export class NewsService{
         };
     };
 
-    async changeStatus(requestingUser: User, newsId: number, newStatus: boolean): Promise<void> {
-        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            (await this.getNewsById(newsId)).setStatus(newStatus)
-        } else {
-            throw new Error ('Unauthorized')
-        };
-    };
 
 };

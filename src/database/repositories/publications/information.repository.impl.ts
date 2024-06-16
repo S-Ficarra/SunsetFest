@@ -11,8 +11,10 @@ import { InformationRepository } from 'src/domain/repositories/publication/infor
 import { mapInformationEntityToModel, mapInformationTypeToEntity, mapInformationTypeToEntityEdit } from 'src/database/mappers/publications/information.mapper';
 import { mapPubliDetailsToEntity, mapPubliDetailsToEntityEdit, mapPublicationModelToEntity, mapPublicationModelToEntityEdit } from 'src/database/mappers/publications/publication.mapper';
 import { mapIllustratedImageToEntity, mapIllustratedImageToEntityEdit, mapIllustratedPubliContentToEntity, mapIllustratedPubliContentToEntityEdit } from 'src/database/mappers/publications/illustrated.mapper';
+import { Injectable } from '@nestjs/common';
 
 
+@Injectable()
 export class InformationRepositoryImpl implements InformationRepository {
 
     constructor(
@@ -32,11 +34,12 @@ export class InformationRepositoryImpl implements InformationRepository {
 
 
     async getAllInformation(): Promise<Information[]> {
-        const allInformations = await this.publicationRepository.find();
-        const mappedInformations = allInformations.map(async publi_entity => {
-            const content_entity=  publi_entity.publication__contents_
-            const image_entity = publi_entity.images_
-            const detail_entity =  publi_entity.publication__details_
+        const allPublication = await this.publicationRepository.find();
+        const informationEntities = allPublication.filter(publi_entity => publi_entity.publication__types_.type === 'information');
+        const mappedInformations = informationEntities.map(async publi_entity => {
+            const content_entity=  publi_entity.publication__contents_;
+            const image_entity = publi_entity.images_;
+            const detail_entity =  publi_entity.publication__details_;
             const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
             return mapInformationEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
         })
@@ -44,12 +47,15 @@ export class InformationRepositoryImpl implements InformationRepository {
     };
 
     async getInformationById(informationId: number): Promise<Information> {
-        const publi_entity = await this.publicationRepository.findOneBy({id: informationId});
-        const content_entity=  publi_entity.publication__contents_
-        const image_entity = publi_entity.images_
-        const detail_entity =  publi_entity.publication__details_
-        const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
-        return mapInformationEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
+        const publi_entity = await this.publicationRepository.findOneBy({id: informationId});        
+        if (publi_entity) {
+            const content_entity=  publi_entity.publication__contents_;
+            const image_entity = publi_entity.images_;
+            const detail_entity =  publi_entity.publication__details_;
+            const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
+            return mapInformationEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
+        };
+        return null;
     };
 
     async createInformation(information: Information): Promise<Information> {
@@ -69,7 +75,6 @@ export class InformationRepositoryImpl implements InformationRepository {
 
     async editInformation(information: Information): Promise<Information> {
         const information_entity = await this.publicationRepository.findOneBy({id: information.getId()})
-
         const content_entity = mapIllustratedPubliContentToEntityEdit(information, information_entity.publication__contents_.id);
         await this.contentRepository.save(content_entity);
         const image_entity = mapIllustratedImageToEntityEdit(information, information_entity.images_.id);
@@ -85,7 +90,18 @@ export class InformationRepositoryImpl implements InformationRepository {
     };
 
     async deleteInformation(informationId: number): Promise<void> {
+        const info_entity = await this.publicationRepository.findOneBy({id: informationId});
+        const content_entity = info_entity.publication__contents_.id;
+        const type_entity = info_entity.publication__types_.id;
+        const detail_entity = info_entity.publication__details_.id;
+        const image = info_entity.images_.id;
+
+        this.publiTypeRepository.delete(type_entity);
+        this.imageRepository.delete(image);
+        this.detailsRepository.delete(detail_entity);
+        this.contentRepository.delete(content_entity);
         this.publicationRepository.delete(informationId);
     };
    
+
 };
