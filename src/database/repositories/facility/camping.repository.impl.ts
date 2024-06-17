@@ -22,8 +22,11 @@ export class CampingRepositoryImpl implements CampingRepository {
     async getAllCampings(): Promise<Camping[]> {
         const allCampings = await this.campingRepository.find()
         const mappedCampingsPromises = allCampings.map( async camping_entity => {
-            const location_entity = await this.locationRepository.findOneBy({id: camping_entity.location_.id});
-            return mapCampingEntityToModel(camping_entity, location_entity.longitude, location_entity.latitude);
+            if (camping_entity) {
+                const camping_location = await this.locationRepository.findOneBy({id: camping_entity.location_.id});
+                return mapCampingEntityToModel(camping_entity, camping_location.longitude, camping_location.latitude);  
+            };
+            return null;
         });
         return Promise.all(mappedCampingsPromises);
     };

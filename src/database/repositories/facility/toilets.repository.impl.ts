@@ -7,7 +7,6 @@ import { ToiletRepository } from 'src/domain/repositories/facility/toilet.reposi
 import { mapFacilityLocationToEntity, mapFacilityLocationToEntityEdit } from '../../mappers/facility/facility.mapper';
 import { mapToiletEntityToModel, mapToiletModelToEntity, mapToiletModelToEntityEdit } from '../../mappers/facility/toilet.mapper';
 import { Injectable } from '@nestjs/common';
-import { timeStamp } from 'console';
 
 @Injectable()
 export class ToiletRepositoryImpl implements ToiletRepository {
@@ -22,8 +21,11 @@ export class ToiletRepositoryImpl implements ToiletRepository {
     async getAllToilets(): Promise<Toilet[]> {
         const allToilet = await this.toiletsRepository.find();
         const mappedToiletPromises = allToilet.map(async toilet_entity => {
-            const location_entity = await this.locationRepository.findOneBy({id: toilet_entity.location_.id});
-            return mapToiletEntityToModel(toilet_entity, location_entity.longitude, location_entity.latitude);
+            if (toilet_entity) {
+                const location_entity = await this.locationRepository.findOneBy({id: toilet_entity.location_.id});
+                return mapToiletEntityToModel(toilet_entity, location_entity.longitude, location_entity.latitude);            
+            };   
+            return null;
         });
         return Promise.all(mappedToiletPromises);
     };

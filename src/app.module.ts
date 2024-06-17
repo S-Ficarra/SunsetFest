@@ -8,6 +8,7 @@ import { InformationModule } from './modules/information.module';
 import { FaqsModule } from './modules/faqs.module';
 import { ToiletModule } from './modules/toilets.module';
 import { CampingModule } from './modules/camping.module';
+import { VipModule } from './modules/vip.module';
 require('dotenv').config();
 
 
@@ -32,6 +33,7 @@ require('dotenv').config();
     FaqsModule,
     ToiletModule,
     CampingModule,
+    VipModule,
   ],
 })
 export class AppModule {}
