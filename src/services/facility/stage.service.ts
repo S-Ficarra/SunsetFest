@@ -1,30 +1,35 @@
+import { Inject } from "@nestjs/common";
 import { Stage } from "src/domain/models/facility/stage.model";
 import { StageRepository } from "src/domain/repositories/facility/stage.repository";
 
 export class StageService {
 
-    constructor(private stageRepository : StageRepository){};
+    constructor( @Inject('StageRepository') private stageRepository : StageRepository){};
 
     async getAllStages(): Promise<Stage[]> {
-        return this.stageRepository.getAllStages();
+        return await this.stageRepository.getAllStages();
     };
 
     async getStageById(stageId: number): Promise<Stage> {
-        return this.stageRepository.getStageById(stageId);
+        const stage = await this.stageRepository.getStageById(stageId);
+        if (stage) {
+            return stage
+        };
+        throw new Error (`Stage ${stageId} do not exist`);
     };
 
     async createStage(stage: Stage): Promise<Stage> {
-        this.stageRepository.createStage(stage);
+        await this.stageRepository.createStage(stage);
         return stage;
     };
 
     async editStage(stage: Stage): Promise<Stage> {
-        this.stageRepository.editStage(stage);
+        await this.stageRepository.editStage(stage);
         return stage;
     };
 
     async deleteStage(stageId: number): Promise<void> {
-        this.stageRepository.deleteStage(stageId);
+        await this.stageRepository.deleteStage(stageId);
     };
 
 };
