@@ -1,31 +1,36 @@
+import { Inject } from "@nestjs/common";
 import { Camping } from "src/domain/models/facility/camping.model";
 import { CampingRepository } from "src/domain/repositories/facility/camping.repository";
 
 export class CampingService{
 
-    constructor(private campingRepository : CampingRepository){};
+    constructor( @Inject('CampingRepository') private campingRepository : CampingRepository){};
     
 
     async getAllCampings(): Promise<Camping[]> {
-        return this.campingRepository.getAllCampings();
+        return await this.campingRepository.getAllCampings();
     };
 
     async getCampingById(campingId: number): Promise<Camping> {
-        return this.campingRepository.getCampingById(campingId);
+        const camping = await this.campingRepository.getCampingById(campingId);
+        if (camping) {
+            return camping;
+        };
+        throw new Error (`Camping ${campingId} do not exist`);
     };
 
     async createCamping(camping: Camping): Promise<Camping> {
-        this.campingRepository.createCamping(camping);
-        return camping;
+        const createdCamping = await this.campingRepository.createCamping(camping);
+        return createdCamping;
     };
 
     async editCamping(camping: Camping): Promise<Camping> {
-        this.campingRepository.editCamping(camping);
-        return camping;
+        const editedCamping = await this.campingRepository.editCamping(camping);
+        return editedCamping;
     };
 
     async deleteCamping(campingId: number): Promise<void> {
-        this.campingRepository.deleteCamping(campingId);
+        await this.campingRepository.deleteCamping(campingId);
     };
 
 

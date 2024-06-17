@@ -11,7 +11,7 @@ import { mapToiletDtoToModelCreate, mapToiletDtoToModelEdit } from "./mappers/to
 export class ToiletController {
 
     constructor (
-        private readonly toiletServices : ToiletService,
+        private readonly toiletServices : ToiletService
     ){};
 
 
@@ -70,7 +70,7 @@ export class ToiletController {
     @Post('toilets/:id/deletetoilet')
     async deleteToilet(@Param('id') id: number): Promise<{}> {
         try {
-            const toiletId = +id;
+            const toiletId = id;
             const toilet = await this.toiletServices.getToiletById(toiletId);
             
             if (!toilet) {

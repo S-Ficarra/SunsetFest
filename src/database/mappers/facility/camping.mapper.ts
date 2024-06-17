@@ -1,11 +1,22 @@
 import { campings } from "src/database/entities/campings.entity";
+import { locations } from "src/database/entities/locations.entity";
 import { Camping } from "src/domain/models/facility/camping.model";
 
-export function mapCampingModelToEntity (model: Camping, fkLocation: number): campings {
+export function mapCampingModelToEntity (model: Camping, location: locations): campings {
 
     const entity = new campings();
     entity.name = model.getName();
-    entity.location_ = fkLocation;
+    entity.location_ = location;
+    entity.capacity = model.getCapacity();
+    return entity;
+};
+
+export function mapCampingModelToEntityEdit (model: Camping, location: locations): campings {
+
+    const entity = new campings();
+    entity.id = model.getId();
+    entity.name = model.getName();
+    entity.location_ = location;
     entity.capacity = model.getCapacity();
     return entity;
 };
