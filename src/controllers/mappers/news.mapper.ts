@@ -12,9 +12,7 @@ export function mapNewsDtoToModelCreate (newsDto : IllustratedDto, image: Buffer
         image
     );
 
-    const status = newsDto.status === 'true';
-    console.log(status);
-    
+    const status = newsDto.status === 'true';    
 
     const news = new News (
         user,

@@ -12,6 +12,15 @@ export function mapFacilityLocationToEntity(model: Facility): locations {
     return location_entity;
 };
 
+export function mapFacilityLocationToEntityEdit(model: Facility, locEntityId : number): locations {
+    const location_entity = new locations();
+    location_entity.id = locEntityId
+    location_entity.facility_type = model.getType();
+    location_entity.longitude = model.getLongitude();
+    location_entity.latitude = model.getLatitude();
+    return location_entity;
+};
+
 export function mapShopOpenTimesToEntity (model: Shop): opening_times{
     const openTimes_entity = new opening_times();
     openTimes_entity.opening_time = model.getOpeningTimes().getOpenAt();

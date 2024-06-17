@@ -13,7 +13,7 @@ export class FaqService {
     ){};
 
     async getAllFaq(): Promise<Faq[]> {
-        return this.faqRepository.getAllFaq();
+        return await this.faqRepository.getAllFaq();
     };
 
 

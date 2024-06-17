@@ -6,6 +6,7 @@ import { BandModule } from './modules/band.module';
 import { NewsModule } from './modules/news.module';
 import { InformationModule } from './modules/information.module';
 import { FaqsModule } from './modules/faqs.module';
+import { ToiletModule } from './modules/toilets.module';
 require('dotenv').config();
 
 
@@ -27,7 +28,8 @@ require('dotenv').config();
     BandModule,
     NewsModule,
     InformationModule,
-    FaqsModule
+    FaqsModule,
+    ToiletModule
   ],
 })
 export class AppModule {}

@@ -10,8 +10,8 @@ export class toilets {
     @Column()
     name: string;
 
-    @ManyToOne(() => locations, {cascade: true, onDelete: 'CASCADE'})
+    @ManyToOne(() => locations, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    location_: number;
+    location_: locations;
 
 };
