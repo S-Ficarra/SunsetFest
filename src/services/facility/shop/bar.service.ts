@@ -1,31 +1,36 @@
+import { Inject } from "@nestjs/common";
 import { Bar } from "src/domain/models/facility/shop/bar.model";
 import { BarRepository } from "src/domain/repositories/facility/shop/bar.repository";
 
 export class BarService implements BarRepository {
 
-    constructor(private barRepository : BarRepository){}
+    constructor( @Inject('BarRepository') private barRepository : BarRepository){}
     
     
     async getAllBars(): Promise<Bar[]> {
-        return this.barRepository.getAllBars();
+        return await this.barRepository.getAllBars();
     };
 
     async getBarById(barId: number): Promise<Bar> {
-        return this.barRepository.getBarById(barId);
+        const bar = await this.barRepository.getBarById(barId);
+        if (bar) {
+            return bar;
+        };
+        throw new Error (`Bar ${barId} do not exist`);
     };
 
     async createBar(bar: Bar): Promise<Bar> {
-        this.barRepository.createBar(bar);
-        return bar;
+        const barCreated = await this.barRepository.createBar(bar);
+        return barCreated;
     };
 
     async editBar(bar: Bar): Promise<Bar> {
-        this.barRepository.editBar(bar);
-        return bar;
+        const barEdited = await this.barRepository.editBar(bar);
+        return barEdited;
     };
 
     async deleteBar(barId: number): Promise<void> {
-        this.barRepository.deleteBar(barId);
+        await this.barRepository.deleteBar(barId);
     };
 
 };

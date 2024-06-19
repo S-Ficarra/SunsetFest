@@ -27,3 +27,11 @@ export function mapShopOpenTimesToEntity (model: Shop): opening_times{
     openTimes_entity.closing_time = model.getOpeningTimes().getCloseAt();
     return openTimes_entity;
 };
+
+export function mapShopOpenTimesToEntityEdit (model: Shop, openTimeId: number): opening_times{
+    const openTimes_entity = new opening_times();
+    openTimes_entity.id = openTimeId;
+    openTimes_entity.opening_time = model.getOpeningTimes().getOpenAt();
+    openTimes_entity.closing_time = model.getOpeningTimes().getCloseAt();
+    return openTimes_entity;
+};

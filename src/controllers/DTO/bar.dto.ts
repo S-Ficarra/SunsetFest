@@ -1,15 +1,11 @@
 import { Type } from "class-transformer";
-import { IsString, IsNumber } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 
 
-export class StageDto {
-    
+export class BarDto {
+
     @IsString()
     name: string;
-
-    @IsNumber()
-    @Type(() => Number)
-    capacity: number;
 
     @IsNumber()
     @Type(() => Number)
@@ -18,5 +14,11 @@ export class StageDto {
     @IsNumber()
     @Type(() => Number)
     longitude: number;
+
+    @IsString()
+    openingTime: string;
+
+    @IsString()
+    closingTime: string;
 
 };

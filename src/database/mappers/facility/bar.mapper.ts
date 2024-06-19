@@ -2,12 +2,22 @@ import { bars } from "src/database/entities/bars.entity";
 import { opening_times } from "src/database/entities/opening_times.entity";
 import { Bar } from "src/domain/models/facility/shop/bar.model";
 import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
+import { locations } from "src/database/entities/locations.entity";
 
-export function mapBarModelToEntity (model: Bar, fkLocation: number, fkOpenTimes: number): bars{
+export function mapBarModelToEntity (model: Bar, Location: locations, OpenTimes: opening_times): bars{
     const entity = new bars();
     entity.name = model.getName();
-    entity.location_ = fkLocation;
-    entity.opening__times_ = fkOpenTimes;
+    entity.location_ = Location;
+    entity.opening__times_ = OpenTimes;
+    return entity;
+};
+
+export function mapBarModelToEntityEdit (model: Bar, Location: locations, OpenTimes: opening_times): bars{
+    const entity = new bars();
+    entity.id = model.getId();
+    entity.name = model.getName();
+    entity.location_ = Location;
+    entity.opening__times_ = OpenTimes;
     return entity;
 };
 
