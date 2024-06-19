@@ -12,6 +12,7 @@ import { VipModule } from './modules/vip.module';
 import { StageModule } from './modules/stages.module';
 import { CountdownModule } from './modules/countdown.module';
 import { BarModule } from './modules/bar.module';
+import { RestaurantModule } from './modules/restaurant.module';
 require('dotenv').config();
 
 
@@ -38,8 +39,9 @@ require('dotenv').config();
     CampingModule,
     VipModule,
     StageModule,
-    CountdownModule,
     BarModule,
+    RestaurantModule,
+    CountdownModule,
   ],
 })
-export class AppModule {}
+export class AppModule {}""

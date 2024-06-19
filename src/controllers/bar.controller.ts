@@ -86,15 +86,5 @@ export class BarController {
         };
     };
 
-
-
-
-
-
-
-
-
-
-
     
 };

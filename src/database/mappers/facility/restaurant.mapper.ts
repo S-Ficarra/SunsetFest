@@ -2,13 +2,24 @@ import { restaurants } from "src/database/entities/restaurants.entity";
 import { opening_times } from "src/database/entities/opening_times.entity";
 import { Restaurant } from "src/domain/models/facility/shop/restaurant.model";
 import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
+import { locations } from "src/database/entities/locations.entity";
 
-export function mapRestaurantModelToEntity (model: Restaurant, fkLocation: number, fkOpenTimes: number): restaurants{
+export function mapRestaurantModelToEntity (model: Restaurant, Location: locations, openTimes: opening_times): restaurants{
     const entity = new restaurants();
     entity.name = model.getName();
     entity.food_type = model.getFoodType();
-    entity.location_ = fkLocation;
-    entity.opening__times_ = fkOpenTimes;
+    entity.location_ = Location;
+    entity.opening__times_ = openTimes;
+    return entity;
+};
+
+export function mapRestaurantModelToEntityEdit (model: Restaurant, location: locations, openTimes: opening_times): restaurants{
+    const entity = new restaurants();
+    entity.id = model.getId();
+    entity.name = model.getName();
+    entity.food_type = model.getFoodType();
+    entity.location_ = location;
+    entity.opening__times_ = openTimes;
     return entity;
 };
 

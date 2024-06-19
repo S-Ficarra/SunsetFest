@@ -1,30 +1,35 @@
+import { Inject } from "@nestjs/common";
 import { Restaurant } from "src/domain/models/facility/shop/restaurant.model";
 import { RestaurantRepository } from "src/domain/repositories/facility/shop/restaurant.repository";
 
 export class RestaurantService{
 
-    constructor(private restaurantRepository : RestaurantRepository){};
+    constructor( @Inject('RestaurantRepository') private restaurantRepository : RestaurantRepository){};
 
     async getAllRestaurants(): Promise<Restaurant[]> {
-        return this.restaurantRepository.getAllRestaurants();
+        return await this.restaurantRepository.getAllRestaurants();
     };
 
     async getRestaurantById(restaurantId: number): Promise<Restaurant> {
-        return this.restaurantRepository.getRestaurantById(restaurantId);
+        const restaurant =  await this.restaurantRepository.getRestaurantById(restaurantId);
+        if (restaurant) {
+            return restaurant;
+        };
+        throw new Error (`Restaurant ${restaurantId} do not exist`)
     };
 
     async createRestaurant(restaurant: Restaurant): Promise<Restaurant> {
-        this.restaurantRepository.createRestaurant(restaurant);
+        await this.restaurantRepository.createRestaurant(restaurant);
         return restaurant;
     };
 
     async editRestaurant(restaurant: Restaurant): Promise<Restaurant> {
-        this.restaurantRepository.editRestaurant(restaurant);
+        await this.restaurantRepository.editRestaurant(restaurant);
         return restaurant;
     };
 
     async deleteRestaurant(restaurantId: number): Promise<void> {
-        this.restaurantRepository.deleteRestaurant(restaurantId);
+        await this.restaurantRepository.deleteRestaurant(restaurantId);
     };
 
 };
