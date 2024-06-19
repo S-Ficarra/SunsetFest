@@ -15,17 +15,17 @@ export class RestaurantService{
         if (restaurant) {
             return restaurant;
         };
-        throw new Error (`Restaurant ${restaurantId} do not exist`)
+        throw new Error (`Restaurant ${restaurantId} do not exist`);
     };
 
     async createRestaurant(restaurant: Restaurant): Promise<Restaurant> {
-        await this.restaurantRepository.createRestaurant(restaurant);
-        return restaurant;
+        const createdRestaurant = await this.restaurantRepository.createRestaurant(restaurant);
+        return createdRestaurant;
     };
 
     async editRestaurant(restaurant: Restaurant): Promise<Restaurant> {
-        await this.restaurantRepository.editRestaurant(restaurant);
-        return restaurant;
+        const editedRestaurant = await this.restaurantRepository.editRestaurant(restaurant);
+        return editedRestaurant;
     };
 
     async deleteRestaurant(restaurantId: number): Promise<void> {

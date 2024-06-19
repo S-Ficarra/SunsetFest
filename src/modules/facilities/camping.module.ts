@@ -2,36 +2,38 @@ import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthentificationService } from "src/authentification/authentification.service";
-import { CountdownController } from "src/controllers/controllers/countdown.controller";
-import { countdowns } from "src/database/entities/countdowns.entity";
+import { CampingController } from "src/controllers/controllers/facilities/camping.controller";
+import { campings } from "src/database/entities/campings.entity";
+import { locations } from "src/database/entities/locations.entity";
 import { users } from "src/database/entities/users.entity";
-import { CountdownRepositoryImpl } from "src/database/repositories/countdown.repository.impl";
+import { CampingRepositoryImpl } from "src/database/repositories/facility/camping.repository.impl";
 import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { CountdownService } from "src/services/countdown.service";
+import { CampingService } from "src/services/facility/camping.service";
 import { RoleService } from "src/services/user/role.service";
 import { UserService } from "src/services/user/user.service";
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([countdowns]),
+        TypeOrmModule.forFeature([campings]),
+        TypeOrmModule.forFeature([locations]),
         TypeOrmModule.forFeature([users]),
     ],
     providers: [
-        CountdownService,
+        CampingService,
         {
-            provide: 'CountdownRepository',
-            useClass: CountdownRepositoryImpl,
+            provide: 'CampingRepository',
+            useClass: CampingRepositoryImpl,
         },
         UserService,
         {
             provide: 'UserRepository',
             useClass: UserRepositoryImpl,
         },
-        RoleService, 
+        RoleService,
         AuthentificationService,
         JwtService,
     ],
-    controllers: [CountdownController],
+    controllers: [CampingController],
 })
-export class CountdownModule {}
+export class CampingModule {}

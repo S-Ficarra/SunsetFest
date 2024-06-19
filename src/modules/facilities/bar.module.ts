@@ -2,36 +2,40 @@ import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthentificationService } from "src/authentification/authentification.service";
-import { CountdownController } from "src/controllers/controllers/countdown.controller";
-import { countdowns } from "src/database/entities/countdowns.entity";
+import { BarController } from "src/controllers/controllers/facilities/bar.controller";
+import { bars } from "src/database/entities/bars.entity";
+import { locations } from "src/database/entities/locations.entity";
+import { opening_times } from "src/database/entities/opening_times.entity";
 import { users } from "src/database/entities/users.entity";
-import { CountdownRepositoryImpl } from "src/database/repositories/countdown.repository.impl";
+import { BarRepositoryImpl } from "src/database/repositories/facility/bar.repository.impl";
 import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { CountdownService } from "src/services/countdown.service";
+import { BarService } from "src/services/facility/shop/bar.service";
 import { RoleService } from "src/services/user/role.service";
 import { UserService } from "src/services/user/user.service";
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([countdowns]),
+        TypeOrmModule.forFeature([bars]),
+        TypeOrmModule.forFeature([opening_times]),
+        TypeOrmModule.forFeature([locations]),
         TypeOrmModule.forFeature([users]),
     ],
     providers: [
-        CountdownService,
+        BarService,
         {
-            provide: 'CountdownRepository',
-            useClass: CountdownRepositoryImpl,
+            provide: 'BarRepository',
+            useClass: BarRepositoryImpl,
         },
         UserService,
         {
             provide: 'UserRepository',
             useClass: UserRepositoryImpl,
         },
-        RoleService, 
+        RoleService,
         AuthentificationService,
         JwtService,
     ],
-    controllers: [CountdownController],
+    controllers: [BarController],
 })
-export class CountdownModule {}
+export class BarModule {}

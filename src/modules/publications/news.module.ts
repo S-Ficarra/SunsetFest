@@ -2,32 +2,37 @@ import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthentificationService } from "src/authentification/authentification.service";
-import { BandController } from "src/controllers/controllers/band.controller";
-import { bands } from "src/database/entities/bands.entity";
+import { NewsController } from "src/controllers/controllers/publications/news.controller";
 import { images } from "src/database/entities/images.entity";
+import { publication_contents } from "src/database/entities/publication_contents.entity";
 import { publication_details } from "src/database/entities/publication_details.entity";
+import { publication_types } from "src/database/entities/publication_types.entity";
+import { publications } from "src/database/entities/publications.entity";
 import { users } from "src/database/entities/users.entity";
-import { BandRepositoryImpl } from "src/database/repositories/program/bands.repository.impl";
+import { NewsRepositoryImpl } from "src/database/repositories/publications/news.repository.impl";
 import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { BandService } from "src/services/band/band.service";
+import { NewsService } from "src/services/publication/news.service";
 import { RoleService } from "src/services/user/role.service";
 import { UserService } from "src/services/user/user.service";
 
 
-
 @Module({
     imports: [
-        TypeOrmModule.forFeature([bands]),
+        TypeOrmModule.forFeature([publication_types]),
+        TypeOrmModule.forFeature([publications]),
+        TypeOrmModule.forFeature([publication_contents]),
         TypeOrmModule.forFeature([publication_details]),
         TypeOrmModule.forFeature([images]),
-        TypeOrmModule.forFeature([users])],
+        TypeOrmModule.forFeature([users]),
+    ],
     providers: [
-        BandService, 
+        NewsService,
         {
-            provide: 'BandRepository',
-            useClass: BandRepositoryImpl,
+            provide: 'NewsRepository',
+            useClass: NewsRepositoryImpl
         },
-        UserService, {
+        UserService,
+        {
             provide: 'UserRepository',
             useClass: UserRepositoryImpl,
         },
@@ -35,6 +40,6 @@ import { UserService } from "src/services/user/user.service";
         AuthentificationService,
         JwtService,
     ],
-    controllers: [BandController],
+    controllers: [NewsController],
 })
-export class BandModule {}
+export class NewsModule {}

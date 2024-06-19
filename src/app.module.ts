@@ -3,16 +3,17 @@ import { UserModule } from './modules/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/authentification.module';
 import { BandModule } from './modules/band.module';
-import { NewsModule } from './modules/news.module';
-import { InformationModule } from './modules/information.module';
-import { FaqsModule } from './modules/faqs.module';
-import { ToiletModule } from './modules/toilets.module';
-import { CampingModule } from './modules/camping.module';
-import { VipModule } from './modules/vip.module';
-import { StageModule } from './modules/stages.module';
+import { NewsModule } from './modules/publications/news.module';
+import { InformationModule } from './modules/publications/information.module';
+import { FaqsModule } from './modules/publications/faqs.module';
+import { ToiletModule } from './modules/facilities/toilets.module';
+import { CampingModule } from './modules/facilities/camping.module';
+import { VipModule } from './modules/facilities/vip.module';
+import { StageModule } from './modules/facilities/stages.module';
 import { CountdownModule } from './modules/countdown.module';
-import { BarModule } from './modules/bar.module';
-import { RestaurantModule } from './modules/restaurant.module';
+import { BarModule } from './modules/facilities/bar.module';
+import { RestaurantModule } from './modules/facilities/restaurant.module';
+import { MerchandisingModule } from './modules/facilities/merchandising.module';
 require('dotenv').config();
 
 
@@ -41,6 +42,7 @@ require('dotenv').config();
     StageModule,
     BarModule,
     RestaurantModule,
+    MerchandisingModule,
     CountdownModule,
   ],
 })

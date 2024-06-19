@@ -2,32 +2,33 @@ import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthentificationService } from "src/authentification/authentification.service";
-import { BandController } from "src/controllers/controllers/band.controller";
-import { bands } from "src/database/entities/bands.entity";
+import { FaqController } from "src/controllers/controllers/publications/faq.controller";
+import { faqs } from "src/database/entities/faqs.entity";
 import { images } from "src/database/entities/images.entity";
 import { publication_details } from "src/database/entities/publication_details.entity";
 import { users } from "src/database/entities/users.entity";
-import { BandRepositoryImpl } from "src/database/repositories/program/bands.repository.impl";
+import { FaqRepositoryImpl } from "src/database/repositories/publications/faq.repository.impl";
 import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { BandService } from "src/services/band/band.service";
+import { FaqService } from "src/services/publication/faq.service";
 import { RoleService } from "src/services/user/role.service";
 import { UserService } from "src/services/user/user.service";
 
 
-
 @Module({
     imports: [
-        TypeOrmModule.forFeature([bands]),
         TypeOrmModule.forFeature([publication_details]),
         TypeOrmModule.forFeature([images]),
-        TypeOrmModule.forFeature([users])],
+        TypeOrmModule.forFeature([users]),
+        TypeOrmModule.forFeature([faqs]),
+    ],
     providers: [
-        BandService, 
+        FaqService,
         {
-            provide: 'BandRepository',
-            useClass: BandRepositoryImpl,
+            provide: 'FaqRepository',
+            useClass: FaqRepositoryImpl
         },
-        UserService, {
+        UserService,
+        {
             provide: 'UserRepository',
             useClass: UserRepositoryImpl,
         },
@@ -35,6 +36,6 @@ import { UserService } from "src/services/user/user.service";
         AuthentificationService,
         JwtService,
     ],
-    controllers: [BandController],
+    controllers: [FaqController],
 })
-export class BandModule {}
+export class FaqsModule {}

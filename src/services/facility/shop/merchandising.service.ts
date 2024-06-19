@@ -1,30 +1,36 @@
+import { Inject } from "@nestjs/common";
 import { Merchandising } from "src/domain/models/facility/shop/merchandising.model";
 import { MerchandisingRepository } from "src/domain/repositories/facility/shop/merchandising.repository";
 
 export class MerchandisingService{
 
-    constructor(private merchandisingRepository : MerchandisingRepository){};
+    constructor( @Inject('MerchandisingRepository') private merchandisingRepository : MerchandisingRepository){};
 
     async getAllMerchandising(): Promise<Merchandising[]> {
-        return this.merchandisingRepository.getAllMerchandising();
+        return await this.merchandisingRepository.getAllMerchandising();
     };
 
     async getMerchandisingById(merchandisingId: number): Promise<Merchandising> {
-        return this.merchandisingRepository.getMerchandisingById(merchandisingId);
+        const merchandising = await this.merchandisingRepository.getMerchandisingById(merchandisingId);
+        if (merchandising) {
+            return merchandising;
+        };
+        throw new Error (`Merchandising ${merchandisingId} do not exist`);
+
     };
 
     async createMerchandising(merchandising: Merchandising): Promise<Merchandising> {
-        this.merchandisingRepository.createMerchandising(merchandising);
-        return merchandising;
+        const createdMerch = await this.merchandisingRepository.createMerchandising(merchandising);
+        return createdMerch;
     };
 
     async editMerchandising(merchandising: Merchandising): Promise<Merchandising> {
-        this.merchandisingRepository.editMerchandising(merchandising);
-        return merchandising;
+        const editedMerch = await this.merchandisingRepository.editMerchandising(merchandising);
+        return editedMerch;
     };
 
     async deleteMerchandising(merchandisingId: number): Promise<void> {
-        this.merchandisingRepository.deleteMerchandising(merchandisingId);
+        await this.merchandisingRepository.deleteMerchandising(merchandisingId);
     };
 
 };
