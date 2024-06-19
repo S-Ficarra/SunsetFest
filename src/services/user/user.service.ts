@@ -14,15 +14,19 @@ export class UserService {
 
 
     async getAllUsers(): Promise<any> {
-        return this.userRepository.getAllUsers();
+        return await this.userRepository.getAllUsers();
     };
 
     async getUserById(userId: number): Promise<any> {
-        return this.userRepository.getUserById(userId);
+        const user = await this.userRepository.getUserById(userId);
+        if (user) {
+            return user;
+        };
+        throw new Error (`User ${userId} Do not exist`);
     };
 
     async getUserByEmail(userEmail: string): Promise<User> {       
-        return this.userRepository.getUserByEmail(userEmail);
+        return await this.userRepository.getUserByEmail(userEmail);
     };
 
 

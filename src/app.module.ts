@@ -10,6 +10,7 @@ import { ToiletModule } from './modules/toilets.module';
 import { CampingModule } from './modules/camping.module';
 import { VipModule } from './modules/vip.module';
 import { StageModule } from './modules/stages.module';
+import { CountdownModule } from './modules/countdown.module';
 require('dotenv').config();
 
 
@@ -36,6 +37,7 @@ require('dotenv').config();
     CampingModule,
     VipModule,
     StageModule,
+    CountdownModule,
   ],
 })
 export class AppModule {}

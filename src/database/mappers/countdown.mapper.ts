@@ -11,6 +11,17 @@ export function mapCountdownModeltoEntity(model: Countdown): countdowns {
 
 };
 
+export function mapCountdownModeltoEntityEdit(model: Countdown): countdowns {
+
+    const entity = new countdowns();
+    entity.id = model.getId()
+    entity.name = model.getName();
+    entity.starting_time = model.getStartingDateAndTime();
+    entity.ending_time = model.getEndingDateAndTime();
+    return entity;
+
+};
+
 
 export function mapCountdownEntitytoModel (entity: countdowns): Countdown {
 
