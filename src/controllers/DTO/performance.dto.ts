@@ -1,15 +1,16 @@
 import { IsString } from "class-validator";
 
 
-export class CountdownDto {
+
+export class PerformanceDto {
 
     @IsString()
-    name: string;
+    band: number;
 
     @IsString()
-    startingTime: string;
+    stage: number;
 
     @IsString()
-    endingTime: string;
+    timeFrame: number;
 
 };

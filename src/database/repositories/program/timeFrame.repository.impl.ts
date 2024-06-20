@@ -4,7 +4,10 @@ import { timeframes } from "src/database/entities/timeframes.entity";
 import { TimeFrame } from "src/domain/models/program/performance/timeFrame.model";
 import { TimeFrameRepository } from "src/domain/repositories/program/performance/timeFrame.repository";
 import { mapTimeFrameToEntity, mapTimeFrameToModel } from 'src/database/mappers/program/timeFrame.mapper';
+import { Injectable } from '@nestjs/common';
 
+
+@Injectable()
 export class TimeFrameRepositoryImpl implements TimeFrameRepository {
 
     constructor(

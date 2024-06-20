@@ -20,7 +20,8 @@ import { UserService } from "src/services/user/user.service";
         TypeOrmModule.forFeature([bands]),
         TypeOrmModule.forFeature([publication_details]),
         TypeOrmModule.forFeature([images]),
-        TypeOrmModule.forFeature([users])],
+        TypeOrmModule.forFeature([users])
+    ],
     providers: [
         BandService, 
         {

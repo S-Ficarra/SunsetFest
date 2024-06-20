@@ -20,6 +20,7 @@ export class AuthentificationService {
       try {
 
         const user = await this.usersService.getUserByEmail(email); 
+        
         const userPassword = user.getPassword();    
         const pass = await bcrypt.compare(password, userPassword)
         

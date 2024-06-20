@@ -71,7 +71,7 @@ export class ProgramService {
     };
 
     private hasConflict(performanceA: Performance, performanceB: Performance): any {
-        const sameDayStageTime = performanceA.getDay() == performanceB.getDay() && performanceA.getStage() == performanceB.getStage() && performanceA.getTimeFrame() == performanceB.getTimeFrame();
+        const sameDayStageTime = performanceA.getStage() == performanceB.getStage() && performanceA.getTimeFrame() == performanceB.getTimeFrame();
         const sameBand = performanceA.getBand() == performanceB.getBand();        
         if (sameBand && sameDayStageTime) {
             throw new Error('This performance is already in the program');
