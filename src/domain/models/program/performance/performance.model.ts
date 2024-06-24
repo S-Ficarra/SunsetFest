@@ -1,6 +1,5 @@
 import { Band } from "../../band/band.model";
 import { Stage } from "../../facility/stage.model";
-import { Days } from "./DayEnum";
 import { TimeFrame } from "./timeFrame.model";
 
 export class Performance {

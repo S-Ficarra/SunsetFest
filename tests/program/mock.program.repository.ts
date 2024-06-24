@@ -1,3 +1,4 @@
+import { Performance } from "src/domain/models/program/performance/performance.model";
 import { Program } from "../../src/domain/models/program/program.model";
 import { ProgramRepository } from "../../src/domain/repositories/program/program.repository";
 import { MockPerformanceRepository } from "./performance/mock.performance.repository";
@@ -6,7 +7,7 @@ export class MockProgramRepository implements ProgramRepository {
 
     constructor(
         private performanceRepository: MockPerformanceRepository,
-    ){};
+    ){}
 
     public programList : Program [] = [ 
         new Program ([]),
@@ -22,8 +23,12 @@ export class MockProgramRepository implements ProgramRepository {
         return this.programList;
     };
 
-    async getProgramById(programId: number): Promise<Program> {
+    async getProgramByYear(programId: number): Promise<Program> {
         return this.programList[programId -1 ];
+    };
+
+    findPerformanceInProgram(programYear: number, performanceId: number): Promise<Performance> {
+        throw new Error("Method not implemented.");
     };
 
     async createProgram(id: number): Promise<Program> {
@@ -32,26 +37,15 @@ export class MockProgramRepository implements ProgramRepository {
         this.programList.push(prog);
         return prog;
     };
-/*
-    async editProgram(program: Program): Promise<Program> {
-        let programId = program.getId();
-        this.programList[programId - 1] = program;
-        return program
-    };
 
-    async deleteProgram(programId: number): Promise<void> {
-        this.programList = this.programList.filter(program => program.getId() !== programId);
-    };
-*/
-
-    async addPerformanceToProgram(performanceId: number): Promise<void> {
-        const performanceToAdd = await this.performanceRepository.getPerformanceById(performanceId);
-        const program1 = await this.getProgramById(1);
+    async addPerformanceToProgram(program: Program, performance: Performance): Promise<void> {
+        const performanceToAdd = await this.performanceRepository.getPerformanceById(performance.getId())
+        const program1 = await this.getProgramByYear(1);
         program1.addPerformance(performanceToAdd);
     };
 
     async deletePerformanceFromProgram(performanceId: number): Promise<void> {
-        const program1 = await this.getProgramById(1);
+        const program1 = await this.getProgramByYear(1);
         for (const index in program1.getPerformances()) {
             const performance = program1.getPerformances()[index];
             if (performance.getId() === performanceId) {

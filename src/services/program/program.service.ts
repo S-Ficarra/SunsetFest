@@ -3,54 +3,39 @@ import { ProgramRepository } from "src/domain/repositories/program/program.repos
 import { RoleService } from "../user/role.service";
 import { Performance } from "src/domain/models/program/performance/performance.model";
 import { User } from "src/domain/models/user/user.model";
+import { Inject } from "@nestjs/common";
 
 export class ProgramService {
 
     constructor(
-        private programRepository: ProgramRepository,
+        @Inject('ProgramRepository') private programRepository: ProgramRepository,
         private roleService: RoleService,
     ){};
 
-    async getAllPrograms(): Promise<Program[]> {
-        return this.programRepository.getAllPrograms();
+    async findPerformanceInProgram(programYear: number, performanceId : number): Promise <{}>{
+        const perf = await this.programRepository.findPerformanceInProgram(programYear, performanceId);
+        if (perf) {
+            return perf
+        };
+        return null;
     };
 
-    async getProgramById(programId: number): Promise<Program> {
-        return this.programRepository.getProgramById(programId);
+
+    async getProgramByYear(programYear: number): Promise<Program> {
+        const program = await this.programRepository.getProgramByYear(programYear);
+        return program;
     };
 
-    async createProgram(requestingUser: User, id: number): Promise<Program> {
+    async addPerformanceToProgram(requestingUser: User, programYear: number, performance: Performance): Promise<Performance> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            const program = await this.programRepository.createProgram(id);
-            return program;
-        } else {
-            throw new Error ('Unauthorized');
-        };
-    };
-/*
-    async editProgram(requestingUser: User, program: Program): Promise<Program> {
-        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            await this.programRepository.editProgram(program);
-            return program;
-        } else {
-            throw new Error ('Unauthorized');
-        };
-    };
-
-    async deleteProgram(requestingUser: User, programId: number): Promise<void> {
-        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            await this.programRepository.deleteProgram(programId);
-        } else {
-            throw new Error ('Unauthorized');
-        };
-    };
-*/
-    async addPerformanceToProgram(requestingUser: User, programId: number, performance: Performance): Promise<Performance> {
-        if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            let program = await this.programRepository.getProgramById(programId);
+            let program = await this.programRepository.getProgramByYear(programYear);
+            if (!program) {
+                program = new Program ([]);
+                program.setId(programYear);
+            };                            
             let isOk = this.noConflict(performance, program)
             if (isOk) {
-                await this.programRepository.addPerformanceToProgram(programId, performance);
+                await this.programRepository.addPerformanceToProgram(program, performance);
                 return performance;
             };
         } else {
@@ -61,7 +46,7 @@ export class ProgramService {
     private noConflict(performance: Performance, program: Program): boolean {
         const performances = program.getPerformances();
         for (let i = 0; i < performances.length; i++) {
-            const performanceA = performances[i];
+            const performanceA = performances[i];                        
             const performanceB = performance;
                 if (this.hasConflict(performanceA, performanceB)) {
                     return false
@@ -71,8 +56,8 @@ export class ProgramService {
     };
 
     private hasConflict(performanceA: Performance, performanceB: Performance): any {
-        const sameDayStageTime = performanceA.getStage() == performanceB.getStage() && performanceA.getTimeFrame() == performanceB.getTimeFrame();
-        const sameBand = performanceA.getBand() == performanceB.getBand();        
+        const sameDayStageTime = performanceA.getStage().getId() == performanceB.getStage().getId() && performanceA.getTimeFrame().getId() == performanceB.getTimeFrame().getId();        
+        const sameBand = performanceA.getBand().getId() == performanceB.getBand().getId();        
         if (sameBand && sameDayStageTime) {
             throw new Error('This performance is already in the program');
         } else if (sameBand) {
@@ -86,7 +71,7 @@ export class ProgramService {
 
     async deletePerformanceFromProgram(requestingUser: User, programId: number, performanceId: number): Promise<void> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.programRepository.deletePerformanceFromProgram(programId, performanceId);
+            await this.programRepository.deletePerformanceFromProgram(programId, performanceId);
         } else {
             throw new Error ('Unauthorized');
         };

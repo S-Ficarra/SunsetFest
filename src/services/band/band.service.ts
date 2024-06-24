@@ -20,7 +20,7 @@ export class BandService{
         if (band) {
             return band
         };
-        throw new Error
+        throw new Error (`Band ${bandId} do not exist`)
     };
 
     async getBandByName(name: string): Promise<Band>{
