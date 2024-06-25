@@ -1,6 +1,6 @@
 import { Restaurant } from "../../../../src/domain/models/facility/shop/restaurant.model";
 import { RestaurantRepository } from "../../../../src/domain/repositories/facility/shop/restaurant.repository";
-import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
+import { OpeningTimes } from "src/domain/models/facility/shop/openingTimes.model";
 import { MockOpeningTimesRepository } from "../mock.openingTimes.repository";
 
 

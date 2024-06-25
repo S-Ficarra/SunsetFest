@@ -43,7 +43,6 @@ export class AuthentificationService {
       const token = authHeader.substring(7); 
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
       return await this.usersService.getUserById(+decodedToken.sub)
-
     };
 
 

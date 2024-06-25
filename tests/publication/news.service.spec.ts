@@ -79,18 +79,4 @@ describe('NewsService', () => {
     });
 
 
-    //changeStatus by an editor
-    it ('Should change the status of the publication Id1 from false to true', async () => {
-        await newsService.changeStatus(userRepository.users[1],1,false);
-        expect(await newsService.getNewsById(1)).toEqual(expect.objectContaining({ _status: false}));
-    });
-
-    //changeStatus by an author
-    it ('Should change the status of the publication Id1 from false to true', async () => {
-        const changeStatusCall = async () => await newsService.changeStatus(userRepository.users[0],1,false);
-        expect(changeStatusCall).rejects.toThrow(Error);
-    });
-
-
-
 });

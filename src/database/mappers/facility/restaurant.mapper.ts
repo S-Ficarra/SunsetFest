@@ -1,7 +1,7 @@
 import { restaurants } from "src/database/entities/restaurants.entity";
 import { opening_times } from "src/database/entities/opening_times.entity";
 import { Restaurant } from "src/domain/models/facility/shop/restaurant.model";
-import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
+import { OpeningTimes } from "src/domain/models/facility/shop/openingTimes.model";
 import { locations } from "src/database/entities/locations.entity";
 
 export function mapRestaurantModelToEntity (model: Restaurant, Location: locations, openTimes: opening_times): restaurants{

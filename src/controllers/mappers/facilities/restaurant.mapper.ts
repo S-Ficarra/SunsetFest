@@ -1,4 +1,4 @@
-import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
+import { OpeningTimes } from "src/domain/models/facility/shop/openingTimes.model";
 import { RestaurantDto } from "../../DTO/facilities/restaurant.dto";
 import { Restaurant } from "src/domain/models/facility/shop/restaurant.model";
 

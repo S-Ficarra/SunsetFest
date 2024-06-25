@@ -1,4 +1,4 @@
-import { OpeningTimes } from "../../../src/domain/models/facility/openingTimes.model";
+import { OpeningTimes } from "../../../src/domain/models/facility/shop/openingTimes.model";
 
 export class MockOpeningTimesRepository {
 

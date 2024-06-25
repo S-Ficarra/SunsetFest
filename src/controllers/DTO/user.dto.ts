@@ -7,7 +7,7 @@ export class UserDto {
     @IsString()
     firstName: string;
   
-    @IsEmail({}, { message: 'L\'adresse email n\'est pas valide.' })
+    @IsEmail({}, { message: "L'adresse email n'est pas valide." })
     email: string;
   
     @IsString()

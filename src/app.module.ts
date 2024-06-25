@@ -50,4 +50,4 @@ require('dotenv').config();
     ProgramModule
   ],
 })
-export class AppModule {}""
+export class AppModule {}

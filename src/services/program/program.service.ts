@@ -1,9 +1,10 @@
-import { Program } from "src/domain/models/program/program.model";
+import { Program } from "../../domain/models/program/program.model";
 import { ProgramRepository } from "src/domain/repositories/program/program.repository";
 import { RoleService } from "../user/role.service";
 import { Performance } from "src/domain/models/program/performance/performance.model";
 import { User } from "src/domain/models/user/user.model";
 import { Inject } from "@nestjs/common";
+
 
 export class ProgramService {
 
