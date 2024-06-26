@@ -36,7 +36,7 @@ export class BarController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('bars/createbar')
+    @Post('bars/create')
     async createBar (@Body(new ValidationPipe()) createBarDto: BarDto): Promise <Bar | {}> {
 
         try {
@@ -51,7 +51,7 @@ export class BarController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('bars/:id/editbar')
+    @Post('bars/:id/edit')
     async editBar (
         @Param('id') id: number, 
         @Body(new ValidationPipe()) editBarDto: BarDto): Promise<Bar | {}> {
@@ -68,18 +68,18 @@ export class BarController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('bars/:id/deletebar')
+    @Post('bars/:id/delete')
     async deleteBar(@Param('id') id: number): Promise<{}> {
 
         try {
             const barToDelete = await this.barService.getBarById(id);
             
-            if (!barToDelete) {
-                return {message: `Bar ${id} do not exist`};
+            if (barToDelete) {
+                await this.barService.deleteBar(id);
+                return {message: `Bar ${id} deleted`};   
             };
 
-            await this.barService.deleteBar(id);
-            return {message: `Bar ${id} deleted`};   
+            return {message: `Bar ${id} do not exist`};
 
         } catch (error) {
             return {message: error.message};

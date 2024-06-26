@@ -38,7 +38,7 @@ export class FaqService {
 
     async deleteFaq(requestingUser: User, faqId: number): Promise<void> {
         if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.faqRepository.deleteFaq(faqId);
+            await this.faqRepository.deleteFaq(faqId);
         } else {
             throw new Error('Unauthorized');
         };

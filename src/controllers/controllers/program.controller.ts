@@ -64,43 +64,19 @@ export class ProgramController {
             try {
                 const userLogged = await this.authServices.getUserLogged(req);
                 const performanceToDeleteId = parseInt(programDto.performanceId)
-                
                 const perf = await this.programServices.findPerformanceInProgram(year, performanceToDeleteId);
 
-                if (!perf) {
-                    return {message: `Performance ${performanceToDeleteId} do not exist in program ${year}`};
+                if (perf) {
+                    await this.programServices.deletePerformanceFromProgram(userLogged, year, performanceToDeleteId);
+                    return {message: `Performance ${performanceToDeleteId} removed from program ${year}`};
                 };
                                 
-                await this.programServices.deletePerformanceFromProgram(userLogged, year, performanceToDeleteId);
-                return {message: `Performance ${performanceToDeleteId} removed from program ${year}`};
+                return {message: `Performance ${performanceToDeleteId} do not exist in program ${year}`};
 
             } catch (error) {
                 return {message: error.message};
-            }
-
+            };
         };
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

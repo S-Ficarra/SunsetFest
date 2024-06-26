@@ -21,7 +21,7 @@ export class NewsService{
     };
 
     async getNewsById(newsId: number): Promise<News>{
-        const news = this.newsRepository.getNewsById(newsId);
+        const news = await this.newsRepository.getNewsById(newsId);
         if(news){
             return news;
         };
@@ -40,7 +40,7 @@ export class NewsService{
 
     async deleteNews(requestingUser: User, newsId: number): Promise<void> {
         if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.newsRepository.deleteNews(newsId);
+            await this.newsRepository.deleteNews(newsId);
         } else {
             throw new Error('Unauthorized')
         };

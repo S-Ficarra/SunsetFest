@@ -22,9 +22,9 @@ export class AuthentificationService {
         const user = await this.usersService.getUserByEmail(email); 
         
         const userPassword = user.getPassword();    
-        const pass = await bcrypt.compare(password, userPassword)
+        const isPasswordMatch = await bcrypt.compare(password, userPassword)
         
-        if (pass) { 
+        if (isPasswordMatch) { 
           const payload = { email: user.getEmail() , sub: user.getId()};
           return this.jwtService.sign(payload);
         } else {

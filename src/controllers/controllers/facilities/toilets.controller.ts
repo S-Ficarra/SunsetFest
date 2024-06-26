@@ -37,7 +37,7 @@ export class ToiletController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('toilets/createtoilet')
+    @Post('toilets/create')
     async createToilet(@Body(new ValidationPipe()) createToiletDto : ToiletDto): Promise<Toilet | {}> {
 
         try {
@@ -50,7 +50,7 @@ export class ToiletController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('toilets/:id/edittoilet')
+    @Post('toilets/:id/edit')
     async editToilet(
         @Param('id') id: number,
         @Body(new ValidationPipe()) editToiletDto: ToiletDto): Promise<Toilet | {}> {
@@ -67,18 +67,19 @@ export class ToiletController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('toilets/:id/deletetoilet')
+    @Post('toilets/:id/delete')
     async deleteToilet(@Param('id') id: number): Promise<{}> {
         try {
             const toiletId = id;
             const toilet = await this.toiletServices.getToiletById(toiletId);
             
-            if (!toilet) {
-                return {message: `Toilet ${toiletId} do not exist`};
+            if (toilet) {
+                await this.toiletServices.deleteToilet(toiletId);
+                return {message: `Toilet ${toiletId} deleted`};
             };
 
-            await this.toiletServices.deleteToilet(toiletId);
-            return {message: `Toilet ${toiletId} deleted`};
+            return {message: `Toilet ${toiletId} do not exist`};
+
         } catch (error) {
             return {message: error.message};
         };

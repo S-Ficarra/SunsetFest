@@ -7,8 +7,6 @@ import { mapMerchandisingDtoToModel, mapMerchandisingDtoToModelEdit } from "../.
 
 
 
-
-
 @Controller()
 export class MerchandisingController {
 
@@ -39,7 +37,7 @@ export class MerchandisingController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('merchandisings/createmerchandising')
+    @Post('merchandisings/create')
     async createMerchandising (@Body(new ValidationPipe()) createMerchDto: MerchandisingDto): Promise <Merchandising | {}> {
         try {
             const merchToCreate = mapMerchandisingDtoToModel(createMerchDto);
@@ -53,18 +51,15 @@ export class MerchandisingController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('merchandisings/:id/editmerchandising')
+    @Post('merchandisings/:id/edit')
     async editMerchandising(
         @Param('id') id: number,
         @Body(new ValidationPipe()) editMerchDto: MerchandisingDto): Promise <Merchandising | {}> {
 
             try {
-                console.log(editMerchDto);
-                
                 const merchToEdit = await this.merchServices.getMerchandisingById(id);
                 console.log(merchToEdit);
-                
-                
+                                
                 const mappedMerchToEdit = mapMerchandisingDtoToModelEdit(merchToEdit, editMerchDto);
                 const editedMerch = await this.merchServices.editMerchandising(mappedMerchToEdit);
                 return editedMerch;
@@ -75,18 +70,18 @@ export class MerchandisingController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('merchandisings/:id/deletemerchandising')
+    @Post('merchandisings/:id/delete')
     async deleteMerchandising(@Param('id') id: number,): Promise <{}> {
 
         try {
             const merchToDelete = await this.merchServices.getMerchandisingById(id);
 
-            if (!merchToDelete) {
-                return {message: `Merchandising ${id} do not exist`};
+            if (merchToDelete) {
+                await this.merchServices.deleteMerchandising(id);
+                return {message: `Merchandising ${id} deleted`};   
             };
 
-            await this.merchServices.deleteMerchandising(id);
-            return {message: `Merchandising ${id} deleted`};   
+            return {message: `Merchandising ${id} do not exist`};
             
         } catch (error) {
             return {message: error.message};

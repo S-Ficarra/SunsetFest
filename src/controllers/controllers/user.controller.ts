@@ -43,7 +43,7 @@ export class UserController {
 
     
     @UseGuards(JwtAuthGuard)
-    @Post('users/createuser')
+    @Post('users/create')
     async createUser(@Body(new ValidationPipe())/*<-validate RegExs for password etc, defined here ->*/  createUserDto: UserDto, @Req()req: Request): Promise<User | {}> {    
 
         try {
@@ -78,7 +78,7 @@ export class UserController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('users/:id/deleteuser')
+    @Post('users/:id/delete')
     async deleteUser(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
 
         try {
@@ -86,16 +86,17 @@ export class UserController {
             const userId = +id; // Convertir id en nombre
             const user = await this.userService.getUserById(id);
 
-            if (!user) {
-                return {message: `User ${userId} do not exist`};
+            if (user) {
+                await this.userService.deleteUser(userLogged, id);
+                return {message: `User ${userId} deleted`};
             };
 
-            await this.userService.deleteUser(userLogged, id);
-            return {message: `User ${userId} deleted`};
+            return {message: `User ${userId} do not exist`};
 
         } catch (error) {
             return {message : error.message}; 
         };        
     };
 
+    
 };

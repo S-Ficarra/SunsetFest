@@ -38,7 +38,7 @@ export class VipController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('vips/createvip')
+    @Post('vips/create')
     async createVip(@Body(new ValidationPipe()) createVipDto: VipDto): Promise <Vip | {}> {
         try {
             const vipToCreate = mapVipDtoToModelCreate(createVipDto);
@@ -51,7 +51,7 @@ export class VipController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('vips/:id/editvip')
+    @Post('vips/:id/edit')
     async editVip(
         @Param('id') id: number,
         @Body(new ValidationPipe()) editVipDto: VipDto): Promise <Vip | {}> {
@@ -67,17 +67,17 @@ export class VipController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('vips/:id/deletevip')
+    @Post('vips/:id/delete')
     async deleteVip(@Param('id') id: number): Promise<{}> {
         try {
             const vipToDelete = await this.vipServices.getVipById(id);
 
-            if(!vipToDelete){
-                return {message: `Vip ${id} do not exist`};
+            if(vipToDelete){
+                await this.vipServices.deleteVip(id);
+                return {message: `Vip ${id} deleted`};
             };
 
-            await this.vipServices.deleteVip(id);
-            return {message: `Vip ${id} deleted`};
+            return {message: `Vip ${id} do not exist`};           
 
         } catch (error) {
             return {message: error.message};

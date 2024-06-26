@@ -41,7 +41,7 @@ export class StageController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('stages/createstage')
+    @Post('stages/create')
     async createStage(@Body(new ValidationPipe()) createStageDto : StageDto): Promise <Stage | {}> {
         try {
             const stageToCreate = mapStageDtoToModel(createStageDto);
@@ -56,7 +56,7 @@ export class StageController {
 
     
     @UseGuards(JwtAuthGuard)
-    @Post('stages/:id/editstage')
+    @Post('stages/:id/edit')
     async editStage(
         @Param('id') id: number,
         @Body(new ValidationPipe()) editStageDto: StageDto): Promise <Stage | {}> {
@@ -72,17 +72,17 @@ export class StageController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('stages/:id/deletestage')
+    @Post('stages/:id/delete')
     async deleteStage(@Param('id') id: number): Promise <{}> {
         try {
             const stageToDelete = await this.stageService.getStageById(id);
             
-            if (!stageToDelete) {
-                return {message: `Stage ${id} do not exist`};
+            if (stageToDelete) {
+                await this.stageService.deleteStage(id);
+                return {message: `Stage ${id} deleted`};
             };
 
-            await this.stageService.deleteStage(id);
-            return {message: `Stage ${id} deleted`};
+            return {message: `Stage ${id} do not exist`};
 
         } catch (error) {
             return {message: error.message};

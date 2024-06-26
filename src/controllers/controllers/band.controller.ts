@@ -42,7 +42,7 @@ export class BandController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('bands/createband')
+    @Post('bands/create')
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'thumbnailImage', maxCount: 1 },
         { name: 'bannerImage', maxCount: 1 },], 
@@ -68,7 +68,7 @@ export class BandController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('bands/:id/editband')
+    @Post('bands/:id/edit')
     @UseInterceptors(FileFieldsInterceptor([
         { name: 'thumbnailImage', maxCount: 1 },
         { name: 'bannerImage', maxCount: 1 },], 
@@ -95,18 +95,21 @@ export class BandController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('bands/:id/deleteband')
+    @Post('bands/:id/delete')
     async deleteBand(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
 
         try {
             const userLogged = await this.authService.getUserLogged(req)
             const bandId = +id;
             const band = await this.bandService.getBandById(id);
-            if (!band) {
-                return {message: `Band ${bandId} do not exist`};
-            }
-            await this.bandService.deleteBand(userLogged, id);
-            return {message: `Band ${bandId} deleted`};
+
+            if (band) {
+                await this.bandService.deleteBand(userLogged, id);
+                return {message: `Band ${bandId} deleted`};
+            };
+
+            return {message: `Band ${bandId} do not exist`};
+
         } catch (error) {
             return {message : error.message }; 
         }; 

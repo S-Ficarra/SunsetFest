@@ -49,7 +49,7 @@ export class PerformanceController{
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('performances/createperformance')
+    @Post('performances/create')
     async createPerformance(@Body(new ValidationPipe()) createPerfDto: PerformanceDto): Promise <Performance | {}> {
 
         try {
@@ -65,8 +65,9 @@ export class PerformanceController{
         };
     };
 
+
     @UseGuards(JwtAuthGuard)
-    @Post('performances/:id/editperformance')
+    @Post('performances/:id/edit')
     async editPerformance(
         @Param('id') id: number,
         @Body(new ValidationPipe()) editPerfDto: PerformanceDto): Promise <Performance | {}> {
@@ -89,37 +90,23 @@ export class PerformanceController{
         };
 
 
-        @UseGuards(JwtAuthGuard)
-        @Post('performances/:id/deleteperformance')
-        async deletePerformance(@Param('id') id: number): Promise <{}> {
-            try {
-                const perfToDelete = await this.perfServices.getPerformanceById(id);
+    @UseGuards(JwtAuthGuard)
+    @Post('performances/:id/delete')
+    async deletePerformance(@Param('id') id: number): Promise <{}> {
+        try {
+            const perfToDelete = await this.perfServices.getPerformanceById(id);
 
-                if (!perfToDelete) {
-                    return {message: `Performance ${id} do not exist`};
-                };
-
+            if (perfToDelete) {
                 await this.perfServices.deletePerformance(id)
                 return {message: `Performance ${id} deleted`};
-                
-            } catch (error) {
-                return {message: error.message};  
             };
+
+            return {message: `Performance ${id} do not exist`};
+
+        } catch (error) {
+            return {message: error.message};  
         };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    };
 
 
 };

@@ -36,7 +36,7 @@ export class CampingController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('campings/createcamping')
+    @Post('campings/create')
     async createCamping(@Body(new ValidationPipe()) createCampingDto: CampingDto): Promise<Camping | {}> {
         try {
             const campingToCreate = mapCampingDtoToModelCreate(createCampingDto);
@@ -49,7 +49,7 @@ export class CampingController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('campings/:id/editcamping')
+    @Post('campings/:id/edit')
     async editCamping(
         @Param('id') id: number,
         @Body(new ValidationPipe()) editCampingDto: CampingDto): Promise <Camping | {}> {
@@ -65,17 +65,18 @@ export class CampingController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('campings/:id/deletecamping')
+    @Post('campings/:id/delete')
     async deleteCamping(@Param('id') id: number): Promise<{}> {
         try {
             const camping = await this.campingServices.getCampingById(id);
 
-            if (!camping) {
-                return {message: `Camping ${id} do not exist`};
+            if (camping) {
+                await this.campingServices.deleteCamping(id);
+                return {message: `Camping ${id} deleted`};
             };
 
-            await this.campingServices.deleteCamping(id);
-            return {message: `Camping ${id} deleted`};
+            return {message: `Camping ${id} do not exist`};
+
         } catch (error) {
             return {message: error.message};
         };

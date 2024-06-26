@@ -41,7 +41,7 @@ export class InformationService {
 
     async deleteInformation(requestingUser: User, informationId: number): Promise<void> {
         if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.informationRepository.deleteInformation(informationId);
+            await this.informationRepository.deleteInformation(informationId);
         } else {
             throw new Error('Unauthorized');
         };

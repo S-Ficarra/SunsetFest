@@ -57,13 +57,13 @@ export class ProgramService {
     };
 
     private hasConflict(performanceA: Performance, performanceB: Performance): any {
-        const sameDayStageTime = performanceA.getStage().getId() == performanceB.getStage().getId() && performanceA.getTimeFrame().getId() == performanceB.getTimeFrame().getId();        
-        const sameBand = performanceA.getBand().getId() == performanceB.getBand().getId();        
-        if (sameBand && sameDayStageTime) {
+        const hasSameDayStageTime = performanceA.getStage().getId() == performanceB.getStage().getId() && performanceA.getTimeFrame().getId() == performanceB.getTimeFrame().getId();        
+        const hasSameBand = performanceA.getBand().getId() == performanceB.getBand().getId();        
+        if (hasSameBand && hasSameDayStageTime) {
             throw new Error('This performance is already in the program');
-        } else if (sameBand) {
+        } else if (hasSameBand) {
             throw new Error ("This band is planned to perform more than once");
-        } else if (sameDayStageTime) {
+        } else if (hasSameDayStageTime) {
             throw new Error('Another band is already planned at this stage, time & day');
         } else {
             return false;

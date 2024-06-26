@@ -37,9 +37,9 @@ export class InformationRepositoryImpl implements InformationRepository {
         const allPublication = await this.publicationRepository.find();
         const informationEntities = allPublication.filter(publi_entity => publi_entity.publication__types_.type === 'information');
         const mappedInformations = informationEntities.map(async publi_entity => {
-            const content_entity=  publi_entity.publication__contents_;
+            const content_entity = publi_entity.publication__contents_;
             const image_entity = publi_entity.images_;
-            const detail_entity =  publi_entity.publication__details_;
+            const detail_entity = publi_entity.publication__details_;
             const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
             return mapInformationEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
         })
@@ -49,9 +49,9 @@ export class InformationRepositoryImpl implements InformationRepository {
     async getInformationById(informationId: number): Promise<Information> {
         const publi_entity = await this.publicationRepository.findOneBy({id: informationId});        
         if (publi_entity) {
-            const content_entity=  publi_entity.publication__contents_;
+            const content_entity = publi_entity.publication__contents_;
             const image_entity = publi_entity.images_;
-            const detail_entity =  publi_entity.publication__details_;
+            const detail_entity = publi_entity.publication__details_;
             const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
             return mapInformationEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
         };
@@ -96,11 +96,11 @@ export class InformationRepositoryImpl implements InformationRepository {
         const detail_entity = info_entity.publication__details_.id;
         const image = info_entity.images_.id;
 
-        this.publiTypeRepository.delete(type_entity);
-        this.imageRepository.delete(image);
-        this.detailsRepository.delete(detail_entity);
-        this.contentRepository.delete(content_entity);
-        this.publicationRepository.delete(informationId);
+        await this.publiTypeRepository.delete(type_entity);
+        await this.imageRepository.delete(image);
+        await this.detailsRepository.delete(detail_entity);
+        await this.contentRepository.delete(content_entity);
+        await this.publicationRepository.delete(informationId);
     };
    
 

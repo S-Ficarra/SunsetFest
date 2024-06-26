@@ -49,12 +49,12 @@ export class NewsRepositoryImpl implements NewsRepository {
     async getNewsById(newsId: number): Promise<News> {
         const publi_entity = await this.publicationRepository.findOneBy({id: newsId});
         if (publi_entity) {
-            const content_entity=  publi_entity.publication__contents_;
+            const content_entity = publi_entity.publication__contents_;
             const image_entity = publi_entity.images_;
-            const detail_entity =  publi_entity.publication__details_;
+            const detail_entity = publi_entity.publication__details_;
             const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
             return mapNewsEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
-        }
+        };
         return null;
     };
 
@@ -100,11 +100,11 @@ export class NewsRepositoryImpl implements NewsRepository {
         const detail_entity = news_entity.publication__details_.id;
         const image = news_entity.images_.id;
 
-        this.publiTypeRepository.delete(type_entity);
-        this.imageRepository.delete(image);
-        this.detailsRepository.delete(detail_entity);
-        this.contentRepository.delete(content_entity);
-        this.publicationRepository.delete(newsId);
+        await this.publiTypeRepository.delete(type_entity);
+        await this.imageRepository.delete(image);
+        await this.detailsRepository.delete(detail_entity);
+        await this.contentRepository.delete(content_entity);
+        await this.publicationRepository.delete(newsId);
     };
    
 };

@@ -12,11 +12,11 @@ export class BandService{
     ){};
 
     async getAllBand(): Promise<Band[]>{
-        return this.bandRepository.getAllBands();
+        return await this.bandRepository.getAllBands();
     };
 
     async getBandById(bandId: number): Promise<Band>{
-        const band = this.bandRepository.getBandById(bandId);
+        const band = await this.bandRepository.getBandById(bandId);
         if (band) {
             return band
         };
@@ -24,7 +24,7 @@ export class BandService{
     };
 
     async getBandByName(name: string): Promise<Band>{
-        const band = this.bandRepository.getBandByName(name);
+        const band = await this.bandRepository.getBandByName(name);
         if (band) {
             throw new Error ('Band with the same name already exist');
         };
@@ -32,19 +32,21 @@ export class BandService{
     }
 
     async createBand(band: Band): Promise<Band> {
-        if (!await this.bandRepository.getBandByName(band.getName())) {
-            const bandCreated = this.bandRepository.createBand(band);    
-            return bandCreated;   
+        const nameTaken = await this.bandRepository.getBandByName(band.getName())
+        if (nameTaken) {
+            throw new Error ('Band with the same name already exist');
         };
-        throw new Error ('Band with the same name already exist');
+        const bandCreated = await this.bandRepository.createBand(band);    
+        return bandCreated; 
     };
 
     async editBand(band: Band): Promise<Band> {
-        if (!await this.bandRepository.getBandByName(band.getName())) {
-            this.bandRepository.editBand(band);   
-            return band;   
+        const nameTaken = await this.bandRepository.getBandByName(band.getName())
+        if (nameTaken) {
+            throw new Error ('Band with the same name already exist');
         };
-        throw new Error ('Band with the same name already exist');
+        const bandEdited = await this.bandRepository.editBand(band);   
+        return bandEdited;  
     };
 
     async deleteBand(requestingUser: User, bandId: number): Promise<void> {

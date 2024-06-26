@@ -42,7 +42,7 @@ export class InformationController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('informations/createinformation')
+    @Post('informations/create')
     @UseInterceptors(FileFieldsInterceptor([{ name: 'image', maxCount: 1 },],multerConfig))
     async createInformation(
         @UploadedFiles() files: { image?: Express.Multer.File[] },
@@ -63,7 +63,7 @@ export class InformationController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('informations/:id/editinformation')
+    @Post('informations/:id/edit')
     @UseInterceptors(FileFieldsInterceptor([{ name: 'image', maxCount: 1 },],multerConfig))
     async editInformation(
         @Param('id') id: number,
@@ -86,18 +86,20 @@ export class InformationController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('informations/:id/deleteinformation')
+    @Post('informations/:id/delete')
     async deleteInformation(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
-    
         try {
             const userLogged = await this.authServices.getUserLogged(req)
             const informationId = +id;
             const information = await this.infoServices.getInformationById(informationId);
-            if(!information){
-                return {message: `Information ${informationId} do not exist`};
+
+            if(information){
+                await this.infoServices.deleteInformation(userLogged, informationId);
+                return {message: `Information ${informationId} deleted`};
             };
-            await this.infoServices.deleteInformation(userLogged, informationId);
-            return {message: `Information ${informationId} deleted`};
+
+            return {message: `Information ${informationId} do not exist`};
+
         } catch (error) {
             return {message : error.message };             
         };

@@ -40,7 +40,7 @@ export class NewsController {
     
 
     @UseGuards(JwtAuthGuard)
-    @Post('news/createnews')
+    @Post('news/create')
     @UseInterceptors(FileFieldsInterceptor([{ name: 'image', maxCount: 1 },],multerConfig))
     async createNews(
         @UploadedFiles() files: { image?: Express.Multer.File[] },
@@ -62,7 +62,7 @@ export class NewsController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('news/:id/editnews')
+    @Post('news/:id/edit')
     @UseInterceptors(FileFieldsInterceptor([{ name: 'image', maxCount: 1 },],multerConfig))
     async editNews (
         @Param('id')id: number,
@@ -85,18 +85,21 @@ export class NewsController {
     
 
     @UseGuards(JwtAuthGuard)
-    @Post('news/:id/deletenews')
+    @Post('news/:id/delete')
     async deleteNews(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
     
         try {
             const userLogged = await this.authServices.getUserLogged(req)
             const newsId = +id;
             const news = await this.newsServices.getNewsById(newsId);
-            if(!news){
-                return {message: `News ${newsId} do not exist`};
+
+            if(news){
+                await this.newsServices.deleteNews(userLogged, newsId);
+                return {message: `News ${newsId} deleted`};
             };
-            await this.newsServices.deleteNews(userLogged, newsId);
-            return {message: `News ${newsId} deleted`};
+
+            return {message: `News ${newsId} do not exist`};
+            
         } catch (error) {
             return {message : error.message };             
         };

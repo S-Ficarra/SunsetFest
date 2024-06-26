@@ -39,11 +39,9 @@ export class CountdownController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('countdowns/createcountdown')
+    @Post('countdowns/create')
     async createCountdown(@Body(new ValidationPipe()) createCountdownDto: CountdownDto): Promise <Countdown | {}> {
-
         try {
-
             const countdownToCreate = mapCountdownDtoToModelCreate(createCountdownDto);
             const countdownCreated = await this.countdownService.createCountdown(countdownToCreate);
             return countdownCreated;
@@ -55,7 +53,7 @@ export class CountdownController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('countdowns/:id/editcountdown')
+    @Post('countdowns/:id/edit')
     async editCountdown(
         @Param('id') id: number,
         @Body(new ValidationPipe()) editCountdownDto : CountdownDto): Promise <Countdown | {}> {
@@ -73,18 +71,18 @@ export class CountdownController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('countdowns/:id/deletecountdown')
+    @Post('countdowns/:id/delete')
     async deleteCountdown(@Param('id') id: number): Promise <{}> {
-
         try {
             const countdownToDelete = await this.countdownService.getCountdownById(id);
 
-            if (!countdownToDelete) {
-                return {message: `Countdown ${id} do not exist`};
+            if (countdownToDelete) {
+                await this.countdownService.deleteCountdown(id);
+                return {message: `Countdown ${id} deleted`};
             };
 
-            await this.countdownService.deleteCountdown(id);
-            return {message: `Countdown ${id} deleted`};
+            return {message: `Countdown ${id} do not exist`};
+
         } catch (error) {
             return {message: error.message};
         };

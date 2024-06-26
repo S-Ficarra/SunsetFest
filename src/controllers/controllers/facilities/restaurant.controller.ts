@@ -37,7 +37,7 @@ export class RestaurantController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('restaurants/createrestaurant')
+    @Post('restaurants/create')
     async createRestaurant (@Body(new ValidationPipe()) createRestaurantDto: RestaurantDto): Promise <Restaurant | {}> {
         try {
             const restaurantToCreate = mapRestaurantDtoToModel(createRestaurantDto);
@@ -50,7 +50,7 @@ export class RestaurantController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('restaurants/:id/editrestaurant')
+    @Post('restaurants/:id/edit')
     async editRestaurant (
         @Param('id') id: number, 
         @Body(new ValidationPipe()) editRestaurantDto: RestaurantDto): Promise<Restaurant | {}> {
@@ -67,18 +67,18 @@ export class RestaurantController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('restaurants/:id/deleterestaurant')
+    @Post('restaurants/:id/delete')
     async deleteBar(@Param('id') id: number): Promise<{}> {
 
         try {
             const restaurantToDelete = await this.restaurantService.getRestaurantById(id);  
             
-            if (!restaurantToDelete) {
-                return {message: `Restaurant ${id} do not exist`};
+            if (restaurantToDelete) {
+                await this.restaurantService.deleteRestaurant(id);
+                return {message: `Restaurant ${id} deleted`};  
             };
 
-            await this.restaurantService.deleteRestaurant(id);
-            return {message: `Restaurant ${id} deleted`};   
+            return {message: `Restaurant ${id} do not exist`};
 
         } catch (error) {
             return {message: error.message};

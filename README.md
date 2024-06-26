@@ -178,13 +178,13 @@ This 2nd method compare if the performance we try to add already exist in the pr
 ```typescript
     // ./src/services/program/program.services.ts
     private hasConflict(performanceA: Performance, performanceB: Performance): any {
-        const sameDayStageTime = performanceA.getStage().getId() == performanceB.getStage().getId() && performanceA.getTimeFrame().getId() == performanceB.getTimeFrame().getId();        
-        const sameBand = performanceA.getBand().getId() == performanceB.getBand().getId();        
-        if (sameBand && sameDayStageTime) {
+        const hasSameDayStageTime = performanceA.getStage().getId() == performanceB.getStage().getId() && performanceA.getTimeFrame().getId() == performanceB.getTimeFrame().getId();        
+        const hasSameBand = performanceA.getBand().getId() == performanceB.getBand().getId();        
+        if (hasSameBand && hasSameDayStageTime) {
             throw new Error('This performance is already in the program');
-        } else if (sameBand) {
+        } else if (hasSameBand) {
             throw new Error ("This band is planned to perform more than once");
-        } else if (sameDayStageTime) {
+        } else if (hasSameDayStageTime) {
             throw new Error('Another band is already planned at this stage, time & day');
         } else {
             return false;
@@ -204,19 +204,24 @@ All endpoint (except login) are only accessible for users logged, their session 
 ```typescript
     // ./src/controllers/controllers/publications/faq.controller.ts
     @UseGuards(JwtAuthGuard)  // <-- stop user not logged in to access the endpoint
-    @Post('faqs/createfaq')
-    async createFaq(
+    @Post('faqs/:id/edit')
+    async editFaq(
         @Req() req: Request,
-        @Body(new ValidationPipe()) createFaqDto : FaqDto): Promise <Faq | {}> {
+        @Param('id') id: number,
+        @Body(new ValidationPipe()) editFaqDto : FaqDto): Promise <Faq | {}> {
+
             try {
+                const faqToEdit = await this.faqServices.getFaqById(id);
                 const userLogged = await this.authServices.getUserLogged(req); // <-- extract the user from the JWT
-                const faqToCreate = mapFaqDtoToModelCreate(createFaqDto, userLogged);
-                return await this.faqServices.createFaq(faqToCreate);
+                const mappedFaqToEdit = mapFaqDtoToModelEdit(faqToEdit, editFaqDto, userLogged);
+
+                return await this.faqServices.editFaq(mappedFaqToEdit);
             } catch (error) {
                 return {message : error.message};   
             };
         };
 ```
+
 
 The JWT is recovered from the request http headers and decrypted to access the userId included in the payload :
 
@@ -239,38 +244,38 @@ Login
 | **Users**          | **Bars**                | **Merchandisings**                     |
 |--------------------|-------------------------|-------------------------|
 | users              | bars                    | merchandisings                         |
-| users/createuser   | bars/createbar          | merchandisings/createmerchandising     |
+| users/create   | bars/create          | merchandisings/create     |
 | users/:id          | bars/:id                | merchandisings/:id                     |
-| users/:id/edit     | bars/:id/editbar        | merchandisings/:id/editmerchandising   |
-| users/:id/deleteuser | bars/:id/deletebar    | merchandisings/:id/deletemerchandising |
+| users/:id/edit     | bars/:id/edit        | merchandisings/:id/edit  |
+| users/:id/delete | bars/:id/delete   | merchandisings/:id/delete |
 |-|-|-
 | **Restaurants**    | **Campings**            | **Stages**              |
 | restaurants        | campings                | stages                  |
-| restaurants/createrestaurant | campings/createcamping | stages/createstage  |
+| restaurants/create | campings/create| stages/create  |
 | restaurants/:id    | campings/:id            | stages/:id              |
-| restaurants/:id/edit | campings/:id/editcamping | stages/:id/editstage |
-| restaurants/:id/deleterestaurant | campings/:id/deletecamping | stages/:id/deletestage |
+| restaurants/:id/edit | campings/:id/edit | stages/:id/edit |
+| restaurants/:id/delete | campings/:id/delete| stages/:id/delete|
 |-|-|-
 | **Toilets**        | **VIPs**                | **FAQs**                |
 | toilets            | vips                    | faqs                    |
-| toilets/createtoilet | vips/createvip        | faqs/createfaq          |
+| toilets/create | vips/create       | faqs/create         |
 | toilets/:id        | vips/:id                | faqs/:id                |
-| toilets/:id/edittoilet | vips/:id/editvip    | faqs/:id/editfaq        |
-| toilets/:id/deletetoilet | vips/:id/deletevip | faqs/:id/deletefaq     |
+| toilets/:id/edit| vips/:id/edit   | faqs/:id/edit       |
+| toilets/:id/delete| vips/:id/delete| faqs/:id/delete    |
 |-|-|-
 | **Informations**   | **News**                | **Bands**               |
 | informations       | news                    | bands                   |
-| informations/createinformation | news/createnews | bands/createband     |
+| informations/create | news/create | bands/create    |
 | informations/:id   | news/:id                | bands/:id               |
-| informations/:id/editinformation | news/:id/editnews | bands/:id/editband |
-| informations/:id/deleteinformation | news/:id/deletenews | bands/:id/deleteband |
+| informations/:id/edit| news/:id/edit | bands/:id/edit |
+| informations/:id/delete | news/:id/delete | bands/:id/delete |
 |-|-|-
 | **Countdowns**     | **Performances**        | **Programs**            |
 | countdowns         | performances            | programs                |
-| countdowns/createcountdown | performances/createperformance | programs/:year |
+| countdowns/create | performances/create| programs/:year |
 | countdowns/:id     | performances/:id        | programs/:year/addperformance |
-| countdowns/:id/editcountdown | performances/:id/editperformance | programs/:year/deleteperformance |
-| countdowns/:id/deletecountdown | performances/:id/deleteperformance | |
+| countdowns/:id/edit| performances/:id/edit | programs/:year/deleteperformance |
+| countdowns/:id/delete| performances/:id/delete | |
 
 
 ## Tests
@@ -349,7 +354,7 @@ This repository is also called if user are needed to other objects tests, exempl
     });
 ```
 
-Each test are made on these fake datas, the MockRepository is injected when services are initialized
+Each test are made on these fake datas, the MockRepository is injected when services are initialized.
 
 
 

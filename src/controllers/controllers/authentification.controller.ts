@@ -12,12 +12,12 @@ export class AuthentificationController {
     
     const token = await this.authService.login(loginDto.email, loginDto.password); 
 
-    if (!token) {
-      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    if (token) {
+      res.setHeader('Authorization', `Bearer ${token}`);
+      return res.status(HttpStatus.OK).send('You are logged in');
     };
 
-    res.setHeader('Authorization', `Bearer ${token}`);
-    return res.status(HttpStatus.OK).send('You are logged in');
+    throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
 
   };
 

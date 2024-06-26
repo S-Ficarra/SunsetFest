@@ -38,7 +38,7 @@ export class FaqController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('faqs/createfaq')
+    @Post('faqs/create')
     async createFaq(
         @Req() req: Request,
         @Body(new ValidationPipe()) createFaqDto : FaqDto): Promise <Faq | {}> {
@@ -53,7 +53,7 @@ export class FaqController {
 
 
     @UseGuards(JwtAuthGuard)
-    @Post('faqs/:id/editfaq')
+    @Post('faqs/:id/edit')
     async editFaq(
         @Req() req: Request,
         @Param('id') id: number,
@@ -72,17 +72,20 @@ export class FaqController {
 
 
         @UseGuards(JwtAuthGuard)
-        @Post('faqs/:id/deletefaq')
+        @Post('faqs/:id/delete')
         async deleteFaq(@Param('id') id: number, @Req() req: Request): Promise <{}> {
             try {
                 const userLogged = await this.authServices.getUserLogged(req);
                 const faqId = +id;
                 const faq = await this.faqServices.getFaqById(faqId);
-                if(!faq){
-                    return {message: `Faq ${faqId} do not exist`};
+
+                if(faq){
+                    await this.faqServices.deleteFaq(userLogged, faqId);
+                    return {message: `faq ${faqId} deleted`};
                 };
-                await this.faqServices.deleteFaq(userLogged, faqId);
-                return {message: `faq ${faqId} deleted`};
+
+                return {message: `Faq ${faqId} do not exist`};
+
             } catch (error) {
                 return {message: error.message};
             };
