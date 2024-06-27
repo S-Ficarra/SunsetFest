@@ -12,5 +12,5 @@ export const AppDataSource = new DataSource({
     entities: ["./dist/src/database/entities/*{.js,.ts}"],
     synchronize: true,
     logging: false,
-  })
+  });
 

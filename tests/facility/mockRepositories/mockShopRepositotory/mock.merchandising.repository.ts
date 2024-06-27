@@ -1,14 +1,11 @@
-import { OpeningTimesService } from "../../../../src/services/facility/openingTimes.service";
 import { Merchandising } from "../../../../src/domain/models/facility/shop/merchandising.model";
 import { MerchandisingRepository } from "../../../../src/domain/repositories/facility/shop/merchandising.repository";
-import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
 import { MockOpeningTimesRepository } from "../mock.openingTimes.repository";
 
 
 export class MockMerchandisingRepository implements MerchandisingRepository {
 
     constructor(public openingTimesRepository : MockOpeningTimesRepository,
-        public openingTimesService : OpeningTimesService
     ){};
     
 

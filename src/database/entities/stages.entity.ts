@@ -10,9 +10,9 @@ export class stages {
     @Column()
     name: string;
 
-    @ManyToOne(() => locations, {cascade: true})
+    @ManyToOne(() => locations, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    location_: number;
+    location_: locations;
 
     @Column()
     capacity: number;

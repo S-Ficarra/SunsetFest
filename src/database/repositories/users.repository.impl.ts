@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../domain/models/user/user.model';
 import { users } from '../entities/users.entity';
 import { UserRepository } from '../../domain/repositories/user/user.repository';
-import { mapUserEntityToModel, mapUserModelToEntity } from '../mappers/user.mapper';
+import { mapUserEntityToModel, mapUserModelToEntity, mapUserModelToEntityEdit } from '../mappers/user.mapper';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UserRepositoryImpl implements UserRepository {
   
     constructor(
@@ -13,8 +15,19 @@ export class UserRepositoryImpl implements UserRepository {
     ){};
 
     async getUserById(id: number): Promise<User | undefined> {
-        const userEntity = await this.userRepository.findOneBy({id: id});
-        return mapUserEntityToModel(userEntity);
+        const user_entity = await this.userRepository.findOneBy({id: id});
+        if(user_entity){
+            return mapUserEntityToModel(user_entity);
+        }
+        throw new Error ('User do not exist')
+    };
+
+    async getUserByEmail(userEmail: string): Promise<User | undefined> {    
+        const user_entity = await this.userRepository.findOneBy({ email: userEmail });               
+        if(user_entity){
+        return mapUserEntityToModel(user_entity);
+        }
+        return undefined;
     };
 
     async getAllUsers(): Promise<User[]> {
@@ -33,10 +46,10 @@ export class UserRepositoryImpl implements UserRepository {
     };
 
     async editUser(user: User): Promise<User> {
-        const user_entity = mapUserModelToEntity(user);
+        const user_entity = mapUserModelToEntityEdit(user);
         const editedUser = await this.userRepository.save(user_entity);
-        user.setId(editedUser.id)
-        return user;
+        const editedUserModel = mapUserEntityToModel(editedUser)
+        return editedUserModel;
     };
 
     async deleteUser(userId: number): Promise<void> {

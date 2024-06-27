@@ -1,14 +1,15 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Faq } from 'src/domain/models/publication/faq.model';
-import { faqs } from 'src/database/entities/faqs.entity';
-import { publication_details } from 'src/database/entities/publication_details.entity';
-import { users } from 'src/database/entities/users.entity';
-import { FaqRepository } from 'src/domain/repositories/publication/faq.repository';
-import { mapFaqEntitytoModel, mapFaqModeltoEntity } from '../../mappers/publications/faq.mapper';
+import { Faq } from '../../../domain/models/publication/faq.model';
+import { faqs } from '../../../database/entities/faqs.entity';
+import { publication_details } from '../../../database/entities/publication_details.entity';
+import { users } from '../../../database/entities/users.entity';
+import { FaqRepository } from '../../../domain/repositories/publication/faq.repository';
+import { mapFaqEntitytoModel, mapFaqModeltoEntity, mapFaqModeltoEntityEdit } from '../../mappers/publications/faq.mapper';
 import { mapPubliDetailsToEntity, mapPubliDetailsToEntityEdit } from '../../mappers/publications/publication.mapper';
+import { Injectable } from '@nestjs/common';
 
-
+@Injectable()
 export class FaqRepositoryImpl implements FaqRepository {
 
     constructor(
@@ -24,38 +25,46 @@ export class FaqRepositoryImpl implements FaqRepository {
     async getAllFaq(): Promise<Faq[]> {
         const allFaqs = await this.faqsRepository.find();
         const mappedFaqsPromises = allFaqs.map(async faq_entity => {
-            const publication_details = await this.publicationDetailsRepository.findOneBy({id: faq_entity.publication__details_});
-            const user_entity = await this.userRepository.findOneBy({id: publication_details.author_});
-            return mapFaqEntitytoModel(faq_entity, publication_details, user_entity);
+            const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.author_});
+            return mapFaqEntitytoModel(faq_entity, faq_entity.publication__details_, user_entity);
         });
         return Promise.all(mappedFaqsPromises);
     };
 
     async getFaqById(faqId: number): Promise<Faq> {
         const faq_entity = await this.faqsRepository.findOneBy({id: faqId});
-        const publication_details = await this.publicationDetailsRepository.findOneBy({id: faq_entity.publication__details_});
-        const user_entity = await this.userRepository.findOneBy({id: publication_details.author_});
-        return mapFaqEntitytoModel(faq_entity, publication_details, user_entity);
+        if (faq_entity) {
+            const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.author_});
+            return mapFaqEntitytoModel(faq_entity, faq_entity.publication__details_, user_entity);
+        };
+        return null;
     };
 
     async createFaq(faq: Faq): Promise<Faq> {
         const publication_details = mapPubliDetailsToEntity(faq);
         await this.publicationDetailsRepository.save(publication_details);
-        const createdFaq = mapFaqModeltoEntity(faq, publication_details.id);
+        const createdFaq = mapFaqModeltoEntity(faq, publication_details);
+        await this.faqsRepository.save(createdFaq);
         faq.setId(createdFaq.id);
         return faq; 
     };
 
     async editFaq(faq: Faq): Promise<Faq> {
-        const publication_details = mapPubliDetailsToEntityEdit(faq);
+        const faq_entity = await this.faqsRepository.findOneBy({id: faq.getId()})
+        const publication_details = mapPubliDetailsToEntityEdit(faq, faq_entity.publication__details_.id);
         await this.publicationDetailsRepository.save(publication_details);
-        const editedFaq = mapFaqModeltoEntity(faq, publication_details.id);
+        const editedFaq = mapFaqModeltoEntityEdit(faq_entity.id, faq, publication_details);
+        await this.faqsRepository.save(editedFaq);
         faq.setId(editedFaq.id);
         return faq; 
     };
 
     async deleteFaq(faqId: number): Promise<void> {
-        this.faqsRepository.delete(faqId);
+        const faq_entity = await this.faqsRepository.findOneBy({id: faqId});
+        const publi_detail = faq_entity.publication__details_.id;
+
+        await this.publicationDetailsRepository.delete(publi_detail);
+        await this.faqsRepository.delete(faqId);
     };
     
 };

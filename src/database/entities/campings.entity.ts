@@ -13,8 +13,8 @@ export class campings {
     @Column()
     capacity: number;
 
-    @ManyToOne(() => locations, {cascade: true})
+    @ManyToOne(() => locations, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    location_: number;
+    location_: locations;
 
 };

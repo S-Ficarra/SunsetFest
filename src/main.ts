@@ -1,18 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AppDataSource } from "./database/ormconfig"
-import "reflect-metadata";
+import * as bodyParser from 'body-parser';
+
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+
   await app.listen(3000);
-}
+};
+
 
 bootstrap();
 
-AppDataSource.initialize()
-    .then(() => {
-      console.log('Database connected succefully');
-    })
-    .catch((error) => console.log(error))

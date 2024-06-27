@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Countdown } from 'src/domain/models/countdown.model';
 import { countdowns } from '../entities/countdowns.entity';
 import { CountdownRepository } from 'src/domain/repositories/countdown.repository';
-import { mapCountdownEntitytoModel, mapCountdownModeltoEntity } from '../mappers/countdown.mapper';
+import { mapCountdownEntitytoModel, mapCountdownModeltoEntity, mapCountdownModeltoEntityEdit } from '../mappers/countdown.mapper';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class CountdownRepositoryImpl implements CountdownRepository {
 
 
@@ -17,14 +19,20 @@ export class CountdownRepositoryImpl implements CountdownRepository {
     async getAllCountdowns(): Promise<Countdown[]> {
         const allCountdowns = await this.countdownRepository.find();
         const mappedCountdownPromises =  allCountdowns.map( async countdown_entity => {
-            return mapCountdownEntitytoModel(countdown_entity);
+            if (countdown_entity) {
+                return mapCountdownEntitytoModel(countdown_entity);
+            };
+            return null;
         });
         return Promise.all(mappedCountdownPromises);
     };
 
     async getCountdownById(countdownId: number): Promise<Countdown> {
         const countdown_entity = await this.countdownRepository.findOneBy({id: countdownId});
-        return mapCountdownEntitytoModel(countdown_entity);
+        if (countdown_entity) {
+            return mapCountdownEntitytoModel(countdown_entity);
+        };
+        return null;
     };
 
     async createCountdown(countdown: Countdown): Promise<Countdown> {
@@ -35,14 +43,14 @@ export class CountdownRepositoryImpl implements CountdownRepository {
     };
 
     async editCountdown(countdown: Countdown): Promise<Countdown> {
-        const countdown_entity = mapCountdownModeltoEntity(countdown);
+        const countdown_entity = mapCountdownModeltoEntityEdit(countdown);
         const editedCountdown = await this.countdownRepository.save(countdown_entity);
         countdown.setId(editedCountdown.id);
         return countdown;
     };
 
     async deleteCountdown(countdownId: number): Promise<void> {
-        this.countdownRepository.delete(countdownId);
+        await this.countdownRepository.delete(countdownId);
     };
 
     

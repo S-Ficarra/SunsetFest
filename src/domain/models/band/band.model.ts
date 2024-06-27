@@ -2,24 +2,20 @@ import { User } from "../user/user.model";
 import { Socials } from "./socials.model";
 
 export class Band {
-    await: any;
-    socials(socials: any) {
-        throw new Error("Method not implemented.");
-    }
 
     private _id: number;
     private _name: string;
     private _country: string;
     private _text: string;
     private _socials: Socials;
-    private _thumbnailImage: Blob;
-    private _bannerImage: Blob;
+    private _thumbnailImage: Buffer;
+    private _bannerImage: Buffer;
     private _user: User;
     private _createdAt: Date;
     private _modifiedAt: Date;
 
 
-    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Blob, bannerImage: Blob, user: User, createdAt: Date, modifiedAt: Date) {
+    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Buffer, bannerImage: Buffer, user: User, createdAt: Date, modifiedAt: Date) {
         this._name = name;
         this._country = country;
         this._text = text;
@@ -71,27 +67,27 @@ export class Band {
         return this._socials;
     };
 
-    setThumbnailImage(thumbnailImage: Blob) {
+    setThumbnailImage(thumbnailImage: Buffer) {
         this._thumbnailImage = thumbnailImage;
     };
 
-    getThumbnailImage(): Blob {
+    getThumbnailImage(): Buffer {
         return this._thumbnailImage;
     };
 
-    setBannerImage(bannerImage: Blob) {
+    setBannerImage(bannerImage: Buffer) {
         this._bannerImage = bannerImage;
     };
 
-    getBannerImage(): Blob {
+    getBannerImage(): Buffer {
         return this._bannerImage;
     };
 
-    setAuthorId(userId: User) {
+    setAuthor(userId: User) {
         this._user = userId;
     };
 
-    getAuthorId(): User {
+    getAuthor(): User {
         return this._user;
     };
 

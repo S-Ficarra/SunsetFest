@@ -1,5 +1,5 @@
 import { Facility } from "../facility.model";
-import { OpeningTimes } from "../openingTimes.model";
+import { OpeningTimes } from "./openingTimes.model";
 
 export class Shop extends Facility {
 

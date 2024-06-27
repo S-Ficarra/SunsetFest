@@ -2,50 +2,48 @@ import { User } from "../../domain/models/user/user.model";
 import { Faq } from "../../domain/models/publication/faq.model";
 import { FaqRepository } from "../../domain/repositories/publication/faq.repository";
 import { RoleService } from "../user/role.service";
+import { Inject } from "@nestjs/common";
 
 export class FaqService {
 
 
     constructor(
-        private faqRepository: FaqRepository,
+        @Inject('FaqRepository') private faqRepository: FaqRepository,
         private roleService : RoleService,
     ){};
 
     async getAllFaq(): Promise<Faq[]> {
-        return this.faqRepository.getAllFaq();
+        return await this.faqRepository.getAllFaq();
     };
 
 
     async getFaqById(faqId: number): Promise<Faq> {   
-        return this.faqRepository.getFaqById(faqId);
+        const faq = await this.faqRepository.getFaqById(faqId);
+        if (faq) {
+            return faq;
+        };
+        throw new Error (`Faq ${faqId} do not exist`);
     };
 
     async createFaq(faq: Faq): Promise<Faq> {
-        this.faqRepository.createFaq(faq);
-        return faq;
+        const faqCreated = await this.faqRepository.createFaq(faq);
+        return faqCreated;
     };
 
     async editFaq(faq: Faq): Promise<Faq> {
-        this.faqRepository.editFaq(faq);
-        return faq;
+        const faqEdited = await this.faqRepository.editFaq(faq);
+        return faqEdited;
     };
 
 
     async deleteFaq(requestingUser: User, faqId: number): Promise<void> {
         if (this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            this.faqRepository.deleteFaq(faqId);
+            await this.faqRepository.deleteFaq(faqId);
         } else {
             throw new Error('Unauthorized');
         };
     };
 
-    async changeStatus(requestingUser: User, faqId: number, newStatus: boolean): Promise<void> {
-        if (this.roleService.isAdmin(requestingUser) || this.roleService.isEditor(requestingUser)){
-            (await this.getFaqById(faqId)).setStatus(newStatus)
-        } else {
-            throw new Error ('Unauthorized')
-        };
-    };
 
 
 };

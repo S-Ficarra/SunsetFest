@@ -1,15 +1,13 @@
 import { Performance } from "../../../src/domain/models/program/performance/performance.model";
 import { PerformanceService } from "../../../src/services/program/performance/performance.service";
-import { MockPerformanceRepository } from "../performance/mock.performance.repository";
+import { MockPerformanceRepository } from "./mock.performance.repository";
 import { MockTimeFrameRepository } from "./mock.timeFrame.repository";
 import { MockBandRepository } from "../../band/mock.band.repository";
 import { MockStageRepository } from "../../facility/mockRepositories/mock.stage.repository";
-import { MockSocialsRepository } from "../../band/mock.socials.repository";
 import { MockUserRepository } from "../../user/mock.user.repository";
 
 
 describe('PerformanceService', () => {
-    let socialRepository : MockSocialsRepository;
     let bandRepository : MockBandRepository;
     let stageRepository : MockStageRepository;
     let timeFrameRepository: MockTimeFrameRepository;
@@ -20,13 +18,12 @@ describe('PerformanceService', () => {
 
     beforeEach(() => {
         userRepository = new MockUserRepository();
-        socialRepository = new MockSocialsRepository();
-        bandRepository = new MockBandRepository(socialRepository, userRepository)
+        bandRepository = new MockBandRepository( userRepository)
         stageRepository = new MockStageRepository();
         timeFrameRepository = new MockTimeFrameRepository();
         userRepository.setFakeIdToTest();
-        socialRepository.setFakeIdToTest();
-        bandRepository.setFakeIdToTest();
+        bandRepository.setFakeIdToTestSocials();
+        bandRepository.setFakeIdToTestBand();
         timeFrameRepository.setFakeIdToTest();
         stageRepository.setFakeIdToTest();
         performanceRepository= new MockPerformanceRepository(userRepository, bandRepository, timeFrameRepository, stageRepository);
@@ -40,10 +37,10 @@ describe('PerformanceService', () => {
         const performance = await performanceService.getAllPerformances();
         expect(performance).toHaveLength(2);
         expect(performance).toEqual(expect.arrayContaining([
-            expect.objectContaining({_day: 'friday', _band: 
+            expect.objectContaining({_band: 
             expect.objectContaining({_id: 1}), _stage: 
             expect.objectContaining({_id: 1})}),
-            expect.objectContaining({_day: 'saturday', _band: 
+            expect.objectContaining({_band: 
             expect.objectContaining({_id: 2}), _stage: 
             expect.objectContaining({_id: 2})})
         ]));
@@ -53,7 +50,7 @@ describe('PerformanceService', () => {
     it("should return a performance by it's id", async () => {
         let foundPerformance1 = await performanceService.getPerformanceById(1);
         expect(foundPerformance1).toEqual(
-            expect.objectContaining({_day: 'friday', _band: 
+            expect.objectContaining({_band: 
             expect.objectContaining({_id: 1}), _stage: 
             expect.objectContaining({_id: 1})}));
     });
@@ -62,7 +59,7 @@ describe('PerformanceService', () => {
 
     //createPerformance
     it('should return a performance just created', async () => {
-        const performanceCreated = new Performance (bandRepository.bands[0], 'sunday', timeFrameRepository.timeFrameArray[0], stageRepository.stages[0]);
+        const performanceCreated = new Performance (bandRepository.bands[0], timeFrameRepository.timeFrameArray[0], stageRepository.stages[0]);
         performanceService.createPerformance(performanceCreated); 
         const foundPerformance3 = await performanceService.getPerformanceById(3)
         expect(foundPerformance3).toEqual(performanceCreated);
@@ -71,7 +68,7 @@ describe('PerformanceService', () => {
     
     //editPerformance
     it('should return a performance edited', async () => {
-        const performanceEdited = new Performance (bandRepository.bands[1], 'saturday', timeFrameRepository.timeFrameArray[0], stageRepository.stages[1]);
+        const performanceEdited = new Performance (bandRepository.bands[1], timeFrameRepository.timeFrameArray[0], stageRepository.stages[1]);
         performanceEdited.setId(1)
         performanceService.editPerformance(performanceEdited);  
         const foundPerformanceEdited = await performanceService.getPerformanceById(1)  

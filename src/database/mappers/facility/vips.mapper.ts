@@ -1,11 +1,21 @@
-import { vips } from "src/database/entities/vips.entity";
-import { Vip } from "src/domain/models/facility/vip.model";
+import { locations } from "../../../database/entities/locations.entity";
+import { vips } from "../../../database/entities/vips.entity";
+import { Vip } from "../../../domain/models/facility/vip.model";
 
-export function mapVipModelToEntity(model: Vip, fkLocation: number): vips {
+export function mapVipModelToEntity(model: Vip, location: locations): vips {
 
     const entity = new vips();
     entity.name = model.getName();
-    entity.location_ = fkLocation
+    entity.location_ = location
+    return entity;
+};
+
+export function mapVipModelToEntityEdit(model: Vip, location: locations): vips {
+
+    const entity = new vips();
+    entity.id = model.getId()
+    entity.name = model.getName();
+    entity.location_ = location
     return entity;
 };
 

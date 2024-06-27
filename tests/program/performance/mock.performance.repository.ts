@@ -23,7 +23,7 @@ export class MockPerformanceRepository implements PerformanceRepository{
             this.timeFrameRepository = timeFrameRepository;
             this.stageRepository = stageRepository;
             userRepository.setFakeIdToTest();
-            bandRepository.setFakeIdToTest();
+            bandRepository.setFakeIdToTestBand();
             timeFrameRepository.setFakeIdToTest();
             stageRepository.setFakeIdToTest();
             this.initializePerformances();
@@ -32,8 +32,8 @@ export class MockPerformanceRepository implements PerformanceRepository{
 
     private initializePerformances(): void {
         this.performances.push(
-            new Performance (this.bandRepository.bands[0], 'friday', this.timeFrameRepository.timeFrameArray[0], this.stageRepository.stages[0]),
-            new Performance (this.bandRepository.bands[1], 'saturday', this.timeFrameRepository.timeFrameArray[1], this.stageRepository.stages[1])
+            new Performance (this.bandRepository.bands[0], this.timeFrameRepository.timeFrameArray[0], this.stageRepository.stages[0]),
+            new Performance (this.bandRepository.bands[1], this.timeFrameRepository.timeFrameArray[1], this.stageRepository.stages[1])
         );
         };
     

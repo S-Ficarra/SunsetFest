@@ -1,11 +1,21 @@
-import { Stage } from "src/domain/models/facility/stage.model";
-import { stages } from "src/database/entities/stages.entity";
+import { Stage } from "../../../domain/models/facility/stage.model";
+import { stages } from "../../../database/entities/stages.entity";
+import { locations } from "../../../database/entities/locations.entity";
 
-export function mapStageModelToEntity (model: Stage, fkLocation: number): stages {
+export function mapStageModelToEntity (model: Stage, location: locations): stages {
     const entity = new stages();
     entity.name = model.getName();
     entity.capacity = model.getCapacity();
-    entity.location_ = fkLocation;
+    entity.location_ = location ;
+    return entity;
+};
+
+export function mapStageModelToEntityEdit (model: Stage, location: locations): stages {
+    const entity = new stages();
+    entity.id = model.getId();
+    entity.name = model.getName();
+    entity.capacity = model.getCapacity();
+    entity.location_ = location ;
     return entity;
 };
 

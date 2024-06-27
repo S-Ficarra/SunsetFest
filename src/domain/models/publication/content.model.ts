@@ -3,9 +3,9 @@ export class Content {
     private _id: number;
     private _title: string;
     private _text: string;
-    private _image: Blob; 
+    private _image: Buffer; 
 
-    constructor (title: string, text: string, image: Blob) {
+    constructor (title: string, text: string, image: Buffer) {
         this._title = title;
         this._text = text;
         this._image = image;
@@ -35,11 +35,11 @@ export class Content {
         return this._text;
     };
 
-    setImage(blob: Blob): void {
-        this._image = blob;
+    setImage(buffer: Buffer): void {
+        this._image = buffer;
     };
 
-    getImage(): Blob {
+    getImage(): Buffer {
         return this._image;
     };
 

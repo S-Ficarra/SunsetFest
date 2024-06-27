@@ -11,21 +11,21 @@ export class publications {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => publication_contents, {cascade: true})
+    @ManyToOne(() => publication_contents, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    publication__contents_: number;
+    publication__contents_: publication_contents;
 
-    @ManyToOne(() => publication_details, {cascade: true})
+    @ManyToOne(() => publication_details, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    publication__details_: number;
+    publication__details_: publication_details;
 
-    @ManyToOne(() => publication_types, {cascade: true})
+    @ManyToOne(() => publication_types, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    publication__types_: number;
+    publication__types_: publication_types;
 
-    @ManyToOne(() => images, { cascade: true, nullable: true })
+    @ManyToOne(() => images, { cascade: true, nullable: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    images_: number | null;
+    images_: images | null;
 
 
 };

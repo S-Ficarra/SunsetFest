@@ -1,12 +1,11 @@
 import { Content } from "../../../src/domain/models/publication/content.model";
-import { ContentRepository } from "../../../src/domain/repositories/publication/content.repository";
 
-export class MockContentRepository implements ContentRepository {
+export class MockContentRepository {
 
 
     public content: Content[] = [
-        new Content ('title1', 'text1', new Blob),
-        new Content ('title2', 'text2', new Blob),
+        new Content ('title1', 'text1', Buffer.from('image1')),
+        new Content ('title2', 'text2', Buffer.from('image2')),
     ];
 
     setFakeIdToTest(): void {

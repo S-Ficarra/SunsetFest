@@ -13,8 +13,8 @@ export class faqs {
     @Column()
     answer: string;
 
-    @OneToOne(() => publication_details)
+    @OneToOne(() => publication_details, {cascade: true, onDelete: 'CASCADE', eager: true})
     @JoinColumn()
-    publication__details_: number;
+    publication__details_: publication_details;
 
 };

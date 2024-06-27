@@ -1,18 +1,19 @@
-import { Program } from "src/domain/models/program/program.model";
-import { programs } from "src/database/entities/programs.entity";
-import { Performance } from "src/domain/models/program/performance/performance.model";
-import { performances } from "src/database/entities/performances.entity";
+import { Program } from "../../../domain/models/program/program.model";
+import { programs } from "../../../database/entities/programs.entity";
+import { performances } from "../../../database/entities/performances.entity";
 
-export function mapProgramToEntity (programId: number, performance: Performance): programs {
+export function mapProgramToEntity (program: Program, performance: performances): programs {
     const entity = new programs();
-    entity.id = programId;
-    entity.performance_ = performance.getId();
+
+    entity.year = program.getId();
+    entity.performance_ = performance;
+
     return entity;
 };
 
 
-export function mapCreatedProgram (id: number): programs {
+export function mapCreatedProgram (year: number): programs {
     const entity = new programs();
-    entity.id = id
+    entity.year = year;
     return entity;
 }

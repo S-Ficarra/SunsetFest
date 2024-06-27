@@ -1,25 +1,27 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Performance } from 'src/domain/models/program/performance/performance.model';
-import { performances } from 'src/database/entities/performances.entity';
-import { PerformanceRepository } from 'src/domain/repositories/program/performance/performance.repository';
-import { bands } from 'src/database/entities/bands.entity';
-import { stages } from 'src/database/entities/stages.entity';
-import { timeframes } from 'src/database/entities/timeframes.entity';
-import { BandService } from 'src/services/band/band.service';
-import { RoleService } from 'src/services/user/role.service';
+import { Performance } from '../../../domain/models/program/performance/performance.model';
+import { performances } from '../../../database/entities/performances.entity';
+import { PerformanceRepository } from '../../../domain/repositories/program/performance/performance.repository';
+import { bands } from '../../../database/entities/bands.entity';
+import { stages } from '../../../database/entities/stages.entity';
+import { timeframes } from '../../../database/entities/timeframes.entity';
+import { BandService } from '../../../services/band/band.service';
+import { RoleService } from '../../../services/user/role.service';
 import { BandRepositoryImpl } from './bands.repository.impl';
-import { images } from 'src/database/entities/images.entity';
-import { publication_details } from 'src/database/entities/publication_details.entity';
-import { users } from 'src/database/entities/users.entity';
+import { images } from '../../../database/entities/images.entity';
+import { publication_details } from '../../../database/entities/publication_details.entity';
+import { users } from '../../../database/entities/users.entity';
 import { StageRepositoryImpl } from '../facility/stage.repository.impl';
-import { StageService } from 'src/services/facility/stage.service';
-import { locations } from 'src/database/entities/locations.entity';
-import { mapPerformanceEntitytoModel, mapPerformanceModeltoEntity } from 'src/database/mappers/program/performance.mapper';
-import { TimeFrameService } from 'src/services/program/performance/timeFrame.service';
+import { StageService } from '../../../services/facility/stage.service';
+import { locations } from '../../../database/entities/locations.entity';
+import { mapPerformanceEntitytoModel, mapPerformanceModeltoEntity, mapPerformanceModeltoEntityEdit } from '../../../database/mappers/program/performance.mapper';
+import { TimeFrameService } from '../../../services/program/performance/timeFrame.service';
 import { TimeFrameRepositoryImpl } from './timeFrame.repository.impl';
+import { Injectable } from '@nestjs/common';
 
 
+@Injectable()
 export class PerformanceRepositoryImpl implements PerformanceRepository {
     
     timeFrameService: TimeFrameService;
@@ -59,37 +61,43 @@ export class PerformanceRepositoryImpl implements PerformanceRepository {
     async getAllPerformances(): Promise<Performance[]> {
         const allPerformances = await this.perfRepository.find();
         const mappedAllPerf = allPerformances.map(async perf_entity => {
-            const band = await this.bandService.getBandById(perf_entity.band_);
-            const stage = await this.stageService.getStageById(perf_entity.stage_);
-            const timeFrame = await this.timeFrameService.getTimeFrameById(perf_entity.timeframe_);
-            return mapPerformanceEntitytoModel(perf_entity, band, timeFrame, stage);
+            if (perf_entity) {
+                const band = await this.bandService.getBandById(perf_entity.band_.id);
+                const stage = await this.stageService.getStageById(perf_entity.stage_.id);
+                const timeFrame = await this.timeFrameService.getTimeFrameById(perf_entity.timeframe_.id);
+                return mapPerformanceEntitytoModel(perf_entity, band, timeFrame, stage);
+            };
+            return null;
         });
         return Promise.all(mappedAllPerf);
     };
 
     async getPerformanceById(performanceId: number): Promise<Performance> {
-        const perf_entity = await this.perfRepository.findOneBy({id: performanceId});
-        const band = await this.bandService.getBandById(perf_entity.band_);
-        const stage = await this.stageService.getStageById(perf_entity.stage_);
-        const timeFrame = await this.timeFrameService.getTimeFrameById(perf_entity.timeframe_);
-        return mapPerformanceEntitytoModel(perf_entity, band, timeFrame, stage);
+        const perf_entity = await this.perfRepository.findOneBy({id: performanceId});                
+        if (perf_entity) {
+            const band = await this.bandService.getBandById(perf_entity.band_.id);
+            const stage = await this.stageService.getStageById(perf_entity.stage_.id);
+            const timeFrame = await this.timeFrameService.getTimeFrameById(perf_entity.timeframe_.id);
+            return mapPerformanceEntitytoModel(perf_entity, band, timeFrame, stage);
+        };
+        return null;
     };
 
     async createPerformance(performance: Performance): Promise<Performance> {
-        const fkBand = performance.getBand().getId();
-        const fkStage = performance.getStage().getId();
-        const fkTimeFrame = performance.getTimeFrame().getId();
-        const createdPerformance = mapPerformanceModeltoEntity(performance, fkBand, fkTimeFrame, fkStage);
+        const band = await this.bandRepository.findOneBy({id: performance.getBand().getId()}) 
+        const stage = await this.stagesRepository.findOneBy({id: performance.getStage().getId()})
+        const timeFrame = await this.timeFrameRepository.findOneBy({id: performance.getTimeFrame().getId()}) 
+        const createdPerformance = mapPerformanceModeltoEntity(performance, band, stage, timeFrame);
         await this.perfRepository.save(createdPerformance);
         performance.setId(createdPerformance.id);
         return performance;
     };
 
     async editPerformance(performance: Performance): Promise<Performance> {
-        const fkBand = performance.getBand().getId();
-        const fkStage = performance.getStage().getId();
-        const fkTimeFrame = performance.getTimeFrame().getId();
-        const editedPerformance = mapPerformanceModeltoEntity(performance, fkBand, fkTimeFrame, fkStage);
+        const band = await this.bandRepository.findOneBy({id: performance.getBand().getId()}) 
+        const stage = await this.stagesRepository.findOneBy({id: performance.getStage().getId()})
+        const timeFrame = await this.timeFrameRepository.findOneBy({id: performance.getTimeFrame().getId()}) 
+        const editedPerformance = mapPerformanceModeltoEntityEdit(performance, band, stage, timeFrame);
         await this.perfRepository.save(editedPerformance);
         performance.setId(editedPerformance.id);
         return performance;

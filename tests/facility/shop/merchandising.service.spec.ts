@@ -1,4 +1,3 @@
-import { OpeningTimesService } from "../../../src/services/facility/openingTimes.service";
 import { Merchandising } from "../../../src/domain/models/facility/shop/merchandising.model";
 import { MerchandisingService } from "../../../src/services/facility/shop/merchandising.service";
 import { MockMerchandisingRepository } from "../mockRepositories/mockShopRepositotory/mock.merchandising.repository";
@@ -9,14 +8,12 @@ import { MockOpeningTimesRepository } from "../mockRepositories/mock.openingTime
 describe('MerchandisingService', () => {
     let merchandisingService: MerchandisingService;
     let merchandisingRepository: MockMerchandisingRepository;
-    let openingTimesService: OpeningTimesService;
     let openingTimesRepository: MockOpeningTimesRepository;
 
 
     beforeEach(() => {
         openingTimesRepository = new MockOpeningTimesRepository();
-        openingTimesService = new OpeningTimesService(openingTimesRepository);
-        merchandisingRepository = new MockMerchandisingRepository(openingTimesRepository, openingTimesService);
+        merchandisingRepository = new MockMerchandisingRepository(openingTimesRepository);
         merchandisingService = new MerchandisingService(merchandisingRepository);
         merchandisingRepository.setFakeIdToTest();
     });

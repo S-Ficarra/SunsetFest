@@ -8,9 +8,9 @@ export class Publication {
     private _createdAt: Date;
     private _modifiedAt: Date;
     private _status : boolean;
-    private _type : string;
+    private _type : PublicationType;
 
-    constructor (user: User, createdAt: Date, modifiedAt: Date, status: boolean, type: string) {
+    constructor (user: User, createdAt: Date, modifiedAt: Date, status: boolean, type: PublicationType) {
         this._user = user;
         this._createdAt = createdAt;
         this._modifiedAt = modifiedAt;
@@ -58,7 +58,7 @@ export class Publication {
         return this._status;
     };
 
-    setType(type: string): void {
+    setType(type: PublicationType): void {
         this._type = type;
     };
 

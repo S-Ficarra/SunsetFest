@@ -9,20 +9,17 @@ export class performances {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @OneToOne(() => bands)
+    @ManyToOne(() => bands, {eager: true})
     @JoinColumn()
-    band_: number;
+    band_: bands;
 
-    @Column()
-    day: string;
-
-    @ManyToOne(() => timeframes)
+    @ManyToOne(() => timeframes, {eager: true})
     @JoinColumn()
-    timeframe_: number;
+    timeframe_: timeframes;
 
-    @ManyToOne(() => stages)
+    @ManyToOne(() => stages, {eager: true})
     @JoinColumn()
-    stage_: number;
+    stage_: stages;
 
 
 };

@@ -1,15 +1,15 @@
-import { OpeningTimesService } from "../../../../src/services/facility/openingTimes.service";
 import { Restaurant } from "../../../../src/domain/models/facility/shop/restaurant.model";
 import { RestaurantRepository } from "../../../../src/domain/repositories/facility/shop/restaurant.repository";
-import { OpeningTimes } from "src/domain/models/facility/openingTimes.model";
+import { OpeningTimes } from "src/domain/models/facility/shop/openingTimes.model";
 import { MockOpeningTimesRepository } from "../mock.openingTimes.repository";
 
 
 export class MockRestaurantRepository implements RestaurantRepository {
 
-    constructor(public openingTimesService : OpeningTimesService,
-        public openingTimesRepository : MockOpeningTimesRepository
+    constructor(public openingTimesRepository : MockOpeningTimesRepository
     ){};
+
+    
 
     public restaurants: Restaurant[] = [
         new Restaurant ('hell burger', 123.546, 356.214, this.openingTimesRepository.openingTimesArray[0], 'burger'),
