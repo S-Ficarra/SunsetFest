@@ -1,6 +1,6 @@
-import { Bar } from "src/domain/models/facility/shop/bar.model";
+import { Bar } from "../../../domain/models/facility/shop/bar.model";
 import { BarDto } from "../../DTO/facilities/bar.dto";
-import { OpeningTimes } from "src/domain/models/facility/shop/openingTimes.model";
+import { OpeningTimes } from "../../../domain/models/facility/shop/openingTimes.model";
 
 
 export function mapBarDtoToModel (createBarDto: BarDto) {

@@ -1,4 +1,4 @@
-import { Vip } from "src/domain/models/facility/vip.model";
+import { Vip } from "../../../domain/models/facility/vip.model";
 import { VipDto } from "../../DTO/facilities/vip.dto";
 
 

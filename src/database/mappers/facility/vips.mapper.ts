@@ -1,6 +1,6 @@
-import { locations } from "src/database/entities/locations.entity";
-import { vips } from "src/database/entities/vips.entity";
-import { Vip } from "src/domain/models/facility/vip.model";
+import { locations } from "../../../database/entities/locations.entity";
+import { vips } from "../../../database/entities/vips.entity";
+import { Vip } from "../../../domain/models/facility/vip.model";
 
 export function mapVipModelToEntity(model: Vip, location: locations): vips {
 

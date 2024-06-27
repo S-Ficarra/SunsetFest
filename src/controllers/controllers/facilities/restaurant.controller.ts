@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Restaurant } from "src/domain/models/facility/shop/restaurant.model";
-import { RestaurantService } from "src/services/facility/shop/restaurant.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Restaurant } from "../../../domain/models/facility/shop/restaurant.model";
+import { RestaurantService } from "../../../services/facility/shop/restaurant.service";
 import { RestaurantDto } from "../../DTO/facilities/restaurant.dto";
 import { mapRestaurantDtoToModel, mapRestaurantDtoToModelEdit } from "../../mappers/facilities/restaurant.mapper";
 

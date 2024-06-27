@@ -1,5 +1,5 @@
-import { TimeFrame } from "src/domain/models/program/performance/timeFrame.model";
-import { timeframes } from "src/database/entities/timeframes.entity";
+import { TimeFrame } from "../../../domain/models/program/performance/timeFrame.model";
+import { timeframes } from "../../../database/entities/timeframes.entity";
 
 export function mapTimeFrameToEntity (model: TimeFrame): timeframes{
     const entity = new timeframes();

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Camping } from "src/domain/models/facility/camping.model";
-import { CampingService } from "src/services/facility/camping.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Camping } from "../../../domain/models/facility/camping.model";
+import { CampingService } from "../../../services/facility/camping.service";
 import { CampingDto } from "../../DTO/facilities/camping.dot";
 import { mapCampingDtoToModelCreate, mapCampingDtoToModelEdit } from "../../mappers/facilities/camping.mapper";
 

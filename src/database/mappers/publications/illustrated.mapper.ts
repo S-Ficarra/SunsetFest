@@ -1,7 +1,6 @@
-import { publication_types } from "src/database/entities/publication_types.entity";
-import { publication_contents } from "src/database/entities/publication_contents.entity";
-import { images } from "src/database/entities/images.entity";
-import { Illustrated } from "src/domain/models/publication/illustrated.model";
+import { publication_contents } from "../../../database/entities/publication_contents.entity";
+import { images } from "../../../database/entities/images.entity";
+import { Illustrated } from "../../../domain/models/publication/illustrated.model";
 
 
 

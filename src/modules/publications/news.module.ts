@@ -1,19 +1,19 @@
 import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { NewsController } from "src/controllers/controllers/publications/news.controller";
-import { images } from "src/database/entities/images.entity";
-import { publication_contents } from "src/database/entities/publication_contents.entity";
-import { publication_details } from "src/database/entities/publication_details.entity";
-import { publication_types } from "src/database/entities/publication_types.entity";
-import { publications } from "src/database/entities/publications.entity";
-import { users } from "src/database/entities/users.entity";
-import { NewsRepositoryImpl } from "src/database/repositories/publications/news.repository.impl";
-import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { NewsService } from "src/services/publication/news.service";
-import { RoleService } from "src/services/user/role.service";
-import { UserService } from "src/services/user/user.service";
+import { AuthentificationService } from "../../authentification/authentification.service";
+import { NewsController } from "../../controllers/controllers/publications/news.controller";
+import { images } from "../../database/entities/images.entity";
+import { publication_contents } from "../../database/entities/publication_contents.entity";
+import { publication_details } from "../../database/entities/publication_details.entity";
+import { publication_types } from "../../database/entities/publication_types.entity";
+import { publications } from "../../database/entities/publications.entity";
+import { users } from "../../database/entities/users.entity";
+import { NewsRepositoryImpl } from "../../database/repositories/publications/news.repository.impl";
+import { UserRepositoryImpl } from "../../database/repositories/users.repository.impl";
+import { NewsService } from "../../services/publication/news.service";
+import { RoleService } from "../../services/user/role.service";
+import { UserService } from "../../services/user/user.service";
 
 
 @Module({

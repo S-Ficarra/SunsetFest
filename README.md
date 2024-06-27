@@ -129,8 +129,48 @@ all Facilities have longitude and latitude attribute to integrate them in a map.
 
 - `Performance` contain a `Band` object, a `Stage` object and a `TimeFrame` object. Timeframe are made with a stating time and an endingtime, made with a date object to determinate the performance time.
 
+`TimeFrame` need to be initialized in the database with date and time of the performance that'll be available. Here's a script exemple, which need to be adapted according to your festival performances each year: 
+
+```sql
+INSERT INTO `timeframes` (`starting_time`, `ending_time`) VALUES
+('2025-06-20 14:00:00', '2025-06-20 16:00:00'),
+('2025-06-20 16:00:00', '2025-06-20 18:00:00'),
+('2025-06-20 18:00:00', '2025-06-20 20:00:00'),
+('2025-06-20 20:00:00', '2025-06-20 22:00:00'),
+('2025-06-20 22:00:00', '2025-06-21 00:00:00'),
+('2025-06-21 00:00:00', '2025-06-21 02:00:00'),
+('2025-06-21 14:00:00', '2025-06-21 16:00:00'),
+('2025-06-21 16:00:00', '2025-06-21 18:00:00'),
+('2025-06-21 18:00:00', '2025-06-21 20:00:00'),
+('2025-06-21 20:00:00', '2025-06-21 22:00:00'),
+('2025-06-21 22:00:00', '2025-06-22 00:00:00'),
+('2025-06-22 00:00:00', '2025-06-22 02:00:00'),
+('2025-06-22 14:00:00', '2025-06-22 16:00:00'),
+('2025-06-22 16:00:00', '2025-06-22 18:00:00'),
+('2025-06-22 18:00:00', '2025-06-22 20:00:00'),
+('2025-06-22 20:00:00', '2025-06-22 22:00:00'),
+('2025-06-22 22:00:00', '2025-06-23 00:00:00'),
+('2025-06-23 00:00:00', '2025-06-23 02:00:00');
+```
+
 - `Program` id is recommended to be a year, it contains the performances in an array. a `Program` cannot contains twice the same performance, it cannot also contain 2 performances of the same `Band`, or a `Performance` with another `Band` at the same `TimeFrame` and `Stage`.
 
+`Program` table should have programs initialized for performances to be added in it. With the following SQL script, program are initialized for 10 years : 
+
+```sql
+INSERT INTO `programs` (`year`, `performance_id`, `id`) VALUES 
+('2023', NULL, NULL), 
+('2024', NULL, NULL),
+('2025', NULL, NULL),
+('2026', NULL, NULL),
+('2027', NULL, NULL),
+('2028', NULL, NULL),
+('2029', NULL, NULL),
+('2030', NULL, NULL),
+('2031', NULL, NULL),
+('2032', NULL, NULL),
+('2033', NULL, NULL);
+```
 
 To verify that there is no conflict when adding a `Performance` to a `Program` :
 
@@ -191,6 +231,7 @@ This 2nd method compare if the performance we try to add already exist in the pr
         }
     };
 ```
+
 
 ### Countdowns
 
@@ -355,6 +396,10 @@ This repository is also called if user are needed to other objects tests, exempl
 ```
 
 Each test are made on these fake datas, the MockRepository is injected when services are initialized.
+
+To test controllers, use the postman collection that test all endpoint : 
+
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://god.gw.postman.com/run-collection/32859526-8b9f691e-69df-4ae9-af19-b41b40bb349b?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D32859526-8b9f691e-69df-4ae9-af19-b41b40bb349b%26entityType%3Dcollection%26workspaceId%3D333c6861-6317-4799-96d0-0428e6e19faf)
 
 
 

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Req, UseGuards, ValidationPipe } from "@nestjs/common";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Faq } from "src/domain/models/publication/faq.model";
-import { FaqService } from "src/services/publication/faq.service";
+import { AuthentificationService } from "../../../authentification/authentification.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Faq } from "../../../domain/models/publication/faq.model";
+import { FaqService } from "../../../services/publication/faq.service";
 import { FaqDto } from "../../DTO/publications/faq.dto";
 import { mapFaqDtoToModelCreate, mapFaqDtoToModelEdit } from "../../mappers/publications/faq.mapper";
 

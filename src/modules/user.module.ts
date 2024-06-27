@@ -3,9 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from '../controllers/controllers/user.controller';
 import { RoleService } from '../services/user/role.service';
 import { UserService } from '../services/user/user.service';
-import { users } from 'src/database/entities/users.entity';
-import { UserRepositoryImpl } from 'src/database/repositories/users.repository.impl';
-import { AuthentificationService } from 'src/authentification/authentification.service';
+import { users } from '../database/entities/users.entity';
+import { UserRepositoryImpl } from '../database/repositories/users.repository.impl';
+import { AuthentificationService } from '../authentification/authentification.service';
 import { JwtService } from '@nestjs/jwt';
 
 

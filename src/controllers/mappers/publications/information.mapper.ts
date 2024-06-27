@@ -1,7 +1,7 @@
-import { Content } from "src/domain/models/publication/content.model";
-import { User } from "src/domain/models/user/user.model";
+import { Content } from "../../../domain/models/publication/content.model";
+import { User } from "../../../domain/models/user/user.model";
 import { IllustratedDto } from "../../DTO/publications/illustrated.dto";
-import { Information } from "src/domain/models/publication/information.model";
+import { Information } from "../../../domain/models/publication/information.model";
 
 export function mapInformationDtoToModelCreate (informationDto : IllustratedDto, image: Buffer, user: User) {
 

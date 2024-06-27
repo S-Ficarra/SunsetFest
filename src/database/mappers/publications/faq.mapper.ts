@@ -1,8 +1,8 @@
-import { Faq } from "src/domain/models/publication/faq.model";
-import { faqs } from "src/database/entities/faqs.entity";
-import { publication_details } from "src/database/entities/publication_details.entity";
-import { users } from "src/database/entities/users.entity";
-import { User } from "src/domain/models/user/user.model";
+import { Faq } from "../../../domain/models/publication/faq.model";
+import { faqs } from "../../../database/entities/faqs.entity";
+import { publication_details } from "../../../database/entities/publication_details.entity";
+import { users } from "../../../database/entities/users.entity";
+import { User } from "../../../domain/models/user/user.model";
 
 
 export function mapFaqModeltoEntity (model: Faq, publiDetails: publication_details): faqs {

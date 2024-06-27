@@ -1,5 +1,5 @@
 import { Controller, Post, Body, HttpException, HttpStatus, Res } from '@nestjs/common';
-import { AuthentificationService } from 'src/authentification/authentification.service';
+import { AuthentificationService } from '../../authentification/authentification.service';
 import { loginDto } from '../DTO/login.dto';
 
 

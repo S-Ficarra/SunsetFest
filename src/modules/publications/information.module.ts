@@ -1,19 +1,19 @@
 import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { InformationController } from "src/controllers/controllers/publications/informations.controller";
-import { images } from "src/database/entities/images.entity";
-import { publication_contents } from "src/database/entities/publication_contents.entity";
-import { publication_details } from "src/database/entities/publication_details.entity";
-import { publication_types } from "src/database/entities/publication_types.entity";
-import { publications } from "src/database/entities/publications.entity";
-import { users } from "src/database/entities/users.entity";
-import { InformationRepositoryImpl } from "src/database/repositories/publications/information.repository.impl";
-import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { InformationService } from "src/services/publication/information.service";
-import { RoleService } from "src/services/user/role.service";
-import { UserService } from "src/services/user/user.service";
+import { AuthentificationService } from "../../authentification/authentification.service";
+import { InformationController } from "../../controllers/controllers/publications/informations.controller";
+import { images } from "../../database/entities/images.entity";
+import { publication_contents } from "../../database/entities/publication_contents.entity";
+import { publication_details } from "../../database/entities/publication_details.entity";
+import { publication_types } from "../../database/entities/publication_types.entity";
+import { publications } from "../../database/entities/publications.entity";
+import { users } from "../../database/entities/users.entity";
+import { InformationRepositoryImpl } from "../../database/repositories/publications/information.repository.impl";
+import { UserRepositoryImpl } from "../../database/repositories/users.repository.impl";
+import { InformationService } from "../../services/publication/information.service";
+import { RoleService } from "../../services/user/role.service";
+import { UserService } from "../../services/user/user.service";
 
 
 @Module({

@@ -1,9 +1,9 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { timeframes } from "src/database/entities/timeframes.entity";
-import { TimeFrame } from "src/domain/models/program/performance/timeFrame.model";
-import { TimeFrameRepository } from "src/domain/repositories/program/performance/timeFrame.repository";
-import { mapTimeFrameToEntity, mapTimeFrameToModel } from 'src/database/mappers/program/timeFrame.mapper';
+import { timeframes } from "../../../database/entities/timeframes.entity";
+import { TimeFrame } from "../../../domain/models/program/performance/timeFrame.model";
+import { TimeFrameRepository } from "../../../domain/repositories/program/performance/timeFrame.repository";
+import { mapTimeFrameToEntity, mapTimeFrameToModel } from '../../../database/mappers/program/timeFrame.mapper';
 import { Injectable } from '@nestjs/common';
 
 

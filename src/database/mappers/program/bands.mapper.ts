@@ -1,10 +1,10 @@
-import { bands } from "src/database/entities/bands.entity"
-import { images } from "src/database/entities/images.entity";
-import { publication_details } from "src/database/entities/publication_details.entity"
-import { users } from "src/database/entities/users.entity";
-import { Band } from "src/domain/models/band/band.model"
-import { Socials } from "src/domain/models/band/socials.model"
-import { User } from "src/domain/models/user/user.model";
+import { bands } from "../../../database/entities/bands.entity"
+import { images } from "../../../database/entities/images.entity";
+import { publication_details } from "../../../database/entities/publication_details.entity"
+import { users } from "../../../database/entities/users.entity";
+import { Band } from "../../../domain/models/band/band.model"
+import { Socials } from "../../../domain/models/band/socials.model"
+import { User } from "../../../domain/models/user/user.model";
 
 
 export function mapBandEntityToModel (band_entity: bands, thumbnail_image: Buffer, banner_image: Buffer, publication_details: publication_details, user: users): Band {

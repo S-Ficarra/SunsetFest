@@ -1,6 +1,6 @@
-import { campings } from "src/database/entities/campings.entity";
-import { locations } from "src/database/entities/locations.entity";
-import { Camping } from "src/domain/models/facility/camping.model";
+import { campings } from "../../../database/entities/campings.entity";
+import { locations } from "../../../database/entities/locations.entity";
+import { Camping } from "../../../domain/models/facility/camping.model";
 
 export function mapCampingModelToEntity (model: Camping, location: locations): campings {
 

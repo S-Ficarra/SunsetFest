@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Merchandising } from "src/domain/models/facility/shop/merchandising.model";
-import { MerchandisingService } from "src/services/facility/shop/merchandising.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Merchandising } from "../../../domain/models/facility/shop/merchandising.model";
+import { MerchandisingService } from "../../../services/facility/shop/merchandising.service";
 import { MerchandisingDto } from "../../DTO/facilities/merchandising.dto";
 import { mapMerchandisingDtoToModel, mapMerchandisingDtoToModelEdit } from "../../mappers/facilities/merchandising.mapper";
 

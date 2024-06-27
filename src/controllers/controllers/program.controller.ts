@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post, Param, UseGuards, Req, ValidationPipe } from "@nestjs/common";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Program } from "src/domain/models/program/program.model";
-import { ProgramService } from "src/services/program/program.service";
+import { AuthentificationService } from "../../authentification/authentification.service";
+import { JwtAuthGuard } from "../../authentification/jwt-auth.guard";
+import { Program } from "../../domain/models/program/program.model";
+import { ProgramService } from "../../services/program/program.service";
 import { ProgramDto } from "../DTO/program.dto";
-import { PerformanceService } from "src/services/program/performance/performance.service";
+import { PerformanceService } from "../../services/program/performance/performance.service";
 
 
 
@@ -27,6 +27,8 @@ export class ProgramController {
 
         try {      
             return await this.programServices.getProgramByYear(year);
+
+            
         } catch (error) {
             return {message: error.message};
         };

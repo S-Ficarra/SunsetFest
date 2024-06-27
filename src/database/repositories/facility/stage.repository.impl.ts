@@ -1,9 +1,9 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Stage } from 'src/domain/models/facility/stage.model';
-import { stages } from 'src/database/entities/stages.entity';
-import { locations } from 'src/database/entities/locations.entity';
-import { StageRepository } from 'src/domain/repositories/facility/stage.repository';
+import { Stage } from '../../../domain/models/facility/stage.model';
+import { stages } from '../../../database/entities/stages.entity';
+import { locations } from '../../../database/entities/locations.entity';
+import { StageRepository } from '../../../domain/repositories/facility/stage.repository';
 import { mapFacilityLocationToEntity, mapFacilityLocationToEntityEdit } from '../../mappers/facility/facility.mapper';
 import { mapStageEntityToModel, mapStageModelToEntity, mapStageModelToEntityEdit } from '../../mappers/facility/stage.mapper';
 import { Injectable } from '@nestjs/common';

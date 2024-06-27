@@ -1,4 +1,4 @@
-import { Countdown } from "src/domain/models/countdown.model";
+import { Countdown } from "../../domain/models/countdown.model";
 import { CountdownDto } from "../DTO/countdown.dto";
 
 

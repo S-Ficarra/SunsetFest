@@ -1,7 +1,7 @@
-import { Band } from "src/domain/models/band/band.model";
-import { Stage } from "src/domain/models/facility/stage.model";
-import { Performance } from "src/domain/models/program/performance/performance.model";
-import { TimeFrame } from "src/domain/models/program/performance/timeFrame.model";
+import { Band } from "../../domain/models/band/band.model";
+import { Stage } from "../../domain/models/facility/stage.model";
+import { Performance } from "../../domain/models/program/performance/performance.model";
+import { TimeFrame } from "../../domain/models/program/performance/timeFrame.model";
 
 
 

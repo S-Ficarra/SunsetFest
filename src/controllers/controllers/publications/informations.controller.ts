@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, Req, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from "@nestjs/common";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
-import { multerConfig } from "multer.config";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Information } from "src/domain/models/publication/information.model";
-import { InformationService } from "src/services/publication/information.service";
+import { multerConfig } from "../../../../multer.config";
+import { AuthentificationService } from "../../../authentification/authentification.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Information } from "../../../domain/models/publication/information.model";
+import { InformationService } from "../../../services/publication/information.service";
 import { IllustratedDto } from "../../DTO/publications/illustrated.dto";
 import { mapInformationDtoToModelCreate, mapInformationDtoToModelEdit } from "../../mappers/publications/information.mapper";
 

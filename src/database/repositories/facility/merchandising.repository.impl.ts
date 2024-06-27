@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Merchandising } from 'src/domain/models/facility/shop/merchandising.model';
-import { merchandisings } from 'src/database/entities/merchandisings.entity';
-import { locations } from 'src/database/entities/locations.entity';
-import { opening_times } from 'src/database/entities/opening_times.entity';
-import { MerchandisingRepository } from 'src/domain/repositories/facility/shop/merchandising.repository';
+import { Merchandising } from '../../../domain/models/facility/shop/merchandising.model';
+import { merchandisings } from '../../../database/entities/merchandisings.entity';
+import { locations } from '../../../database/entities/locations.entity';
+import { opening_times } from '../../../database/entities/opening_times.entity';
+import { MerchandisingRepository } from '../../../domain/repositories/facility/shop/merchandising.repository';
 import { mapMerchandisingEntityToModel, mapMerchandisingModelToEntity, mapMerchandisingModelToEntityEdit } from '../../mappers/facility/merchandising.mapper';
 import { mapFacilityLocationToEntity, mapFacilityLocationToEntityEdit, mapShopOpenTimesToEntity, mapShopOpenTimesToEntityEdit } from '../../mappers/facility/facility.mapper';
 import { Injectable } from '@nestjs/common';

@@ -1,5 +1,5 @@
-import { Faq } from "src/domain/models/publication/faq.model";
-import { User } from "src/domain/models/user/user.model";
+import { Faq } from "../../../domain/models/publication/faq.model";
+import { User } from "../../../domain/models/user/user.model";
 import { FaqDto } from "../../DTO/publications/faq.dto";
 
 

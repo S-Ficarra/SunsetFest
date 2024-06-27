@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Bar } from 'src/domain/models/facility/shop/bar.model';
-import { bars } from 'src/database/entities/bars.entity';
-import { locations } from 'src/database/entities/locations.entity';
-import { opening_times } from 'src/database/entities/opening_times.entity';
-import { BarRepository } from 'src/domain/repositories/facility/shop/bar.repository';
+import { Bar } from '../../../domain/models/facility/shop/bar.model';
+import { bars } from '../../../database/entities/bars.entity';
+import { locations } from '../../../database/entities/locations.entity';
+import { opening_times } from '../../../database/entities/opening_times.entity';
+import { BarRepository } from '../../../domain/repositories/facility/shop/bar.repository';
 import { mapBarEntityToModel, mapBarModelToEntity, mapBarModelToEntityEdit } from '../../mappers/facility/bar.mapper';
 import { mapFacilityLocationToEntity, mapFacilityLocationToEntityEdit, mapShopOpenTimesToEntity, mapShopOpenTimesToEntityEdit } from '../../mappers/facility/facility.mapper';
 import { Injectable } from '@nestjs/common';

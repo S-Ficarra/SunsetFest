@@ -1,4 +1,4 @@
-import { User } from "src/domain/models/user/user.model";
+import { User } from "../../domain/models/user/user.model";
 import { UserDto } from "../DTO/user.dto";
 
 export function mapUserDtotoModelCreate (userDto: UserDto, saltedPassword: string): User {

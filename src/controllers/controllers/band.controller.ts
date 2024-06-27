@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Param, Post, Req, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Band } from "src/domain/models/band/band.model";
-import { BandService } from "src/services/band/band.service";
+import { JwtAuthGuard } from "../../authentification/jwt-auth.guard";
+import { Band } from "../../domain/models/band/band.model";
+import { BandService } from "../../services/band/band.service";
 import { BandDto } from "../DTO/band.dto";
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { multerConfig } from "multer.config";
-import { AuthentificationService } from "src/authentification/authentification.service";
+import { multerConfig } from "../../../multer.config";
+import { AuthentificationService } from "../../authentification/authentification.service";
 import { mapBandDtoToModelCreate, mapBandDtoToModelEdit } from "../mappers/band.mapper";
 
 

@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Param, Post, Req, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from "@nestjs/common";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
-import { multerConfig } from "multer.config";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { News } from "src/domain/models/publication/news.model";
-import { NewsService } from "src/services/publication/news.service";
+import { multerConfig } from "../../../../multer.config";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { News } from "../../../domain/models/publication/news.model";
+import { NewsService } from "../../../services/publication/news.service";
 import { IllustratedDto } from "../../DTO/publications/illustrated.dto";
 import { mapNewsDtoToModelCreate, mapNewsDtoToModelEdit } from "../../mappers/publications/news.mapper";
-import { AuthentificationService } from "src/authentification/authentification.service";
+import { AuthentificationService } from "../../../authentification/authentification.service";
 
 @Controller()
 export class NewsController {

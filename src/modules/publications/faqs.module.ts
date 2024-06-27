@@ -1,17 +1,17 @@
 import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { FaqController } from "src/controllers/controllers/publications/faq.controller";
-import { faqs } from "src/database/entities/faqs.entity";
-import { images } from "src/database/entities/images.entity";
-import { publication_details } from "src/database/entities/publication_details.entity";
-import { users } from "src/database/entities/users.entity";
-import { FaqRepositoryImpl } from "src/database/repositories/publications/faq.repository.impl";
-import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { FaqService } from "src/services/publication/faq.service";
-import { RoleService } from "src/services/user/role.service";
-import { UserService } from "src/services/user/user.service";
+import { AuthentificationService } from "../../authentification/authentification.service";
+import { FaqController } from "../../controllers/controllers/publications/faq.controller";
+import { faqs } from "../../database/entities/faqs.entity";
+import { images } from "../../database/entities/images.entity";
+import { publication_details } from "../../database/entities/publication_details.entity";
+import { users } from "../../database/entities/users.entity";
+import { FaqRepositoryImpl } from "../../database/repositories/publications/faq.repository.impl";
+import { UserRepositoryImpl } from "../../database/repositories/users.repository.impl";
+import { FaqService } from "../../services/publication/faq.service";
+import { RoleService } from "../../services/user/role.service";
+import { UserService } from "../../services/user/user.service";
 
 
 @Module({

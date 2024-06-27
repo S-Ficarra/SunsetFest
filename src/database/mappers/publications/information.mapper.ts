@@ -1,13 +1,13 @@
-import { publications } from "src/database/entities/publications.entity";
-import { publication_details } from "src/database/entities/publication_details.entity";
-import { publication_contents } from "src/database/entities/publication_contents.entity";
-import { images } from "src/database/entities/images.entity";
-import { Information } from "src/domain/models/publication/information.model";
-import { User } from "src/domain/models/user/user.model";
-import { users } from "src/database/entities/users.entity";
-import { Content } from "src/domain/models/publication/content.model";
-import { publication_types } from "src/database/entities/publication_types.entity";
-import { PublicationType } from "src/domain/models/publication/PublicationTypes";
+import { publications } from "../../../database/entities/publications.entity";
+import { publication_details } from "../../../database/entities/publication_details.entity";
+import { publication_contents } from "../../../database/entities/publication_contents.entity";
+import { images } from "../../../database/entities/images.entity";
+import { Information } from "../../../domain/models/publication/information.model";
+import { User } from "../../../domain/models/user/user.model";
+import { users } from "../../../database/entities/users.entity";
+import { Content } from "../../../domain/models/publication/content.model";
+import { publication_types } from "../../../database/entities/publication_types.entity";
+import { PublicationType } from "../../../domain/models/publication/PublicationTypes";
 
 
 

@@ -1,6 +1,6 @@
 import { Performance } from "../../../src/domain/models/program/performance/performance.model";
 import { PerformanceService } from "../../../src/services/program/performance/performance.service";
-import { MockPerformanceRepository } from "../performance/mock.performance.repository";
+import { MockPerformanceRepository } from "./mock.performance.repository";
 import { MockTimeFrameRepository } from "./mock.timeFrame.repository";
 import { MockBandRepository } from "../../band/mock.band.repository";
 import { MockStageRepository } from "../../facility/mockRepositories/mock.stage.repository";

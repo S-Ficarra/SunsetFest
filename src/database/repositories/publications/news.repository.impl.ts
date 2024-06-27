@@ -1,16 +1,16 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { News } from 'src/domain/models/publication/news.model';
-import { publication_types } from "src/database/entities/publication_types.entity";
-import { publication_details } from "src/database/entities/publication_details.entity";
-import { publication_contents } from "src/database/entities/publication_contents.entity";
-import { images } from "src/database/entities/images.entity";
-import { users } from 'src/database/entities/users.entity';
-import { publications } from 'src/database/entities/publications.entity';
-import { NewsRepository } from 'src/domain/repositories/publication/news.repository';
-import { mapNewsEntityToModel, mapNewsTypeToEntity, mapNewsTypeToEntityEdit } from 'src/database/mappers/publications/news.mapper';
-import { mapPubliDetailsToEntity, mapPubliDetailsToEntityEdit, mapPublicationModelToEntity, mapPublicationModelToEntityEdit } from 'src/database/mappers/publications/publication.mapper';
-import { mapIllustratedImageToEntity, mapIllustratedImageToEntityEdit, mapIllustratedPubliContentToEntity, mapIllustratedPubliContentToEntityEdit,  } from 'src/database/mappers/publications/illustrated.mapper';
+import { News } from '../../../domain/models/publication/news.model';
+import { publication_types } from "../../../database/entities/publication_types.entity";
+import { publication_details } from "../../../database/entities/publication_details.entity";
+import { publication_contents } from "../../../database/entities/publication_contents.entity";
+import { images } from "../../../database/entities/images.entity";
+import { users } from '../../../database/entities/users.entity';
+import { publications } from '../../../database/entities/publications.entity';
+import { NewsRepository } from '../../../domain/repositories/publication/news.repository';
+import { mapNewsEntityToModel, mapNewsTypeToEntity, mapNewsTypeToEntityEdit } from '../../../database/mappers/publications/news.mapper';
+import { mapPubliDetailsToEntity, mapPubliDetailsToEntityEdit, mapPublicationModelToEntity, mapPublicationModelToEntityEdit } from '../../../database/mappers/publications/publication.mapper';
+import { mapIllustratedImageToEntity, mapIllustratedImageToEntityEdit, mapIllustratedPubliContentToEntity, mapIllustratedPubliContentToEntityEdit,  } from '../../../database/mappers/publications/illustrated.mapper';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

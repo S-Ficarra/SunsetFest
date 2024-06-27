@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Countdown } from "src/domain/models/countdown.model";
-import { CountdownService } from "src/services/countdown.service";
+import { JwtAuthGuard } from "../../authentification/jwt-auth.guard";
+import { Countdown } from "../../domain/models/countdown.model";
+import { CountdownService } from "../../services/countdown.service";
 import { CountdownDto } from "../DTO/countdown.dto";
 import { mapCountdownDtoToModelCreate, mapCountdownDtoToModelEdit } from "../mappers/countdown.mapper";
 

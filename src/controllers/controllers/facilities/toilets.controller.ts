@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Toilet } from "src/domain/models/facility/toilet.model";
-import { ToiletService } from "src/services/facility/toilet.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Toilet } from "../../../domain/models/facility/toilet.model";
+import { ToiletService } from "../../../services/facility/toilet.service";
 import { ToiletDto } from "../../DTO/facilities/toilet.dto";
 import { mapToiletDtoToModelCreate, mapToiletDtoToModelEdit } from "../../mappers/facilities/toilet.mapper";
 

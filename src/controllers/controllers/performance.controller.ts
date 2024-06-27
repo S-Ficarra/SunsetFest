@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { PerformanceService } from "src/services/program/performance/performance.service";
+import { JwtAuthGuard } from "../../authentification/jwt-auth.guard";
+import { PerformanceService } from "../../services/program/performance/performance.service";
 import { PerformanceDto } from "../DTO/performance.dto";
-import { BandService } from "src/services/band/band.service";
-import { StageService } from "src/services/facility/stage.service";
-import { TimeFrameService } from "src/services/program/performance/timeFrame.service";
+import { BandService } from "../../services/band/band.service";
+import { StageService } from "../../services/facility/stage.service";
+import { TimeFrameService } from "../../services/program/performance/timeFrame.service";
 import { mapPerformanceDtoToModel, mapPerformanceDtoToModelEdit } from "../mappers/performance.mapper";
 
 

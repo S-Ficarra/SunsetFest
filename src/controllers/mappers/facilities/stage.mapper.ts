@@ -1,4 +1,4 @@
-import { Stage } from "src/domain/models/facility/stage.model";
+import { Stage } from "../../../domain/models/facility/stage.model";
 import { StageDto } from "../../DTO/facilities/stage.dto";
 
 

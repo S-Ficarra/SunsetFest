@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Bar } from "src/domain/models/facility/shop/bar.model";
-import { BarService } from "src/services/facility/shop/bar.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Bar } from "../../../domain/models/facility/shop/bar.model";
+import { BarService } from "../../../services/facility/shop/bar.service";
 import { BarDto } from "../../DTO/facilities/bar.dto";
 import { mapBarDtoToModel, mapBarDtoToModelEdit } from "../../mappers/facilities/bar.mapper";
 

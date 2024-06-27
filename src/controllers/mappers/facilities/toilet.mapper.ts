@@ -1,4 +1,4 @@
-import { Toilet } from "src/domain/models/facility/toilet.model";
+import { Toilet } from "../../../domain/models/facility/toilet.model";
 import { ToiletDto } from "../../DTO/facilities/toilet.dto";
 
 

@@ -1,5 +1,5 @@
-import { countdowns } from "src/database/entities/countdowns.entity";
-import { Countdown } from "src/domain/models/countdown.model";
+import { countdowns } from "../../database/entities/countdowns.entity";
+import { Countdown } from "../../domain/models/countdown.model";
 
 export function mapCountdownModeltoEntity(model: Countdown): countdowns {
 

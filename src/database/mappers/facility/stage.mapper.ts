@@ -1,6 +1,6 @@
-import { Stage } from "src/domain/models/facility/stage.model";
-import { stages } from "src/database/entities/stages.entity";
-import { locations } from "src/database/entities/locations.entity";
+import { Stage } from "../../../domain/models/facility/stage.model";
+import { stages } from "../../../database/entities/stages.entity";
+import { locations } from "../../../database/entities/locations.entity";
 
 export function mapStageModelToEntity (model: Stage, location: locations): stages {
     const entity = new stages();

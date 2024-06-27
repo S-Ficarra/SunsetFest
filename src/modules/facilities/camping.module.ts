@@ -1,16 +1,16 @@
 import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { CampingController } from "src/controllers/controllers/facilities/camping.controller";
-import { campings } from "src/database/entities/campings.entity";
-import { locations } from "src/database/entities/locations.entity";
-import { users } from "src/database/entities/users.entity";
-import { CampingRepositoryImpl } from "src/database/repositories/facility/camping.repository.impl";
-import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { CampingService } from "src/services/facility/camping.service";
-import { RoleService } from "src/services/user/role.service";
-import { UserService } from "src/services/user/user.service";
+import { AuthentificationService } from "../../authentification/authentification.service";
+import { CampingController } from "../../controllers/controllers/facilities/camping.controller";
+import { campings } from "../../database/entities/campings.entity";
+import { locations } from "../../database/entities/locations.entity";
+import { users } from "../../database/entities/users.entity";
+import { CampingRepositoryImpl } from "../../database/repositories/facility/camping.repository.impl";
+import { UserRepositoryImpl } from "../../database/repositories/users.repository.impl";
+import { CampingService } from "../../services/facility/camping.service";
+import { RoleService } from "../../services/user/role.service";
+import { UserService } from "../../services/user/user.service";
 
 
 @Module({

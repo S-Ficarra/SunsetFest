@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/services/user/user.service';
+import { UserService } from '../services/user/user.service';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import { User } from 'src/domain/models/user/user.model';
+import { User } from '../domain/models/user/user.model';
 require('dotenv').config();
 
 
@@ -38,7 +38,6 @@ export class AuthentificationService {
 
 
     async getUserLogged(req: Request): Promise <User>{
-
       const authHeader = req.headers['authorization'];
       const token = authHeader.substring(7); 
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);

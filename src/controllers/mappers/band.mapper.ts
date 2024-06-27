@@ -1,7 +1,7 @@
-import { Band } from "src/domain/models/band/band.model";
+import { Band } from "../../domain/models/band/band.model";
 import { BandDto } from "../DTO/band.dto";
-import { Socials } from "src/domain/models/band/socials.model";
-import { User } from "src/domain/models/user/user.model";
+import { Socials } from "../../domain/models/band/socials.model";
+import { User } from "../../domain/models/user/user.model";
 
 export function mapBandDtoToModelCreate (bandDto : BandDto, thumbnailImage: Buffer, bannerImage: Buffer, user: User): Band {
 

@@ -1,17 +1,17 @@
 import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { RestaurantController } from "src/controllers/controllers/facilities/restaurant.controller";
-import { locations } from "src/database/entities/locations.entity";
-import { opening_times } from "src/database/entities/opening_times.entity";
-import { restaurants } from "src/database/entities/restaurants.entity";
-import { users } from "src/database/entities/users.entity";
-import { RestaurantRepositoryImpl } from "src/database/repositories/facility/restaurant.repository.impl";
-import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { RestaurantService } from "src/services/facility/shop/restaurant.service";
-import { RoleService } from "src/services/user/role.service";
-import { UserService } from "src/services/user/user.service";
+import { AuthentificationService } from "../../authentification/authentification.service";
+import { RestaurantController } from "../../controllers/controllers/facilities/restaurant.controller";
+import { locations } from "../../database/entities/locations.entity";
+import { opening_times } from "../../database/entities/opening_times.entity";
+import { restaurants } from "../../database/entities/restaurants.entity";
+import { users } from "../../database/entities/users.entity";
+import { RestaurantRepositoryImpl } from "../../database/repositories/facility/restaurant.repository.impl";
+import { UserRepositoryImpl } from "../../database/repositories/users.repository.impl";
+import { RestaurantService } from "../../services/facility/shop/restaurant.service";
+import { RoleService } from "../../services/user/role.service";
+import { UserService } from "../../services/user/user.service";
 
 
 @Module({

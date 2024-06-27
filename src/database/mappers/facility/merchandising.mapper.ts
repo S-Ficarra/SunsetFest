@@ -1,8 +1,8 @@
-import { merchandisings } from "src/database/entities/merchandisings.entity";
-import { opening_times } from "src/database/entities/opening_times.entity";
-import { Merchandising } from "src/domain/models/facility/shop/merchandising.model";
-import { OpeningTimes } from "src/domain/models/facility/shop/openingTimes.model";
-import { locations } from "src/database/entities/locations.entity";
+import { merchandisings } from "../../../database/entities/merchandisings.entity";
+import { opening_times } from "../../../database/entities/opening_times.entity";
+import { Merchandising } from "../../../domain/models/facility/shop/merchandising.model";
+import { OpeningTimes } from "../../../domain/models/facility/shop/openingTimes.model";
+import { locations } from "../../../database/entities/locations.entity";
 
 export function mapMerchandisingModelToEntity (model: Merchandising, location: locations, openTimes: opening_times): merchandisings {
 

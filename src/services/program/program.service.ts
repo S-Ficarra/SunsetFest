@@ -33,7 +33,7 @@ export class ProgramService {
             if (!program) {
                 program = new Program ([]);
                 program.setId(programYear);
-            };                            
+            };                   
             let isOk = this.noConflict(performance, program)
             if (isOk) {
                 await this.programRepository.addPerformanceToProgram(program, performance);

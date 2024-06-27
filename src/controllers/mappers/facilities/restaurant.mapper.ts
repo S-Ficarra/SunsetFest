@@ -1,6 +1,6 @@
-import { OpeningTimes } from "src/domain/models/facility/shop/openingTimes.model";
+import { OpeningTimes } from "../../../domain/models/facility/shop/openingTimes.model";
 import { RestaurantDto } from "../../DTO/facilities/restaurant.dto";
-import { Restaurant } from "src/domain/models/facility/shop/restaurant.model";
+import { Restaurant } from "../../../domain/models/facility/shop/restaurant.model";
 
 
 export function mapRestaurantDtoToModel (createRestaurantDto: RestaurantDto) {

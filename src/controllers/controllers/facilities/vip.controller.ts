@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Param, UseGuards, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Vip } from "src/domain/models/facility/vip.model";
-import { VipService } from "src/services/facility/vip.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Vip } from "../../../domain/models/facility/vip.model";
+import { VipService } from "../../../services/facility/vip.service";
 import { VipDto } from "../../DTO/facilities/vip.dto";
 import { mapVipDtoToModelCreate, mapVipDtoToModelEdit } from "../../mappers/facilities/vip.mapper";
 

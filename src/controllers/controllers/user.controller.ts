@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, Req, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UserDto } from '../DTO/user.dto';
-import { User } from 'src/domain/models/user/user.model';
-import { UserService } from 'src/services/user/user.service';
+import { User } from '../../domain/models/user/user.model';
+import { UserService } from '../../services/user/user.service';
 import * as bcrypt from 'bcrypt';
-import { JwtAuthGuard } from 'src/authentification/jwt-auth.guard';
-import { AuthentificationService } from 'src/authentification/authentification.service';
+import { JwtAuthGuard } from '../../authentification/jwt-auth.guard';
+import { AuthentificationService } from '../../authentification/authentification.service';
 import { mapUserDtoTomodelEdit, mapUserDtotoModelCreate } from '../mappers/user.mapper';
 require('dotenv').config();
 

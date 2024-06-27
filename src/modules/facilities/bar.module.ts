@@ -1,17 +1,17 @@
 import { Module } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AuthentificationService } from "src/authentification/authentification.service";
-import { BarController } from "src/controllers/controllers/facilities/bar.controller";
-import { bars } from "src/database/entities/bars.entity";
-import { locations } from "src/database/entities/locations.entity";
-import { opening_times } from "src/database/entities/opening_times.entity";
-import { users } from "src/database/entities/users.entity";
-import { BarRepositoryImpl } from "src/database/repositories/facility/bar.repository.impl";
-import { UserRepositoryImpl } from "src/database/repositories/users.repository.impl";
-import { BarService } from "src/services/facility/shop/bar.service";
-import { RoleService } from "src/services/user/role.service";
-import { UserService } from "src/services/user/user.service";
+import { AuthentificationService } from "../../authentification/authentification.service";
+import { BarController } from "../../controllers/controllers/facilities/bar.controller";
+import { bars } from "../../database/entities/bars.entity";
+import { locations } from "../../database/entities/locations.entity";
+import { opening_times } from "../../database/entities/opening_times.entity";
+import { users } from "../../database/entities/users.entity";
+import { BarRepositoryImpl } from "../../database/repositories/facility/bar.repository.impl";
+import { UserRepositoryImpl } from "../../database/repositories/users.repository.impl";
+import { BarService } from "../../services/facility/shop/bar.service";
+import { RoleService } from "../../services/user/role.service";
+import { UserService } from "../../services/user/user.service";
 
 
 @Module({

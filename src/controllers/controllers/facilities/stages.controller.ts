@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Get, Param, Post, Body, ValidationPipe } from "@nestjs/common";
-import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { Stage } from "src/domain/models/facility/stage.model";
-import { StageService } from "src/services/facility/stage.service";
+import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
+import { Stage } from "../../../domain/models/facility/stage.model";
+import { StageService } from "../../../services/facility/stage.service";
 import { StageDto } from "../../DTO/facilities/stage.dto";
 import { mapStageDtoToModel, mapStageDtoToModelEdit } from "../../mappers/facilities/stage.mapper";
 

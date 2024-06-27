@@ -1,9 +1,9 @@
-import { Publication } from "src/domain/models/publication/publication.model";
-import { publication_details } from "src/database/entities/publication_details.entity";
-import { publications } from "src/database/entities/publications.entity";
-import { publication_contents } from "src/database/entities/publication_contents.entity";
-import { images } from "src/database/entities/images.entity";
-import { publication_types } from "src/database/entities/publication_types.entity";
+import { Publication } from "../../../domain/models/publication/publication.model";
+import { publication_details } from "../../../database/entities/publication_details.entity";
+import { publications } from "../../../database/entities/publications.entity";
+import { publication_contents } from "../../../database/entities/publication_contents.entity";
+import { images } from "../../../database/entities/images.entity";
+import { publication_types } from "../../../database/entities/publication_types.entity";
 
 
 

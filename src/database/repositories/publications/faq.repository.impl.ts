@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Faq } from 'src/domain/models/publication/faq.model';
-import { faqs } from 'src/database/entities/faqs.entity';
-import { publication_details } from 'src/database/entities/publication_details.entity';
-import { users } from 'src/database/entities/users.entity';
-import { FaqRepository } from 'src/domain/repositories/publication/faq.repository';
+import { Faq } from '../../../domain/models/publication/faq.model';
+import { faqs } from '../../../database/entities/faqs.entity';
+import { publication_details } from '../../../database/entities/publication_details.entity';
+import { users } from '../../../database/entities/users.entity';
+import { FaqRepository } from '../../../domain/repositories/publication/faq.repository';
 import { mapFaqEntitytoModel, mapFaqModeltoEntity, mapFaqModeltoEntityEdit } from '../../mappers/publications/faq.mapper';
 import { mapPubliDetailsToEntity, mapPubliDetailsToEntityEdit } from '../../mappers/publications/publication.mapper';
 import { Injectable } from '@nestjs/common';

@@ -1,4 +1,4 @@
-import { Camping } from "src/domain/models/facility/camping.model";
+import { Camping } from "../../../domain/models/facility/camping.model";
 import { CampingDto } from "../../DTO/facilities/camping.dot";
 
 

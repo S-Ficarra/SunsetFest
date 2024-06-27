@@ -1,7 +1,7 @@
-import { locations } from "src/database/entities/locations.entity";
-import { opening_times } from "src/database/entities/opening_times.entity";
-import { Facility } from "src/domain/models/facility/facility.model";
-import { Shop } from "src/domain/models/facility/shop/shop.model";
+import { locations } from "../../../database/entities/locations.entity";
+import { opening_times } from "../../../database/entities/opening_times.entity";
+import { Facility } from "../../../domain/models/facility/facility.model";
+import { Shop } from "../../../domain/models/facility/shop/shop.model";
 
 
 export function mapFacilityLocationToEntity(model: Facility): locations {

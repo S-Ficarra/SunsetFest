@@ -1,11 +1,11 @@
-import { Performance } from "src/domain/models/program/performance/performance.model";
-import { performances } from "src/database/entities/performances.entity";
-import { TimeFrame } from "src/domain/models/program/performance/timeFrame.model";
-import { Band } from "src/domain/models/band/band.model";
-import { Stage } from "src/domain/models/facility/stage.model";
-import { bands } from "src/database/entities/bands.entity";
-import { timeframes } from "src/database/entities/timeframes.entity";
-import { stages } from "src/database/entities/stages.entity";
+import { Performance } from "../../../domain/models/program/performance/performance.model";
+import { performances } from "../../../database/entities/performances.entity";
+import { TimeFrame } from "../../../domain/models/program/performance/timeFrame.model";
+import { Band } from "../../../domain/models/band/band.model";
+import { Stage } from "../../../domain/models/facility/stage.model";
+import { bands } from "../../../database/entities/bands.entity";
+import { timeframes } from "../../../database/entities/timeframes.entity";
+import { stages } from "../../../database/entities/stages.entity";
 
 
 export function mapPerformanceModeltoEntity (model: Performance, band: bands, stage: stages, timeFrame: timeframes): performances {

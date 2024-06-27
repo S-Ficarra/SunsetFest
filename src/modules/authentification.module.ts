@@ -3,12 +3,12 @@ import { AuthentificationService } from '../authentification/authentification.se
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from '../authentification/jwt.strategy';
-import { AuthentificationController } from 'src/controllers/controllers/authentification.controller';
-import { UserService } from 'src/services/user/user.service';
-import { UserRepositoryImpl } from 'src/database/repositories/users.repository.impl';
-import { RoleService } from 'src/services/user/role.service';
+import { AuthentificationController } from '../controllers/controllers/authentification.controller';
+import { UserService } from '../services/user/user.service';
+import { UserRepositoryImpl } from '../database/repositories/users.repository.impl';
+import { RoleService } from '../services/user/role.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { users } from 'src/database/entities/users.entity';
+import { users } from '../database/entities/users.entity';
 require('dotenv').config();
 
 
