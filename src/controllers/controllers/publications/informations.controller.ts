@@ -19,7 +19,6 @@ export class InformationController {
     ){};
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('informations')
     async getAllInformations(): Promise <Information[] | {}> {
         try {
@@ -30,7 +29,6 @@ export class InformationController {
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('informations/:id')
     async getInformationsById(@Param('id') id: number): Promise <Information | {}> {
         try {

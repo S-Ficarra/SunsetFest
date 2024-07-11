@@ -29,11 +29,7 @@ export class ProgramService {
 
     async addPerformanceToProgram(requestingUser: User, programYear: number, performance: Performance): Promise<Performance> {
         if(this.roleService.isEditor(requestingUser) || this.roleService.isAdmin(requestingUser)){
-            let program = await this.programRepository.getProgramByYear(programYear);
-            if (!program) {
-                program = new Program ([]);
-                program.setId(programYear);
-            };                   
+            let program = await this.programRepository.getProgramByYear(programYear);                  
             let isOk = this.noConflict(performance, program)
             if (isOk) {
                 await this.programRepository.addPerformanceToProgram(program, performance);

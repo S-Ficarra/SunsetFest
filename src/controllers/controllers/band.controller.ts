@@ -19,7 +19,6 @@ export class BandController {
     ){};
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('bands')
     async getAllBands(): Promise <Band[] | {}> {
         try {
@@ -30,7 +29,6 @@ export class BandController {
     };
 
     
-    @UseGuards(JwtAuthGuard)
     @Get('bands/:id')
     async getBandById(@Param('id') id: number): Promise<Band | {}> {      
         try {

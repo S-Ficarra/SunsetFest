@@ -15,7 +15,6 @@ export class FaqController {
     ){};
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('faqs')
     async getAllFaqs(): Promise<Faq[] | {}> {
         try {
@@ -26,7 +25,6 @@ export class FaqController {
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('faqs/:id')
     async getFaqByid(@Param('id') id: number): Promise <Faq | {}> {
         try {

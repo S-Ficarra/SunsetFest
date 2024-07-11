@@ -17,7 +17,6 @@ export class NewsController {
 
     ){};
 
-    @UseGuards(JwtAuthGuard)
     @Get('news')
     async getAllNews(): Promise <News[] | {}> {
         try {
@@ -28,7 +27,6 @@ export class NewsController {
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('news/:id')
     async getNewsById(@Param('id') id: number): Promise <News | {}> {
         try {

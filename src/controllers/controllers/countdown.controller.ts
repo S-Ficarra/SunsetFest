@@ -16,7 +16,6 @@ export class CountdownController {
     ){};
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('countdowns')
     async getAllCountdowns(): Promise <Countdown[] | {}> {
         try {
@@ -27,7 +26,6 @@ export class CountdownController {
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('countdowns/:id')
     async getCountdownById(@Param('id') id: number): Promise <Countdown | {}> {
         try {

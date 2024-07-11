@@ -23,7 +23,6 @@ export class PerformanceController{
 
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('performances')
     async getAllPerformances(): Promise <Performance | {}> {
         try {
@@ -35,7 +34,6 @@ export class PerformanceController{
 
 
     
-    @UseGuards(JwtAuthGuard)
     @Get('performances/:id')
     async getPerformanceById(@Param('id') id: number): Promise <Performance | {}> {
 
