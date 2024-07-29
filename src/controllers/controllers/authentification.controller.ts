@@ -13,12 +13,10 @@ export class AuthentificationController {
     const token = await this.authService.login(loginDto.email, loginDto.password); 
 
     if (token) {
-      res.setHeader('Authorization', `Bearer ${token}`);
-      return res.status(HttpStatus.OK).send('You are logged in');
+      return res.status(HttpStatus.OK).send(`${token}`);
     };
 
     throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
-
   };
 
 };

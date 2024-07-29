@@ -93,7 +93,7 @@ export function mapBandModelToEntityEdit (id: number, model: Band, PublicationDe
 
 export function mapBandPubliDetailsToEntity (model: Band): publication_details{
     const entity = new publication_details();
-    entity.author_ = model.getAuthor().getId();
+    entity.authorId_ = model.getAuthor().getId();
     entity.created_at = new Date();
     entity.modified_at = new Date();
     return entity;
@@ -102,13 +102,13 @@ export function mapBandPubliDetailsToEntity (model: Band): publication_details{
 export function mapBandPubliDetailsToEntityEdit (model: Band, publiId: number): publication_details{
     const entity = new publication_details();
     entity.id = publiId;
-    entity.author_ = model.getAuthor().getId();
+    entity.authorId_ = model.getAuthor().getId();
     entity.created_at = model.getCreatedAt();
     entity.modified_at = new Date();
     return entity;
 };
 
-export function mapBandBannerToEntity (model: Band): images{
+export function mapBandBannerToEntity (model: Band): images{  
     const entity = new images();
     entity.image = model.getBannerImage();
     return entity;
@@ -117,8 +117,8 @@ export function mapBandBannerToEntity (model: Band): images{
 export function mapBandBannerToEntityEdit (model: Band, bannerId : number): images{
     const entity = new images();
     entity.id = bannerId;
-    entity.image = model.getBannerImage();
-    return entity;
+    entity.image = model.getBannerImage();    
+    return entity;   
 };
 
 export function mapBandThumbnailToEntity (model: Band): images{
@@ -130,7 +130,7 @@ export function mapBandThumbnailToEntity (model: Band): images{
 export function mapBandThumbnailToEntityEdit (model: Band, thumbnailId: number): images{
     const entity = new images();
     entity.id = thumbnailId;
-    entity.image = model.getThumbnailImage();
+    entity.image = model.getThumbnailImage();    
     return entity;
 };
 

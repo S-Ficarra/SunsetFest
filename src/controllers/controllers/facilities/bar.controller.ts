@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe, HttpStatus, Res } from "@nestjs/common";
+import { Response } from 'express';
 import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
 import { Bar } from "../../../domain/models/facility/shop/bar.model";
 import { BarService } from "../../../services/facility/shop/bar.service";
@@ -13,38 +14,45 @@ export class BarController {
     constructor(private readonly barService: BarService){};
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('bars')
-    async getAllBars(): Promise <Bar[] | {}> {
+    async getAllBars(@Res() res: Response): Promise <Bar[] | {}> {
         try {
-            return await this.barService.getAllBars();
+            const allBars = await this.barService.getAllBars();
+            return res.status(HttpStatus.OK).send(allBars);
+
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('bars/:id')
-    async getBarById(@Param('id') id: number): Promise <Bar | {}> {
+    async getBarById(
+        @Param('id') id: number,
+        @Res() res: Response): Promise <Bar | {}> {
         try {
-            return await this.barService.getBarById(id);
+            const bar = await this.barService.getBarById(id);
+            return res.status(HttpStatus.OK).send(bar);
+
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('bars/create')
-    async createBar (@Body(new ValidationPipe()) createBarDto: BarDto): Promise <Bar | {}> {
+    async createBar (
+        @Body(new ValidationPipe()) createBarDto: BarDto,
+        @Res() res: Response): Promise <Bar | {}> {
 
         try {
             const barToCreate = mapBarDtoToModel(createBarDto);
             const barCreated = await this.barService.createBar(barToCreate);
-            return barCreated;
+            return res.status(HttpStatus.OK).send(barCreated);
+
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
 
     };
@@ -54,35 +62,38 @@ export class BarController {
     @Post('bars/:id/edit')
     async editBar (
         @Param('id') id: number, 
+        @Res() res: Response,
         @Body(new ValidationPipe()) editBarDto: BarDto): Promise<Bar | {}> {
 
             try {
                 const barToEdit = await this.barService.getBarById(id);
                 const mappedBarToEdit = mapBarDtoToModelEdit(barToEdit, editBarDto);
                 const barEdited = await this.barService.editBar(mappedBarToEdit);
-                return barEdited;
+                return res.status(HttpStatus.OK).send(barEdited);
             } catch (error) {
-                return {message: error.message};
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
             };
         };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('bars/:id/delete')
-    async deleteBar(@Param('id') id: number): Promise<{}> {
+    async deleteBar(
+        @Res() res: Response,
+        @Param('id') id: number): Promise<{}> {
 
         try {
             const barToDelete = await this.barService.getBarById(id);
             
             if (barToDelete) {
                 await this.barService.deleteBar(id);
-                return {message: `Bar ${id} deleted`};   
+                return res.status(HttpStatus.OK).json({message: `Bar ${id} deleted`});
             };
 
-            return {message: `Bar ${id} do not exist`};
+            return res.status(HttpStatus.BAD_REQUEST).json({message: `Bar ${id} do not exist`});
 
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});         
         };
     };
 

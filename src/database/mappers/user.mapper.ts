@@ -34,6 +34,7 @@ export function mapUserModelToEntityEdit(model: User): users {
     entity.name = model.getName();
     entity.first_name = model.getFirstName();
     entity.email = model.getEmail();
+    entity.password = model.getPassword();
     entity.role = model.getRole();
     return entity;
     

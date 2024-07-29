@@ -40,7 +40,7 @@ export class InformationRepositoryImpl implements InformationRepository {
             const content_entity = publi_entity.publication__contents_;
             const image_entity = publi_entity.images_;
             const detail_entity = publi_entity.publication__details_;
-            const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
+            const user_entity = await this.userRepository.findOneBy({id: detail_entity.authorId_});
             return mapInformationEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
         })
         return Promise.all(mappedInformations);
@@ -51,8 +51,8 @@ export class InformationRepositoryImpl implements InformationRepository {
         if (publi_entity) {
             const content_entity = publi_entity.publication__contents_;
             const image_entity = publi_entity.images_;
-            const detail_entity = publi_entity.publication__details_;
-            const user_entity = await this.userRepository.findOneBy({id: detail_entity.author_});
+            const detail_entity = publi_entity.publication__details_;            
+            const user_entity = await this.userRepository.findOneBy({id: detail_entity.authorId_});
             return mapInformationEntityToModel(publi_entity, content_entity, image_entity, detail_entity, user_entity);
         };
         return null;

@@ -7,9 +7,12 @@ export class publication_details {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => users)
-    @JoinColumn()
-    author_: number;
+    @Column()
+    authorId_: number;
+
+    @ManyToOne(() => users, { eager: true })
+    @JoinColumn({ name: 'authorId' }) 
+    author_: users;
 
     @Column()
     created_at: Date;

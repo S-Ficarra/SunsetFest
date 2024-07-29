@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe, HttpStatus, Res } from "@nestjs/common";
+import { Response } from 'express';
 import { JwtAuthGuard } from "../../authentification/jwt-auth.guard";
 import { Countdown } from "../../domain/models/countdown.model";
 import { CountdownService } from "../../services/countdown.service";
@@ -17,35 +18,41 @@ export class CountdownController {
 
 
     @Get('countdowns')
-    async getAllCountdowns(): Promise <Countdown[] | {}> {
+    async getAllCountdowns(@Res() res: Response): Promise <Countdown[] | {}> {
         try {
-            return await this.countdownService.getAllCountdowns();
+            const allCountdowns = await this.countdownService.getAllCountdowns();
+            return res.status(HttpStatus.OK).send(allCountdowns);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
     @Get('countdowns/:id')
-    async getCountdownById(@Param('id') id: number): Promise <Countdown | {}> {
+    async getCountdownById(
+        @Res() res: Response,
+        @Param('id') id: number): Promise <Countdown | {}> {
         try {
-            return await this.countdownService.getCountdownById(id);
+            const countdown = await this.countdownService.getCountdownById(id);
+            return res.status(HttpStatus.OK).send(countdown);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('countdowns/create')
-    async createCountdown(@Body(new ValidationPipe()) createCountdownDto: CountdownDto): Promise <Countdown | {}> {
+    async createCountdown(
+        @Res() res: Response,
+        @Body(new ValidationPipe()) createCountdownDto: CountdownDto): Promise <Countdown | {}> {
         try {
             const countdownToCreate = mapCountdownDtoToModelCreate(createCountdownDto);
             const countdownCreated = await this.countdownService.createCountdown(countdownToCreate);
-            return countdownCreated;
+            return res.status(HttpStatus.OK).send(countdownCreated);
             
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
@@ -53,16 +60,17 @@ export class CountdownController {
     @UseGuards(JwtAuthGuard)
     @Post('countdowns/:id/edit')
     async editCountdown(
+        @Res() res: Response,
         @Param('id') id: number,
         @Body(new ValidationPipe()) editCountdownDto : CountdownDto): Promise <Countdown | {}> {
             try {
                 const countdownToEdit = await this.countdownService.getCountdownById(id);
                 const mappedCountdownToEdit = mapCountdownDtoToModelEdit(countdownToEdit, editCountdownDto);
                 const countdownEdited = await this.countdownService.editCountdown(mappedCountdownToEdit);
-                return countdownEdited;
+                return res.status(HttpStatus.OK).send(countdownEdited);
 
             } catch (error) {
-                return {message: error.message};
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
             };
         };
 
@@ -70,19 +78,21 @@ export class CountdownController {
 
     @UseGuards(JwtAuthGuard)
     @Post('countdowns/:id/delete')
-    async deleteCountdown(@Param('id') id: number): Promise <{}> {
+    async deleteCountdown(
+        @Res() res: Response,
+        @Param('id') id: number): Promise <{}> {
         try {
             const countdownToDelete = await this.countdownService.getCountdownById(id);
 
             if (countdownToDelete) {
                 await this.countdownService.deleteCountdown(id);
-                return {message: `Countdown ${id} deleted`};
+                return res.status(HttpStatus.OK).json({message: `Countdown ${id} deleted`});
             };
 
-            return {message: `Countdown ${id} do not exist`};
+            return res.status(HttpStatus.BAD_REQUEST).json({message: `Countdown ${id} do not exist`});
 
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 

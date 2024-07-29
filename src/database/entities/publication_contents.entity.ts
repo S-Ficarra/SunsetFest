@@ -9,7 +9,7 @@ export class publication_contents {
     @Column()
     title: string;
 
-    @Column()
+    @Column({type: 'text'})
     text: string;
 
 };

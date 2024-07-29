@@ -9,17 +9,18 @@ import { publication_types } from "../../../database/entities/publication_types.
 
 export function mapPubliDetailsToEntity (model: Publication): publication_details{
     const entity = new publication_details();
-    entity.author_ = model.getUser().getId(),
+    entity.authorId_ = model.getUser().getId(),
     entity.created_at = new Date();
     entity.modified_at = new Date();
     entity.status = model.getStatus();
     return entity;
+    
 };
 
 export function mapPubliDetailsToEntityEdit (model: Publication, publiDetailId : number): publication_details{
     const entity = new publication_details();
     entity.id = publiDetailId;
-    entity.author_ = model.getUser().getId(),
+    entity.authorId_ = model.getUser().getId(),
     entity.created_at = model.getCreatedAt();
     entity.modified_at = new Date();
     entity.status = model.getStatus();

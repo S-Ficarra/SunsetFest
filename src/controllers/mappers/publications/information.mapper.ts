@@ -10,11 +10,11 @@ export function mapInformationDtoToModelCreate (informationDto : IllustratedDto,
         informationDto.text,
         image
     );
-
+    
     const status = informationDto.status === 'true';    
 
     const information = new Information (
-        user,
+        user,        
         new Date(),
         new Date(),
         status,

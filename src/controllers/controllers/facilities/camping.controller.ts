@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe, HttpStatus, Res } from "@nestjs/common";
+import { Response } from 'express';
 import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
 import { Camping } from "../../../domain/models/facility/camping.model";
 import { CampingService } from "../../../services/facility/camping.service";
@@ -13,37 +14,41 @@ export class CampingController {
         private readonly campingServices : CampingService
     ){};
 
-    @UseGuards(JwtAuthGuard)
     @Get('campings')
-    async getAllCamping(): Promise <Camping[] | {}> {
+    async getAllCamping(@Res() res: Response): Promise <Camping[] | {}> {
         try {
-            return await this.campingServices.getAllCampings()
+            const allCampings = await this.campingServices.getAllCampings()
+            return res.status(HttpStatus.OK).send(allCampings);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('campings/:id')
-    async getCampingById(@Param('id') id: number): Promise<Camping | {}> {
+    async getCampingById(
+        @Res() res: Response,
+        @Param('id') id: number): Promise<Camping | {}> {
         try {
-            return await this.campingServices.getCampingById(id);
+            const camping = await this.campingServices.getCampingById(id);
+            return res.status(HttpStatus.OK).send(camping);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('campings/create')
-    async createCamping(@Body(new ValidationPipe()) createCampingDto: CampingDto): Promise<Camping | {}> {
+    async createCamping(
+        @Res() res: Response,
+        @Body(new ValidationPipe()) createCampingDto: CampingDto): Promise<Camping | {}> {
         try {
             const campingToCreate = mapCampingDtoToModelCreate(createCampingDto);
             const campingCreated = await this.campingServices.createCamping(campingToCreate);
-            return campingCreated;
+            return res.status(HttpStatus.OK).send(campingCreated);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         }
     }; 
 
@@ -51,34 +56,37 @@ export class CampingController {
     @UseGuards(JwtAuthGuard)
     @Post('campings/:id/edit')
     async editCamping(
+        @Res() res: Response,
         @Param('id') id: number,
         @Body(new ValidationPipe()) editCampingDto: CampingDto): Promise <Camping | {}> {
             try {
                 const campingToEdit = await this.campingServices.getCampingById(id);
                 const mappedCampingToEdit = mapCampingDtoToModelEdit(campingToEdit, editCampingDto);
                 const campingEdited = await this.campingServices.editCamping(mappedCampingToEdit);
-                return campingEdited;
+                return res.status(HttpStatus.OK).send(campingEdited);
             } catch (error) {
-                return {message: error.message};
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
             };
     };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('campings/:id/delete')
-    async deleteCamping(@Param('id') id: number): Promise<{}> {
+    async deleteCamping(
+        @Res() res: Response,
+        @Param('id') id: number): Promise<{}> {
         try {
             const camping = await this.campingServices.getCampingById(id);
 
             if (camping) {
                 await this.campingServices.deleteCamping(id);
-                return {message: `Camping ${id} deleted`};
+                return res.status(HttpStatus.OK).json({message: `Camping ${id} deleted`});
             };
-
-            return {message: `Camping ${id} do not exist`};
+            
+            return res.status(HttpStatus.BAD_REQUEST).json({message: `Camping ${id} do not exist`});
 
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});         
         };
     };
 

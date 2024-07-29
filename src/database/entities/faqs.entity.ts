@@ -10,7 +10,7 @@ export class faqs {
     @Column()
     question: string;
 
-    @Column()
+    @Column({type: 'text'})
     answer: string;
 
     @OneToOne(() => publication_details, {cascade: true, onDelete: 'CASCADE', eager: true})

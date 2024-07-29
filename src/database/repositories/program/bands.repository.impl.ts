@@ -29,7 +29,7 @@ export class BandRepositoryImpl implements BandRepository {
             const thumbnail_image = band_entity.thumbnail__image_.image
             const banner_image = band_entity.banner__image_.image
             const publication_details = band_entity.publication__details_
-            const user = await this.userRepository.findOneBy({id: publication_details.author_})
+            const user = await this.userRepository.findOneBy({id: publication_details.authorId_})
             return mapBandEntityToModel(band_entity, thumbnail_image, banner_image, publication_details, user);
         });
         return Promise.all(mappedBandsPromises);
@@ -41,7 +41,7 @@ export class BandRepositoryImpl implements BandRepository {
             const thumbnail_image = band_entity.thumbnail__image_.image
             const banner_image = band_entity.banner__image_.image
             const publication_details = band_entity.publication__details_
-            const user = await this.userRepository.findOneBy({id: publication_details.author_})
+            const user = await this.userRepository.findOneBy({id: publication_details.authorId_})
             return mapBandEntityToModel(band_entity, thumbnail_image, banner_image, publication_details, user);
         } 
         throw new Error ('Band do not exist');
@@ -53,7 +53,7 @@ export class BandRepositoryImpl implements BandRepository {
             const thumbnail_image = band_entity.thumbnail__image_.image
             const banner_image = band_entity.banner__image_.image
             const publication_details = band_entity.publication__details_
-            const user = await this.userRepository.findOneBy({id: publication_details.author_})
+            const user = await this.userRepository.findOneBy({id: publication_details.authorId_})
             return mapBandEntityToModel(band_entity, thumbnail_image, banner_image, publication_details, user);
         };
     };
@@ -65,7 +65,7 @@ export class BandRepositoryImpl implements BandRepository {
         const thumbnailImageEntity = mapBandThumbnailToEntity(band)
         await this.imageRepository.save(bannerImageEntity);
         await this.imageRepository.save(thumbnailImageEntity);
-        const bandEntity = mapBandModelToEntity(band, publicationDetailsEntity, bannerImageEntity, thumbnailImageEntity);
+        const bandEntity = mapBandModelToEntity(band, publicationDetailsEntity, thumbnailImageEntity, bannerImageEntity);
         await this.bandRepository.save(bandEntity);
         band.setId(bandEntity.id);      
         return band;
@@ -81,7 +81,7 @@ export class BandRepositoryImpl implements BandRepository {
         await this.imageRepository.save(bannerImageEntity);
         await this.imageRepository.save(thumbnailImageEntity);
 
-        const bandEntity = mapBandModelToEntityEdit(band_entity.id, band, publicationDetailsEntity, bannerImageEntity, thumbnailImageEntity);
+        const bandEntity = mapBandModelToEntityEdit(band_entity.id, band, publicationDetailsEntity, thumbnailImageEntity, bannerImageEntity );
 
         await this.bandRepository.save(bandEntity);
         return band;;

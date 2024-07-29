@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, Req, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Req, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe, HttpStatus, Res } from "@nestjs/common";
+import { Response } from 'express';
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { multerConfig } from "../../../../multer.config";
 import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
@@ -18,21 +19,28 @@ export class NewsController {
     ){};
 
     @Get('news')
-    async getAllNews(): Promise <News[] | {}> {
+    async getAllNews(
+        @Res() res: Response): Promise <News[] | {}> {
         try {
-            return await this.newsServices.getAllNews();
+            const allNews = await this.newsServices.getAllNews();
+            return res.status(HttpStatus.OK).send(allNews);
+
         } catch (error) {
-            return {message : error.message}; 
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
     @Get('news/:id')
-    async getNewsById(@Param('id') id: number): Promise <News | {}> {
+    async getNewsById(
+        @Param('id') id: number,
+        @Res() res: Response): Promise <News | {}> {
         try {
-            return await this.newsServices.getNewsById(id);
+            const news = await this.newsServices.getNewsById(id);
+            return res.status(HttpStatus.OK).send(news);
+
         } catch (error) {
-            return {message : error.message}; 
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         }
     };
     
@@ -43,6 +51,7 @@ export class NewsController {
     async createNews(
         @UploadedFiles() files: { image?: Express.Multer.File[] },
         @Req()req: Request, 
+        @Res() res: Response,
         @Body(new ValidationPipe()) createNewsDto: IllustratedDto): Promise <News | {}> {
             
             try {         
@@ -50,13 +59,13 @@ export class NewsController {
                 const image = files.image ? files.image[0].buffer : null;
                 const newsToCreate = mapNewsDtoToModelCreate(createNewsDto, image, userLogged);
 
-                return await this.newsServices.createNews(newsToCreate);
-                
+                const createdNews = await this.newsServices.createNews(newsToCreate);
+
+                return res.status(HttpStatus.OK).json(createdNews);                
             } catch (error) {
-                return {message : error.message};   
-                
-            }
-    };
+                return res.status(HttpStatus.BAD_REQUEST).json({message : error.message});  
+            };
+        };
 
 
     @UseGuards(JwtAuthGuard)
@@ -66,6 +75,7 @@ export class NewsController {
         @Param('id')id: number,
         @UploadedFiles() files: { image?: Express.Multer.File[] },
         @Req()req: Request, 
+        @Res() res: Response,
         @Body(new ValidationPipe()) editNewsDto: IllustratedDto): Promise <News | {}> {
             
             try {
@@ -73,18 +83,21 @@ export class NewsController {
                 const newstoEdit = await this.newsServices.getNewsById(id);
                 const image = files.image ? files.image[0].buffer : null;
                 const mappedNewsToEdit = mapNewsDtoToModelEdit(newstoEdit, editNewsDto, image, userLogged);
+                const editedNews = await this.newsServices.editNews(mappedNewsToEdit);
 
-                return await this.newsServices.editNews(mappedNewsToEdit);
-
+                return res.status(HttpStatus.OK).send(editedNews);
             } catch (error) {
-                return {message : error.message}; 
+                return res.status(HttpStatus.BAD_REQUEST).json({message : error.message});   
             };
     };
     
 
     @UseGuards(JwtAuthGuard)
     @Post('news/:id/delete')
-    async deleteNews(@Param('id')id: number, @Req()req: Request ): Promise<{}> {
+    async deleteNews(
+        @Param('id')id: number,
+        @Req()req: Request,
+        @Res() res: Response ): Promise<{}> {
     
         try {
             const userLogged = await this.authServices.getUserLogged(req)
@@ -93,13 +106,13 @@ export class NewsController {
 
             if(news){
                 await this.newsServices.deleteNews(userLogged, newsId);
-                return {message: `News ${newsId} deleted`};
+                return res.status(HttpStatus.OK).json({message: `News ${newsId} deleted`});
             };
 
-            return {message: `News ${newsId} do not exist`};
+            return res.status(HttpStatus.BAD_REQUEST).json({message: `News ${newsId} do not exist`});
             
         } catch (error) {
-            return {message : error.message };             
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});         
         };
     };
 

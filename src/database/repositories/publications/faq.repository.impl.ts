@@ -25,7 +25,7 @@ export class FaqRepositoryImpl implements FaqRepository {
     async getAllFaq(): Promise<Faq[]> {
         const allFaqs = await this.faqsRepository.find();
         const mappedFaqsPromises = allFaqs.map(async faq_entity => {
-            const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.author_});
+            const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.authorId_});
             return mapFaqEntitytoModel(faq_entity, faq_entity.publication__details_, user_entity);
         });
         return Promise.all(mappedFaqsPromises);
@@ -34,7 +34,7 @@ export class FaqRepositoryImpl implements FaqRepository {
     async getFaqById(faqId: number): Promise<Faq> {
         const faq_entity = await this.faqsRepository.findOneBy({id: faqId});
         if (faq_entity) {
-            const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.author_});
+            const user_entity = await this.userRepository.findOneBy({id: faq_entity.publication__details_.authorId_});
             return mapFaqEntitytoModel(faq_entity, faq_entity.publication__details_, user_entity);
         };
         return null;

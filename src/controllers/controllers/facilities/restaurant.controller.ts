@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe, HttpStatus, Res } from "@nestjs/common";
+import { Response } from 'express';
 import { JwtAuthGuard } from "../../../authentification/jwt-auth.guard";
 import { Restaurant } from "../../../domain/models/facility/shop/restaurant.model";
 import { RestaurantService } from "../../../services/facility/shop/restaurant.service";
@@ -14,37 +15,41 @@ export class RestaurantController {
     constructor(private readonly restaurantService: RestaurantService){};
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('restaurants')
-    async getAllRestaurant(): Promise<Restaurant[] | {}> {
+    async getAllRestaurant(@Res() res: Response): Promise<Restaurant[] | {}> {
         try {
-            return await this.restaurantService.getAllRestaurants();
+            const allRestaurants = await this.restaurantService.getAllRestaurants();
+            return res.status(HttpStatus.OK).send(allRestaurants);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('restaurants/:id')
-    async getRestaurantById(@Param('id') id: number): Promise <Restaurant | {}> {
+    async getRestaurantById(
+        @Res() res: Response,
+        @Param('id') id: number): Promise <Restaurant | {}> {
         try {
-            return await this.restaurantService.getRestaurantById(id);
+            const restaurant = await this.restaurantService.getRestaurantById(id);
+            return res.status(HttpStatus.OK).send(restaurant);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('restaurants/create')
-    async createRestaurant (@Body(new ValidationPipe()) createRestaurantDto: RestaurantDto): Promise <Restaurant | {}> {
+    async createRestaurant (
+        @Res() res: Response,
+        @Body(new ValidationPipe()) createRestaurantDto: RestaurantDto): Promise <Restaurant | {}> {
         try {
             const restaurantToCreate = mapRestaurantDtoToModel(createRestaurantDto);
             const restaurantCreated = await this.restaurantService.createRestaurant(restaurantToCreate);
-            return restaurantCreated;
+            return res.status(HttpStatus.OK).send(restaurantCreated);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
@@ -52,6 +57,7 @@ export class RestaurantController {
     @UseGuards(JwtAuthGuard)
     @Post('restaurants/:id/edit')
     async editRestaurant (
+        @Res() res: Response,
         @Param('id') id: number, 
         @Body(new ValidationPipe()) editRestaurantDto: RestaurantDto): Promise<Restaurant | {}> {
 
@@ -59,29 +65,31 @@ export class RestaurantController {
                 const restaurantToEdit = await this.restaurantService.getRestaurantById(id);       
                 const mappedRestaurantToEdit = mapRestaurantDtoToModelEdit(restaurantToEdit, editRestaurantDto);
                 const restaurantEdited = await this.restaurantService.editRestaurant(mappedRestaurantToEdit);
-                return restaurantEdited;
+                return res.status(HttpStatus.OK).send(restaurantEdited);
             } catch (error) {
-                return {message: error.message};
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
             };
         };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('restaurants/:id/delete')
-    async deleteBar(@Param('id') id: number): Promise<{}> {
+    async deleteBar(
+        @Res() res: Response,
+        @Param('id') id: number): Promise<{}> {
 
         try {
             const restaurantToDelete = await this.restaurantService.getRestaurantById(id);  
             
             if (restaurantToDelete) {
                 await this.restaurantService.deleteRestaurant(id);
-                return {message: `Restaurant ${id} deleted`};  
+                return res.status(HttpStatus.OK).json({message: `Restaurant ${id} deleted`});
             };
 
-            return {message: `Restaurant ${id} do not exist`};
+            return res.status(HttpStatus.BAD_REQUEST).json({message: `Restaurant ${id} do not exist`});
 
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 

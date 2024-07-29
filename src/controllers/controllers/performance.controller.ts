@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe, HttpStatus, Res  } from "@nestjs/common";
+import { Response } from 'express';
 import { JwtAuthGuard } from "../../authentification/jwt-auth.guard";
 import { PerformanceService } from "../../services/program/performance/performance.service";
 import { PerformanceDto } from "../DTO/performance.dto";
@@ -24,23 +25,27 @@ export class PerformanceController{
 
 
     @Get('performances')
-    async getAllPerformances(): Promise <Performance | {}> {
+    async getAllPerformances(@Res() res: Response): Promise <Performance | {}> {
         try {
-            return await this.perfServices.getAllPerformances();
+            const allPerfs = await this.perfServices.getAllPerformances();
+            return res.status(HttpStatus.OK).send(allPerfs);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
 
     
     @Get('performances/:id')
-    async getPerformanceById(@Param('id') id: number): Promise <Performance | {}> {
+    async getPerformanceById(
+        @Res() res: Response,
+        @Param('id') id: number): Promise <Performance | {}> {
 
         try {
-            return await this.perfServices.getPerformanceById(id);
+            const perf = await this.perfServices.getPerformanceById(id);
+            return res.status(HttpStatus.OK).send(perf);
         } catch (error) {
-            return {message: error.message};
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
         
     };
@@ -48,18 +53,21 @@ export class PerformanceController{
 
     @UseGuards(JwtAuthGuard)
     @Post('performances/create')
-    async createPerformance(@Body(new ValidationPipe()) createPerfDto: PerformanceDto): Promise <Performance | {}> {
+    async createPerformance(
+        @Res() res: Response,
+        @Body(new ValidationPipe()) createPerfDto: PerformanceDto): Promise <Performance | {}> {
 
         try {
             const band = await this.bandServices.getBandById(createPerfDto.band);
             const stage = await this.stageServices.getStageById(createPerfDto.stage);
             const timeFrame = await this.timeFrameServices.getTimeFrameById(createPerfDto.timeFrame);
             const perfToSave = mapPerformanceDtoToModel(band, stage, timeFrame);
+            const perfCreated = await this.perfServices.createPerformance(perfToSave);
 
-            return await this.perfServices.createPerformance(perfToSave);
+            return res.status(HttpStatus.OK).send(perfCreated);
 
         } catch (error) {
-            return {message: error.message};  
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
         };
     };
 
@@ -67,6 +75,7 @@ export class PerformanceController{
     @UseGuards(JwtAuthGuard)
     @Post('performances/:id/edit')
     async editPerformance(
+        @Res() res: Response,
         @Param('id') id: number,
         @Body(new ValidationPipe()) editPerfDto: PerformanceDto): Promise <Performance | {}> {
 
@@ -76,33 +85,34 @@ export class PerformanceController{
                 const band = await this.bandServices.getBandById(editPerfDto.band);
                 const stage = await this.stageServices.getStageById(editPerfDto.stage);
                 const timeFrame = await this.timeFrameServices.getTimeFrameById(editPerfDto.timeFrame);
+                const perfEditedToSave = mapPerformanceDtoToModelEdit(perfToEdit, band, stage, timeFrame)
+                const perfEdited = await this.perfServices.editPerformance(perfEditedToSave);
 
-                const perfEdited = mapPerformanceDtoToModelEdit(perfToEdit, band, stage, timeFrame)
-                
-                return await this.perfServices.editPerformance(perfEdited);
+                return res.status(HttpStatus.OK).send(perfEdited);
                 
             } catch (error) {
-                return {message: error.message};  
-
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
             };
         };
 
 
     @UseGuards(JwtAuthGuard)
     @Post('performances/:id/delete')
-    async deletePerformance(@Param('id') id: number): Promise <{}> {
+    async deletePerformance(
+        @Res() res: Response,
+        @Param('id') id: number): Promise <{}> {
         try {
             const perfToDelete = await this.perfServices.getPerformanceById(id);
 
             if (perfToDelete) {
                 await this.perfServices.deletePerformance(id)
-                return {message: `Performance ${id} deleted`};
+                return res.status(HttpStatus.OK).json({message: `Performance ${id} deleted`});
             };
 
-            return {message: `Performance ${id} do not exist`};
+            return res.status(HttpStatus.BAD_REQUEST).json({message: `Performance ${id} do not exist`});
 
         } catch (error) {
-            return {message: error.message};  
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});         
         };
     };
 

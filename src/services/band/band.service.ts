@@ -40,9 +40,9 @@ export class BandService{
         return bandCreated; 
     };
 
-    async editBand(band: Band): Promise<Band> {
+    async editBand(band: Band): Promise<Band> {       
         const nameTaken = await this.bandRepository.getBandByName(band.getName())
-        if (nameTaken) {
+        if (nameTaken && nameTaken.getId !== band.getId) {
             throw new Error ('Band with the same name already exist');
         };
         const bandEdited = await this.bandRepository.editBand(band);   
