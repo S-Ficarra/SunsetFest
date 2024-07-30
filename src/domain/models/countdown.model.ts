@@ -5,9 +5,8 @@ export class Countdown {
     private _startingDateAndTime: Date;
     private _endingDateAndTime: Date;
 
-    constructor(name: string, startingDateAndTime: Date, endingDateAndTime: Date) {
+    constructor(name: string, endingDateAndTime: Date) {
         this._name = name;
-        this._startingDateAndTime = startingDateAndTime;
         this._endingDateAndTime = endingDateAndTime;
     };
 
@@ -25,14 +24,6 @@ export class Countdown {
 
     setName(name: string): void {
         this._name = name;
-    };
-
-    setStartingDateAndTime(_startingDateAndTime: Date): void {
-        this._startingDateAndTime = _startingDateAndTime;
-    };
-
-    getStartingDateAndTime(): Date {
-        return this._startingDateAndTime;
     };
 
     setEndingDateAndTime(endingDateAndTime: Date): void {

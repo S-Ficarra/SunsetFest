@@ -7,9 +7,6 @@ export class CountdownDto {
     name: string;
 
     @IsString()
-    startingTime: string;
-
-    @IsString()
     endingTime: string;
 
 };

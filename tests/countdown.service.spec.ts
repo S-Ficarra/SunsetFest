@@ -27,7 +27,7 @@ describe('CountdownService', () => {
 
     // createCountdown
     it('Should create a new countdown', async () => {
-        const newCountdown = new Countdown("2026", new Date("2024-09-01T00:00:00"), new Date("2024-09-10T00:00:00"));
+        const newCountdown = new Countdown("2026", new Date("2024-09-10T00:00:00"));
         await countdownService.createCountdown(newCountdown);
         const countdowns = await countdownService.getAllCountdowns();
         expect(countdowns).toHaveLength(3);
@@ -36,7 +36,7 @@ describe('CountdownService', () => {
     // editCountdown
     it('Should edit an existing countdown', async () => {
         const countdownId = 1;
-        const updatedCountdown = new Countdown("2026", new Date("2024-06-01T00:00:00"), new Date("2024-06-15T00:00:00"));
+        const updatedCountdown = new Countdown("2026", new Date("2024-06-15T00:00:00"));
         updatedCountdown.setId(countdownId);
         await countdownService.editCountdown(updatedCountdown);
         const countdown = await countdownService.getCountdownById(countdownId);

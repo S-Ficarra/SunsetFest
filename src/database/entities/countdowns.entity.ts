@@ -10,9 +10,6 @@ export class countdowns {
     name: string;
 
     @Column()
-    starting_time: Date;
-
-    @Column()
     ending_time: Date;
 
 };
