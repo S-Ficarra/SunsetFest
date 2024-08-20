@@ -15,7 +15,6 @@ export class MerchandisingController {
     constructor (private readonly merchServices : MerchandisingService){};
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('merchandisings')
     async getAllMerchandising(@Res() res: Response): Promise <Merchandising[] | {}> {
         try {
@@ -27,7 +26,6 @@ export class MerchandisingController {
     };
 
 
-    @UseGuards(JwtAuthGuard)
     @Get('merchandisings/:id')
     async getMerchandisingById(
         @Res() res: Response,

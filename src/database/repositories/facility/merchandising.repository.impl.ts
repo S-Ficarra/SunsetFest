@@ -27,7 +27,7 @@ export class MerchandisingRepositoryImpl implements MerchandisingRepository {
         const allMerchandising = await this.merchandisingsRepository.find();
         const mappedMerchandisingPromises = allMerchandising.map( async merchandising_entity => {
             if (merchandising_entity) {
-                const location_entity = await this.locationRepository.findOneBy({id : merchandising_entity.id});
+                const location_entity = await this.locationRepository.findOneBy({id : merchandising_entity.location_.id});
                 const openTime_entity = await this.openTimesRepository.findOneBy({id: merchandising_entity.opening__times_.id});
                 return mapMerchandisingEntityToModel(merchandising_entity, location_entity.longitude, location_entity.latitude, openTime_entity);
             };

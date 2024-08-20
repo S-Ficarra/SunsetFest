@@ -26,7 +26,7 @@ export class RestaurantRepositoryImpl implements RestaurantRepository {
         const allRestaurants = await this.restaurantsRepository.find();
         const mappedRestaurantPromises = allRestaurants.map( async restaurant_entity => {
             if (restaurant_entity) {
-                const location_entity = await this.locationRepository.findOneBy({id : restaurant_entity.id});
+                const location_entity = await this.locationRepository.findOneBy({id : restaurant_entity.location_.id});
                 const openTime_entity = await this.openTimesRepository.findOneBy({id: restaurant_entity.opening__times_.id});
                 return mapRestaurantEntityToModel(restaurant_entity, location_entity.longitude, location_entity.latitude, openTime_entity);
             };
