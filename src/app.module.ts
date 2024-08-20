@@ -16,6 +16,7 @@ import { RestaurantModule } from './modules/facilities/restaurant.module';
 import { MerchandisingModule } from './modules/facilities/merchandising.module';
 import { PerformanceModule } from './modules/performance.module';
 import { ProgramModule } from './modules/program.module';
+import { EmailModule } from './modules/email.module';
 require('dotenv').config();
 
 
@@ -47,7 +48,8 @@ require('dotenv').config();
     MerchandisingModule,
     CountdownModule,
     PerformanceModule,
-    ProgramModule
+    ProgramModule,
+    EmailModule
   ],
 })
 export class AppModule {}
