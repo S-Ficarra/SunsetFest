@@ -21,7 +21,7 @@ export class EmailController {
 
             try {            
                 await this.emailService.sendContactEmail(contactEmailDto)
-                return res.status(HttpStatus.OK).send('Email sent Successfully');
+                return res.status(HttpStatus.OK).json({message: 'Email sent Successfully'});
                 
             } catch (error) {
                 return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
@@ -38,7 +38,7 @@ export class EmailController {
 
             try {            
                 await this.emailService.sendPressEmail(pressEmailDto, pdf)
-                return res.status(HttpStatus.OK).send('Email sent Successfully');
+                return res.status(HttpStatus.OK).json({message: 'Email sent Successfully'});
                 
             } catch (error) {
                 return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message : error.message});
