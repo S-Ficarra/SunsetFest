@@ -39,6 +39,10 @@ DB_HOST: //your_host_db
 DB_PORT: //your_db_port
 SALT_ROUNDS: //the_number_of_salt_round_for_password_cryption 
 JWT_SECRET_KEY: //the_key_for_the_generation_of_your_jwt_token
+EMAIL_HOST: //your_email_host
+EMAIL_PORT: //your_email_port
+EMAIL_USER: //your_email_username
+EMAIL_PASSWORD: //your_email_password
 ```
 
 (if using the db dockerized in the app)
@@ -237,10 +241,36 @@ This 2nd method compare if the performance we try to add already exist in the pr
 
 - `Countdown` contain a starting date and ending date, the point is to display it on severla page of the website, saved in DB to make it easy to re-use it for several editions of the festival
 
+### Emails
+
+- `EmailService` handles sending emails using nodemailer, it supports both contact and press emails. Emails are configured via environment variables (see Installation chapter to follow the .env model) and include support for attachments. Emails are sent to predefined addresses (contact@sunsetfest.online, presse@sunsetfest.online) using a transporter configured with host, port, user and password.
+To change destinations email address, go to `./src/services/email.service.ts` and change the `to:` parameter in the transporter. Exemple below :
+
+```typescript
+    // ./src/services/email.service.ts
+    async sendContactEmail(contactEmailDto: ContactEmailDto) {
+
+        const { name, firstName, email, subject, message } = contactEmailDto;
+        
+        try {
+            await this.transporter.sendMail({
+            from: `"${name} ${firstName}" <${email}>`,
+            to: 'contact@sunsetfest.online',
+            subject: subject,
+            text: message,
+          });
+          return { message: 'Email sent successfully' };
+        } catch (error) {
+            throw new Error(`Error while sending the email. Details : ${error.message}`);
+        };
+
+      };
+```
+
 
 ## Controllers
 
-All endpoint (except login) are only accessible for users logged, their session is maintened by a JWT token for 60 minutes. When the endpoint needs to know the role of the user to execute, or to register the user details, the user is extracted from the JWT :
+Endpoint others than get and getAll (except login and email) are only accessible for users logged, their session is maintened by a JWT token for 60 minutes. When the endpoint needs to know the role of the user to execute, or to register the user details, the user is extracted from the JWT :
 
 ```typescript
     // ./src/controllers/controllers/publications/faq.controller.ts
@@ -317,6 +347,9 @@ Login
 | countdowns/:id     | performances/:id        | programs/:year/addperformance |
 | countdowns/:id/edit| performances/:id/edit | programs/:year/deleteperformance |
 | countdowns/:id/delete| performances/:id/delete | |
+| **Emails**       |
+| sendemail/contact| 
+| sendemail/press  |
 
 
 ## Tests
