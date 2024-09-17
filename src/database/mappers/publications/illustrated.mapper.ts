@@ -21,14 +21,14 @@ export function mapIllustratedPubliContentToEntityEdit (model: Illustrated, cont
 
 export function mapIllustratedImageToEntity (model: Illustrated): images{
     const entity = new images();
-    entity.image = model.getContent().getImage();
+    entity.image_url = model.getContent().getImage();
     return entity;
 };
 
 export function mapIllustratedImageToEntityEdit (model: Illustrated, imageId: number): images{
     const entity = new images();
     entity.id = imageId;
-    entity.image = model.getContent().getImage();
+    entity.image_url = model.getContent().getImage();
     return entity;
 };
 

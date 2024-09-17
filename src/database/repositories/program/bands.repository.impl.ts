@@ -26,8 +26,8 @@ export class BandRepositoryImpl implements BandRepository {
     async getAllBands(): Promise<Band[]> {
         const allBands = await this.bandRepository.find();
         const mappedBandsPromises = allBands.map(async band_entity => {
-            const thumbnail_image = band_entity.thumbnail__image_.image
-            const banner_image = band_entity.banner__image_.image
+            const thumbnail_image = band_entity.thumbnail__image_.image_url
+            const banner_image = band_entity.banner__image_.image_url
             const publication_details = band_entity.publication__details_
             const user = await this.userRepository.findOneBy({id: publication_details.authorId_})
             return mapBandEntityToModel(band_entity, thumbnail_image, banner_image, publication_details, user);
@@ -38,8 +38,8 @@ export class BandRepositoryImpl implements BandRepository {
     async getBandById(bandId: number): Promise<Band> {
         const band_entity = await this.bandRepository.findOne({where: {id: bandId}});
         if (band_entity) {
-            const thumbnail_image = band_entity.thumbnail__image_.image
-            const banner_image = band_entity.banner__image_.image
+            const thumbnail_image = band_entity.thumbnail__image_.image_url
+            const banner_image = band_entity.banner__image_.image_url
             const publication_details = band_entity.publication__details_
             const user = await this.userRepository.findOneBy({id: publication_details.authorId_})
             return mapBandEntityToModel(band_entity, thumbnail_image, banner_image, publication_details, user);
@@ -50,8 +50,8 @@ export class BandRepositoryImpl implements BandRepository {
     async getBandByName(name: string): Promise <Band> {
         const band_entity = await this.bandRepository.findOneBy({name: name});
         if (band_entity) {
-            const thumbnail_image = band_entity.thumbnail__image_.image
-            const banner_image = band_entity.banner__image_.image
+            const thumbnail_image = band_entity.thumbnail__image_.image_url
+            const banner_image = band_entity.banner__image_.image_url
             const publication_details = band_entity.publication__details_
             const user = await this.userRepository.findOneBy({id: publication_details.authorId_})
             return mapBandEntityToModel(band_entity, thumbnail_image, banner_image, publication_details, user);

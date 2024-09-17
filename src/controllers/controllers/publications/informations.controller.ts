@@ -55,8 +55,10 @@ export class InformationController {
 
             try {
                 const userLogged = await this.authServices.getUserLogged(req);
-                const image = files.image ? files.image[0].buffer : null;
-                const informationToCreate = mapInformationDtoToModelCreate(createinformationDto, image, userLogged);
+                const image = files.image ? files.image[0] : null;
+                const imageUrl = `${image.destination}${image.filename} `
+
+                const informationToCreate = mapInformationDtoToModelCreate(createinformationDto, imageUrl, userLogged);
                 
                 const createdInformation = await this.infoServices.createInformation(informationToCreate);
 
@@ -80,8 +82,10 @@ export class InformationController {
             try {
                 const informationToEdit = await this.infoServices.getInformationById(id)
                 const userLogged = await this.authServices.getUserLogged(req);
-                const image = files.image ? files.image[0].buffer : null;
-                const mappedInformationToEdit = mapInformationDtoToModelEdit(informationToEdit, editinformationDto, image, userLogged);
+                const image = files.image ? files.image[0] : null;
+                const imageUrl = `${image.destination}${image.filename} `
+
+                const mappedInformationToEdit = mapInformationDtoToModelEdit(informationToEdit, editinformationDto, imageUrl, userLogged);
                 const editedInformation = await this.infoServices.editInformation(mappedInformationToEdit);
 
                 return res.status(HttpStatus.OK).send(editedInformation);

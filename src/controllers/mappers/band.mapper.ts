@@ -3,7 +3,7 @@ import { BandDto } from "../DTO/band.dto";
 import { Socials } from "../../domain/models/band/socials.model";
 import { User } from "../../domain/models/user/user.model";
 
-export function mapBandDtoToModelCreate (bandDto : BandDto, thumbnailImage: Buffer, bannerImage: Buffer, user: User): Band {
+export function mapBandDtoToModelCreate (bandDto : BandDto, thumbnailImageUrl: string, bannerImageUrl: string, user: User): Band {
 
     const socials = new Socials (
         bandDto.facebook,
@@ -21,8 +21,8 @@ export function mapBandDtoToModelCreate (bandDto : BandDto, thumbnailImage: Buff
         bandDto.country,
         bandDto.text,
         socials,
-        thumbnailImage,
-        bannerImage,
+        thumbnailImageUrl,
+        bannerImageUrl,
         user,
         new Date(),
         new Date ()        
@@ -31,7 +31,7 @@ export function mapBandDtoToModelCreate (bandDto : BandDto, thumbnailImage: Buff
 };
 
 
-export function mapBandDtoToModelEdit (bandToEdit: Band, bandDto : BandDto, thumbnailImage: Buffer, bannerImage: Buffer, user: User): Band {
+export function mapBandDtoToModelEdit (bandToEdit: Band, bandDto : BandDto, thumbnailImageUrl: string, bannerImageUrl: string, user: User): Band {
 
     const socials = new Socials (
         bandDto.facebook,
@@ -48,8 +48,8 @@ export function mapBandDtoToModelEdit (bandToEdit: Band, bandDto : BandDto, thum
     bandToEdit.setCountry(bandDto.country);
     bandToEdit.setText(bandDto.text)
     bandToEdit.setSocials(socials),                    
-    bandToEdit.setThumbnailImage(thumbnailImage);
-    bandToEdit.setBannerImage(bannerImage)
+    bandToEdit.setThumbnailImageUrl(thumbnailImageUrl);
+    bandToEdit.setBannerImageUrl(bannerImageUrl)
     bandToEdit.setAuthor(user);
     bandToEdit.setModifiedAt(new Date())    
 

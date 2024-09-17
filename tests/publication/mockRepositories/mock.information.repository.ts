@@ -22,8 +22,8 @@ export class MockInformationRepository implements InformationRepository {
 
     initializeInformations(): void {
         this.informations.push(
-            new Information (this.userRepository.users[0], new Date, new Date, true, new Content ('titleInformation1', 'textInformation1', Buffer.from('image1'))),
-            new Information (this.userRepository.users[0], new Date, new Date, false, new Content ('titleInformation2', 'textInformation2', Buffer.from('image2')))
+            new Information (this.userRepository.users[0], new Date, new Date, true, new Content ('titleInformation1', 'textInformation1', 'image1')),
+            new Information (this.userRepository.users[0], new Date, new Date, false, new Content ('titleInformation2', 'textInformation2', 'image2'))
         )
     }
 

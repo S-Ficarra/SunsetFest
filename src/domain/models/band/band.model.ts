@@ -8,20 +8,20 @@ export class Band {
     private _country: string;
     private _text: string;
     private _socials: Socials;
-    private _thumbnailImage: Buffer;
-    private _bannerImage: Buffer;
+    private _thumbnailImageUrl: string;
+    private _bannerImageUrl: string;
     private _user: User;
     private _createdAt: Date;
     private _modifiedAt: Date;
 
 
-    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImage: Buffer, bannerImage: Buffer, user: User, createdAt: Date, modifiedAt: Date) {
+    constructor(name: string, country: string, text: string, socials: Socials, thumbnailImageurl: string, bannerImageUrl: string, user: User, createdAt: Date, modifiedAt: Date) {
         this._name = name;
         this._country = country;
         this._text = text;
         this._socials = socials;
-        this._thumbnailImage = thumbnailImage;
-        this._bannerImage = bannerImage;
+        this._thumbnailImageUrl = thumbnailImageurl;
+        this._bannerImageUrl = bannerImageUrl;
         this._user = user;
         this._createdAt = createdAt;
         this._modifiedAt = modifiedAt;
@@ -67,20 +67,20 @@ export class Band {
         return this._socials;
     };
 
-    setThumbnailImage(thumbnailImage: Buffer) {
-        this._thumbnailImage = thumbnailImage;
+    setThumbnailImageUrl(thumbnailImageUrl: string) {
+        this._thumbnailImageUrl = thumbnailImageUrl;
     };
 
-    getThumbnailImage(): Buffer {
-        return this._thumbnailImage;
+    getThumbnailImageUrl(): string {
+        return this._thumbnailImageUrl;
     };
 
-    setBannerImage(bannerImage: Buffer) {
-        this._bannerImage = bannerImage;
+    setBannerImageUrl(bannerImageUrl: string) {
+        this._bannerImageUrl = bannerImageUrl;
     };
 
-    getBannerImage(): Buffer {
-        return this._bannerImage;
+    getBannerImageUrl(): string {
+        return this._bannerImageUrl;
     };
 
     setAuthor(userId: User) {

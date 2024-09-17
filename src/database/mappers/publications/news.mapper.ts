@@ -23,7 +23,7 @@ export function mapNewsEntityToModel(publi_entity: publications, content_entity:
     const content = new Content (
         content_entity.title,
         content_entity.text,
-        image_entity.image
+        image_entity.image_url
     );
 
     const news = new News (

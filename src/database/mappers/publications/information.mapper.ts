@@ -24,7 +24,7 @@ export function mapInformationEntityToModel(publi_entity: publications, content_
     const content = new Content (
         content_entity.title,
         content_entity.text,
-        image_entity.image
+        image_entity.image_url
     );
 
     const information = new Information (

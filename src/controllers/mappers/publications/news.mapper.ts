@@ -4,12 +4,12 @@ import { Content } from "../../../domain/models/publication/content.model";
 import { News } from "../../../domain/models/publication/news.model";
 
 
-export function mapNewsDtoToModelCreate (newsDto : IllustratedDto, image: Buffer, user: User) {
+export function mapNewsDtoToModelCreate (newsDto : IllustratedDto, imageUrl: string, user: User) {
 
     const content = new Content (
         newsDto.title,
         newsDto.text,
-        image
+        imageUrl
     );
 
     const status = newsDto.status === 'true';    
@@ -25,12 +25,12 @@ export function mapNewsDtoToModelCreate (newsDto : IllustratedDto, image: Buffer
     return news;
 };
 
-export function mapNewsDtoToModelEdit (newsToEdit: News, newsDto: IllustratedDto, image: Buffer, user: User) {
+export function mapNewsDtoToModelEdit (newsToEdit: News, newsDto: IllustratedDto, imageUrl: string, user: User) {
 
     const content = new Content (
         newsDto.title,
         newsDto.text,
-        image
+        imageUrl
     );
 
     const status = newsDto.status === 'true';

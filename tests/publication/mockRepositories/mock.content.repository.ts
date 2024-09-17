@@ -4,8 +4,8 @@ export class MockContentRepository {
 
 
     public content: Content[] = [
-        new Content ('title1', 'text1', Buffer.from('image1')),
-        new Content ('title2', 'text2', Buffer.from('image2')),
+        new Content ('title1', 'text1', 'image1'),
+        new Content ('title2', 'text2', 'image2'),
     ];
 
     setFakeIdToTest(): void {

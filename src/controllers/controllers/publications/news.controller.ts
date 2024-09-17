@@ -56,8 +56,10 @@ export class NewsController {
             
             try {         
                 const userLogged = await this.authServices.getUserLogged(req)
-                const image = files.image ? files.image[0].buffer : null;
-                const newsToCreate = mapNewsDtoToModelCreate(createNewsDto, image, userLogged);
+                const image = files.image ? files.image[0] : null;
+                const imageUrl = `${image.destination}${image.filename} `
+
+                const newsToCreate = mapNewsDtoToModelCreate(createNewsDto, imageUrl, userLogged);
 
                 const createdNews = await this.newsServices.createNews(newsToCreate);
 
@@ -81,8 +83,10 @@ export class NewsController {
             try {
                 const userLogged = await this.authServices.getUserLogged(req);
                 const newstoEdit = await this.newsServices.getNewsById(id);
-                const image = files.image ? files.image[0].buffer : null;
-                const mappedNewsToEdit = mapNewsDtoToModelEdit(newstoEdit, editNewsDto, image, userLogged);
+                const image = files.image ? files.image[0] : null;
+                const imageUrl = `${image.destination}${image.filename} `
+
+                const mappedNewsToEdit = mapNewsDtoToModelEdit(newstoEdit, editNewsDto, imageUrl, userLogged);
                 const editedNews = await this.newsServices.editNews(mappedNewsToEdit);
 
                 return res.status(HttpStatus.OK).send(editedNews);

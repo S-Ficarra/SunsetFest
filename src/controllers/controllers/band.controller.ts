@@ -59,9 +59,11 @@ export class BandController {
         try {
 
             const userLogged = await this.authService.getUserLogged(req)
-            const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0].buffer : null;
-            const bannerImage = files.bannerImage ? files.bannerImage[0].buffer : null;
-            const bandToCreate = mapBandDtoToModelCreate(createBandDto, thumbnailImage, bannerImage, userLogged);
+            const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0] : null;
+            const bannerImage = files.bannerImage ? files.bannerImage[0] : null;
+            const thumbnailUrl = `${thumbnailImage.destination}${thumbnailImage.filename} `
+            const bannerUrl = `${bannerImage.destination}${bannerImage.filename} `
+            const bandToCreate = mapBandDtoToModelCreate(createBandDto, thumbnailUrl, bannerUrl, userLogged);
 
             const createdBand = await this.bandService.createBand(bandToCreate);
 
@@ -90,9 +92,11 @@ export class BandController {
                 
                 const userLogged = await this.authService.getUserLogged(req)
                 const bandToEdit = await this.bandService.getBandById(id);
-                const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0].buffer : null;
-                const bannerImage = files.bannerImage ? files.bannerImage[0].buffer : null;
-                const mappedBandToEdit = mapBandDtoToModelEdit(bandToEdit, editBandDto, thumbnailImage, bannerImage, userLogged)
+                const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0] : null;
+                const bannerImage = files.bannerImage ? files.bannerImage[0] : null;
+                const thumbnailUrl = `${thumbnailImage.destination}${thumbnailImage.filename} `
+                const bannerUrl = `${bannerImage.destination}${bannerImage.filename} `
+                const mappedBandToEdit = mapBandDtoToModelEdit(bandToEdit, editBandDto, thumbnailUrl, bannerUrl, userLogged)
                
                 const editedBand = await this.bandService.editBand(mappedBandToEdit)
                 return res.status(HttpStatus.OK).send(editedBand);

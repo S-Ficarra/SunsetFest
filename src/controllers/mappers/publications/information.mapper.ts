@@ -3,12 +3,12 @@ import { User } from "../../../domain/models/user/user.model";
 import { IllustratedDto } from "../../DTO/publications/illustrated.dto";
 import { Information } from "../../../domain/models/publication/information.model";
 
-export function mapInformationDtoToModelCreate (informationDto : IllustratedDto, image: Buffer, user: User) {
+export function mapInformationDtoToModelCreate (informationDto : IllustratedDto, imageUrl: string, user: User) {
 
     const content = new Content (
         informationDto.title,
         informationDto.text,
-        image
+        imageUrl
     );
     
     const status = informationDto.status === 'true';    
@@ -24,12 +24,12 @@ export function mapInformationDtoToModelCreate (informationDto : IllustratedDto,
     return information;
 };
 
-export function mapInformationDtoToModelEdit (infoToEdit: Information, informationDto: IllustratedDto, image: Buffer, user: User) {
+export function mapInformationDtoToModelEdit (infoToEdit: Information, informationDto: IllustratedDto, imageUrl: string, user: User) {
 
     const content = new Content (
         informationDto.title,
         informationDto.text,
-        image
+        imageUrl
     );
 
     const status = informationDto.status === 'true';

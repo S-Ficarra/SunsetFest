@@ -3,12 +3,12 @@ export class Content {
     private _id: number;
     private _title: string;
     private _text: string;
-    private _image: Buffer; 
+    private _imageUrl: string; 
 
-    constructor (title: string, text: string, image: Buffer) {
+    constructor (title: string, text: string, imageUrl: string) {
         this._title = title;
         this._text = text;
-        this._image = image;
+        this._imageUrl = imageUrl;
     };
 
     getId(): number {
@@ -35,12 +35,12 @@ export class Content {
         return this._text;
     };
 
-    setImage(buffer: Buffer): void {
-        this._image = buffer;
+    setImage(url: string): void {
+        this._imageUrl = url;
     };
 
-    getImage(): Buffer {
-        return this._image;
+    getImage(): string {
+        return this._imageUrl;
     };
 
 

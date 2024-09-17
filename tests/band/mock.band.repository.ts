@@ -28,8 +28,8 @@ export class MockBandRepository implements BandRepository {
 
     private async initializeBands(): Promise<void> {
         this.bands = [
-            new Band ('band1', 'country1', 'text1', this.socials[0], Buffer.from('thumbnail1'), Buffer.from('banner1'), this.userRepository.users[0], new Date, new Date),
-            new Band ('band2', 'country2', 'text2', this.socials[1], Buffer.from('thumbnail2'), Buffer.from('banner2'), this.userRepository.users[1], new Date, new Date)    
+            new Band ('band1', 'country1', 'text1', this.socials[0], 'thumbnail1', 'banner1', this.userRepository.users[0], new Date, new Date),
+            new Band ('band2', 'country2', 'text2', this.socials[1], 'thumbnail2', 'banner2', this.userRepository.users[1], new Date, new Date)    
         ];
     }
 
