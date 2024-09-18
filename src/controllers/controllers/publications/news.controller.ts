@@ -8,6 +8,9 @@ import { NewsService } from "../../../services/publication/news.service";
 import { IllustratedDto } from "../../DTO/publications/illustrated.dto";
 import { mapNewsDtoToModelCreate, mapNewsDtoToModelEdit } from "../../mappers/publications/news.mapper";
 import { AuthentificationService } from "../../../authentification/authentification.service";
+import * as fs from 'fs';
+import * as path from 'path';
+
 
 @Controller()
 export class NewsController {
@@ -57,7 +60,7 @@ export class NewsController {
             try {         
                 const userLogged = await this.authServices.getUserLogged(req)
                 const image = files.image ? files.image[0] : null;
-                const imageUrl = `${image.destination}${image.filename} `
+                const imageUrl = `${image.destination}${image.filename}`
 
                 const newsToCreate = mapNewsDtoToModelCreate(createNewsDto, imageUrl, userLogged);
 
@@ -83,10 +86,21 @@ export class NewsController {
             try {
                 const userLogged = await this.authServices.getUserLogged(req);
                 const newstoEdit = await this.newsServices.getNewsById(id);
-                const image = files.image ? files.image[0] : null;
-                const imageUrl = `${image.destination}${image.filename} `
 
-                const mappedNewsToEdit = mapNewsDtoToModelEdit(newstoEdit, editNewsDto, imageUrl, userLogged);
+
+                const image = files.image ? files.image[0] : null;
+                const oldImageUrl = newstoEdit.getContent().getImage();
+                const newImageUrl = image ? `${image.destination}${image.filename}` : oldImageUrl;
+
+                if (oldImageUrl !== newImageUrl) {
+                    try {
+                        await fs.promises.unlink(oldImageUrl);
+                    } catch (err) {
+                        throw new Error (err)
+                    }
+                }
+
+                const mappedNewsToEdit = mapNewsDtoToModelEdit(newstoEdit, editNewsDto, newImageUrl, userLogged);
                 const editedNews = await this.newsServices.editNews(mappedNewsToEdit);
 
                 return res.status(HttpStatus.OK).send(editedNews);
@@ -109,6 +123,9 @@ export class NewsController {
             const news = await this.newsServices.getNewsById(newsId);
 
             if(news){
+                const imagePath = path.join(process.cwd(), news.getContent().getImage());
+                await fs.promises.unlink(imagePath);              
+                
                 await this.newsServices.deleteNews(userLogged, newsId);
                 return res.status(HttpStatus.OK).json({message: `News ${newsId} deleted`});
             };

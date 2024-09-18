@@ -8,7 +8,8 @@ import { Information } from "../../../domain/models/publication/information.mode
 import { InformationService } from "../../../services/publication/information.service";
 import { IllustratedDto } from "../../DTO/publications/illustrated.dto";
 import { mapInformationDtoToModelCreate, mapInformationDtoToModelEdit } from "../../mappers/publications/information.mapper";
-
+import * as fs from 'fs';
+import * as path from 'path';
 
 
 @Controller()
@@ -56,7 +57,7 @@ export class InformationController {
             try {
                 const userLogged = await this.authServices.getUserLogged(req);
                 const image = files.image ? files.image[0] : null;
-                const imageUrl = `${image.destination}${image.filename} `
+                const imageUrl = `${image.destination}${image.filename}`
 
                 const informationToCreate = mapInformationDtoToModelCreate(createinformationDto, imageUrl, userLogged);
                 
@@ -82,10 +83,21 @@ export class InformationController {
             try {
                 const informationToEdit = await this.infoServices.getInformationById(id)
                 const userLogged = await this.authServices.getUserLogged(req);
-                const image = files.image ? files.image[0] : null;
-                const imageUrl = `${image.destination}${image.filename} `
 
-                const mappedInformationToEdit = mapInformationDtoToModelEdit(informationToEdit, editinformationDto, imageUrl, userLogged);
+                const image = files.image ? files.image[0] : null;
+                const oldImageUrl = informationToEdit.getContent().getImage();
+                const newImageUrl = image ? `${image.destination}${image.filename}` : oldImageUrl;
+
+                if (oldImageUrl !== newImageUrl) {
+                    try {
+                        await fs.promises.unlink(oldImageUrl);
+                    } catch (err) {
+                        throw new Error (err)
+                    }
+                }
+
+
+                const mappedInformationToEdit = mapInformationDtoToModelEdit(informationToEdit, editinformationDto, newImageUrl, userLogged);
                 const editedInformation = await this.infoServices.editInformation(mappedInformationToEdit);
 
                 return res.status(HttpStatus.OK).send(editedInformation);
@@ -108,6 +120,9 @@ export class InformationController {
             const information = await this.infoServices.getInformationById(informationId);
 
             if(information){
+                const imagePath = path.join(process.cwd(), information.getContent().getImage());
+                await fs.promises.unlink(imagePath);              
+                  
                 await this.infoServices.deleteInformation(userLogged, informationId);
                 return res.status(HttpStatus.OK).json({message: `Information ${informationId} deleted`});
             };

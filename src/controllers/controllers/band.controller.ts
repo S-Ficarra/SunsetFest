@@ -8,7 +8,8 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from "../../../multer.config";
 import { AuthentificationService } from "../../authentification/authentification.service";
 import { mapBandDtoToModelCreate, mapBandDtoToModelEdit } from "../mappers/band.mapper";
-
+import * as fs from 'fs';
+import * as path from 'path';
 
 
 @Controller()
@@ -92,11 +93,25 @@ export class BandController {
                 
                 const userLogged = await this.authService.getUserLogged(req)
                 const bandToEdit = await this.bandService.getBandById(id);
+
                 const thumbnailImage = files.thumbnailImage ? files.thumbnailImage[0] : null;
                 const bannerImage = files.bannerImage ? files.bannerImage[0] : null;
-                const thumbnailUrl = `${thumbnailImage.destination}${thumbnailImage.filename} `
-                const bannerUrl = `${bannerImage.destination}${bannerImage.filename} `
-                const mappedBandToEdit = mapBandDtoToModelEdit(bandToEdit, editBandDto, thumbnailUrl, bannerUrl, userLogged)
+
+                const oldThumbnailUrl = bandToEdit.getThumbnailImageUrl();
+                const oldBannerUrl = bandToEdit.getBannerImageUrl();
+
+                const newThumbnailUrl = thumbnailImage ? `${thumbnailImage.destination}${thumbnailImage.filename}` : oldThumbnailUrl;
+                const newBannerUrl = bannerImage ? `${bannerImage.destination}${bannerImage.filename}` : oldBannerUrl;
+
+                if (oldThumbnailUrl !== newThumbnailUrl) {
+                    await fs.promises.unlink(oldThumbnailUrl);
+                }
+
+                if (oldBannerUrl !== newBannerUrl) {
+                    await fs.promises.unlink(oldBannerUrl);
+                }
+
+                const mappedBandToEdit = mapBandDtoToModelEdit(bandToEdit, editBandDto, newThumbnailUrl, newBannerUrl, userLogged)
                
                 const editedBand = await this.bandService.editBand(mappedBandToEdit)
                 return res.status(HttpStatus.OK).send(editedBand);
@@ -120,6 +135,12 @@ export class BandController {
             const band = await this.bandService.getBandById(id);
 
             if (band) {
+                const thumbnailImagePath = band.getThumbnailImageUrl();
+                const bannerImagePath = band.getBannerImageUrl(); 
+
+                await fs.promises.unlink(thumbnailImagePath);
+                await fs.promises.unlink(bannerImagePath);
+
                 await this.bandService.deleteBand(userLogged, id);
                 return res.status(HttpStatus.OK).json({message: `Band ${bandId} deleted`});
             };
