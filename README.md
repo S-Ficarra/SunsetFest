@@ -78,6 +78,8 @@ This API have been conceived with a layered architecture:
 
 `./tests` contain all tests of the API
 
+`./uploads` contain the images uploaded by the users
+
 
 ## Database schema : 
 
@@ -307,9 +309,18 @@ The JWT is recovered from the request http headers and decrypted to access the u
 
 ```
 
-Here's a list of all endpoints, names are planned to be self-explanatory, the first ones are getAll : 
+### Images
 
-Login
+The controller utilizes FileFieldsInterceptor to handle the uploading of multiple image files. multerConfig is provided in a separate file (`./multer.config.ts`) and defines the storage settings, file size limits, file type validation, and destination for the images.
+
+When a user upload an image on an article or a band, the image will be stocked in the `./uploads` folder. Then the path (`uploads/exemple_name.jpg`) of the image will be saved in the database with an ID which will be used as a foreign key in the publication or band table.
+When an object is edited, if the image provided is different, the precedent image is deleted. The image is also deleted from the `./uploads` folder when an object is deleted.
+
+
+### Endpoints
+
+
+Here's a list of all endpoints, names are planned to be self-explanatory, the first ones are getAll : 
 
 
 | **Users**          | **Bars**                | **Merchandisings**                     |
@@ -347,8 +358,8 @@ Login
 | countdowns/:id     | performances/:id        | programs/:year/addperformance |
 | countdowns/:id/edit| performances/:id/edit | programs/:year/deleteperformance |
 | countdowns/:id/delete| performances/:id/delete | |
-| **Emails**       |
-| sendemail/contact| 
+| **Emails**       | **Authentification**      |
+| sendemail/contact| login                     | 
 | sendemail/press  |
 
 
