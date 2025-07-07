@@ -83,12 +83,12 @@ This API have been conceived with a layered architecture:
 
 ## Database schema : 
 
-![DB SCHEMA](https://github.com/S-Ficarra/SunsetFest/assets/131000103/025d20c6-f9d6-43a4-aa45-5e88f49fcae3)
+![DB_SCHEMA](https://github.com/user-attachments/assets/47f84f91-b85d-49be-a26d-abe225e2ddc2)
 
 
 ## Class diagram schema : 
 
-![models_diagram](https://github.com/S-Ficarra/SunsetFest/assets/131000103/c0659754-8ba1-4f53-82a0-ce6a73c41b60)
+![models_diagram](https://github.com/user-attachments/assets/8afbd406-f15f-4c52-9423-3a57da3bfdc9)
 
 
 ## Objects and business rules
